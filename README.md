@@ -1,3 +1,6 @@
+
+# OL_OCH_BURK
+
 <!DOCTYPE html>
 <html lang="sv">
 <head>
@@ -6,7 +9,7 @@
   <title>Stockholm Sweden RP — Café & Bar</title>
   <style>
     :root {
-      --bg: #060b10;
+      --bg: #05090e;
       --panel: rgba(13, 21, 34, 0.95);
       --panel-2: rgba(23, 36, 57, 0.95);
       --text: #f8fafc;
@@ -22,8 +25,10 @@
       margin: 0;
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       color: var(--text);
-      background: linear-gradient(rgba(4,9,15,0.72), rgba(4,9,15,0.82)), url('https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=1900&q=80') center/cover fixed;
+      background: linear-gradient(rgba(4,9,15,0.72), rgba(4,9,15,0.82)), #05090e;
       min-height: 100vh;
+      background-size: cover;
+      background-attachment: fixed;
     }
     .topbar { position: sticky; top: 0; z-index: 10; display: flex; justify-content: space-between; align-items: center; padding: 14px 24px; background: rgba(4,9,15,0.9); border-bottom: 1px solid var(--border); }
     .brand { font-weight: 800; color: var(--gold); letter-spacing: 0.04em; }
@@ -33,27 +38,57 @@
     .hero, .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 22px; box-shadow: 0 18px 46px rgba(0,0,0,0.28); }
     .hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: 20px; padding: 42px 28px; margin-bottom: 24px; }
     .hero h1 { margin: 0 0 10px; font-size: clamp(2rem, 4vw, 3rem); }
+    .hero-visual { border-radius: 18px; overflow: hidden; border: 1px solid var(--border); min-height: 280px; }
+    .hero-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .editable-block { border: 1px dashed rgba(241,183,63,0.35); padding: 10px; border-radius: 12px; background: rgba(241,183,63,0.07); }
+    .editable-block textarea { min-height: 90px; resize: vertical; }
     .hero p, .section p, .muted { color: var(--muted); line-height: 1.6; }
     .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
     .btn { border: none; border-radius: 999px; padding: 11px 16px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; color: #07111f; background: linear-gradient(135deg, var(--gold), #ffd77a); }
     .btn.secondary { color: var(--text); background: linear-gradient(135deg, var(--blue), #6aa7ff); }
     .btn.danger { color: var(--text); background: linear-gradient(135deg, var(--red), #ff8b8b); }
+    .btn.small { padding: 8px 12px; font-size: 0.9rem; }
     .panel { padding: 24px; margin-bottom: 24px; }
     .section h2 { margin-top: 0; margin-bottom: 6px; }
     .grid { display: grid; gap: 16px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .card { padding: 16px; border-radius: 16px; background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); border: 1px solid var(--border); }
     .card h3 { margin-top: 0; margin-bottom: 8px; }
     .price { font-size: 1.2rem; color: var(--gold); font-weight: 700; margin-top: 6px; }
+    .menu-grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-top: 16px; }
+    .menu-card { display: flex; flex-direction: column; height: 100%; transition: transform 180ms ease, border-color 180ms ease; padding: 12px; }
+    .menu-card:hover { transform: translateY(-2px); border-color: rgba(241,183,63,0.4); }
+    .menu-image { width: 100%; aspect-ratio: 5 / 4; object-fit: cover; border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--border); background: rgba(255,255,255,0.04); max-height: 170px; }
+    .card-body { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+    .drink-meta { display: flex; flex-direction: column; gap: 6px; }
+    .menu-tag { display: inline-block; width: fit-content; padding: 6px 10px; border-radius: 999px; background: rgba(241,183,63,0.15); color: var(--gold); font-size: 0.8rem; font-weight: 700; border: 1px solid rgba(241,183,63,0.25); }
+    .menu-description { color: var(--muted); font-size: 0.95rem; line-height: 1.45; }
+    .menu-card .btn { width: 100%; text-align: center; margin-top: auto; }
+    .permission-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 6px; }
+    .permission-chip { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 999px; border: 1px solid var(--border); background: rgba(255,255,255,0.04); font-size: 0.92rem; }
+    .permission-chip input { width: auto; accent-color: var(--gold); margin: 0; }
+    .staff-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .status-badge { display: inline-block; padding: 6px 10px; border-radius: 999px; font-size: 0.8rem; font-weight: 700; }
+    .status-badge.active { background: rgba(74, 222, 128, 0.16); color: var(--green); border: 1px solid rgba(74, 222, 128, 0.24); }
+    .status-badge.inactive { background: rgba(255, 107, 107, 0.16); color: var(--red); border: 1px solid rgba(255, 107, 107, 0.24); }
     form { display: grid; gap: 12px; margin-top: 12px; }
     input, select, button { font: inherit; border-radius: 12px; border: 1px solid var(--border); padding: 12px 14px; background: var(--panel-2); color: var(--text); }
     input::placeholder { color: #8ea2bd; }
     .status { min-height: 20px; margin-top: 8px; color: var(--green); font-weight: 600; }
     .status.error { color: var(--red); }
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(2,6,12,0.74); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 50; }
+    .modal-card { background: var(--panel); border: 1px solid var(--border); border-radius: 18px; padding: 22px; width: min(420px, 100%); box-shadow: 0 24px 50px rgba(0,0,0,0.35); }
+    .modal-actions { display: flex; gap: 10px; margin-top: 14px; }
+    .modal-actions .btn { flex: 1; justify-content: center; }
     .hidden { display: none; }
     .list-item { padding: 12px; border-radius: 14px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); margin-top: 10px; }
     .pill { display: inline-block; padding: 6px 10px; border-radius: 999px; font-size: 0.8rem; background: rgba(47,125,246,0.2); color: #8dc4ff; border: 1px solid rgba(47,125,246,0.25); margin-left: 6px; }
     .split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .small { font-size: 0.95rem; color: var(--muted); }
+    .nav-link { color: var(--text); text-decoration: none; margin-left: 12px; font-weight: 600; }
+    .nav-link:hover, .nav-link.active { color: var(--gold); }
+    .view { display: none; }
+    .view.active { display: block; }
+    .accent { color: var(--gold); font-weight: 700; }
     footer { padding: 24px; text-align: center; color: var(--muted); border-top: 1px solid var(--border); margin-top: 20px; }
     @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } .grid { grid-template-columns: 1fr 1fr; } .split { grid-template-columns: 1fr; } }
     @media (max-width: 600px) { .topbar { flex-direction: column; gap: 8px; } .page { padding: 16px; } .grid { grid-template-columns: 1fr; } }
@@ -63,194 +98,293 @@
   <div class="topbar">
     <div class="brand">Stockholm Sweden RP</div>
     <nav>
-      <a href="#home">Hem</a>
-      <a href="#menu">Meny</a>
-      <a href="#cart">Kassa</a>
-      <a href="#orders">Beställningar</a>
-      <a href="#staff">Personal</a>
-      <a href="#admin">Admin</a>
-      <a href="#contact">Kontakt</a>
+      <a href="#" class="nav-link active" data-view="home">Hem</a>
+      <a href="#" class="nav-link" data-view="order">Beställ</a>
+      <a href="#" class="nav-link" data-view="staff">Personal</a>
+      <a href="#" class="nav-link" data-view="admin">Admin</a>
+      <a href="#" class="nav-link" data-view="contact">Kontakt</a>
     </nav>
   </div>
 
   <div class="page">
-    <section id="home" class="hero">
-      <div>
-        <h1>Välkommen till caféet i Stockholm city</h1>
-        <p>Vi driver en realistisk café- och barupplevelse i SSRP. Nu kan kunder välja drycker, lägga dem i varukorgen och gå vidare till betalning.</p>
-        <div class="btn-row">
-          <a class="btn" href="#menu">Se menyn</a>
-          <a class="btn secondary" href="#cart">Till kassan</a>
+    <section id="home" class="view active">
+      <section class="hero">
+        <div>
+          <h1 id="homeHeadline">Välkommen till caféet i Stockholm city</h1>
+          <p id="homeIntro">Här finns en snygg och enkel beställningsupplevelse där kunder kan välja dryck, lägga till i kassan och få tydlig betalningsinfo.</p>
+          <div class="btn-row">
+            <a class="btn" href="#" data-view="order">Gå till beställning</a>
+            <a class="btn secondary" href="#" data-view="staff">Personalportal</a>
+          </div>
         </div>
-      </div>
-      <div class="panel">
-        <h3>Så fungerar det</h3>
-        <p>• Välj dryck<br />• Lägg till i varukorgen<br />• Fyll i RP-namn och Discord-namn<br />• Betala till Driftynordic</p>
-      </div>
+        <div class="panel">
+          <div class="hero-visual">
+            <img id="heroVisualImage" src="" alt="Kollage med folk, öl och glas på ett träbord" />
+          </div>
+          <h3 style="margin-top: 12px;">Så fungerar det</h3>
+          <p>• Välj dryck<br />• Lägg till i kassan<br />• Fyll i RP-namn och Discord-namn<br />• Beställningen syns för personalen</p>
+        </div>
+      </section>
+
+      <section class="section panel">
+        <h2>En cool struktur</h2>
+        <p>Beställning, personal och admin är nu uppdelade i egna sidor så det känns mer professionellt och lättare att använda.</p>
+        <div class="grid">
+          <div class="card"><h3>Beställ</h3><div class="small">Kunder får en egen sida där det tydligt står att det betalas till Driftynordic.</div></div>
+          <div class="card"><h3>Personal</h3><div class="small">Personal kan logga in, se shift, ta beställningar och markera dem som klara.</div></div>
+          <div class="card"><h3>Admin</h3><div class="small">Admin kan skapa roller, personalkonton och följa personalens shift-status.</div></div>
+        </div>
+      </section>
     </section>
 
-    <section id="menu" class="section panel">
-      <h2>Meny</h2>
-      <p>Välj en dryck och lägg den i varukorgen.</p>
-      <div class="grid">
-        <div class="card"><h3>🇸🇪 Svenska klassiker</h3><div class="price">Storgatan Stark — 95 kr</div><div class="price">Norrlands Guld — 80 kr</div><div class="price">Falcon — 75 kr</div><div class="price">Pripps Blå — 70 kr</div></div>
-        <div class="card"><h3>🍺 Öltyper</h3><div class="price">Pilsner — 90 kr</div><div class="price">Lager — 85 kr</div><div class="price">IPA — 95 kr</div><div class="price">Stout — 95 kr</div></div>
-        <div class="card"><h3>🥤 Alkoholfritt</h3><div class="price">Alkoholfritt Svenskt — 55 kr</div><div class="price">Alkoholfri Pilsner — 65 kr</div><div class="price">Alkoholfri IPA — 60 kr</div></div>
-      </div>
-      <div style="margin-top: 16px;">
-        <select id="drinkSelect"></select>
-        <button id="addToCartBtn" class="btn" style="margin-top: 8px;">Lägg till i varukorgen</button>
-      </div>
-      <div id="menuStatus" class="status"></div>
-    </section>
+    <section id="order" class="view">
+      <section class="section panel">
+        <h2>Beställning</h2>
+        <p class="accent">Det betalas till Driftynordic</p>
+        <p>Välj vad du vill ha och skicka din beställning till personalen.</p>
+        <div id="menuGrid" class="menu-grid"></div>
+        <div style="margin-top: 16px;">
+          <select id="drinkSelect" class="hidden"></select>
+          <button id="addToCartBtn" class="btn" style="margin-top: 8px;">Lägg till i kundvagnen</button>
+        </div>
+        <div id="menuStatus" class="status"></div>
+      </section>
 
-    <section id="cart" class="section panel">
-      <h2>Varukorg</h2>
-      <div id="cartItems"></div>
-      <form id="checkoutForm">
-        <input id="rpName" placeholder="RP-namn" required />
-        <input id="discordName" placeholder="Discord-namn" required />
-        <input id="paymentAmount" placeholder="Belopp att betala" required />
-        <input id="paymentRecipient" value="Driftynordic" readonly />
-        <button type="submit" class="btn">Gå till kassan</button>
-      </form>
-      <div id="checkoutStatus" class="status"></div>
-    </section>
-
-    <section id="orders" class="section panel">
-      <h2>Publik beställningslista</h2>
-      <p>Här kan alla se aktuella beställningar och betalningsuppgifter.</p>
-      <div id="publicOrdersList"></div>
-    </section>
-
-    <section id="staff" class="section panel">
-      <h2>Personalportal</h2>
-      <p>Här finns en egen personalyta där personal kan se aktiva medarbetare, sin shift och ta beställningar.</p>
-      <div id="staffLoginBox">
-        <h3>Logga in</h3>
-        <form id="staffLoginForm">
-          <input id="staffUser" placeholder="Användarnamn" required />
-          <input id="staffPass" type="password" placeholder="Lösenord" required />
-          <button type="submit" class="btn secondary">Logga in som personal</button>
+      <section class="section panel">
+        <h2>Kassa</h2>
+        <div id="cartItems"></div>
+        <form id="checkoutForm">
+          <input id="rpName" placeholder="RP-namn" required />
+          <input id="discordName" placeholder="Discord-namn" required />
+          <input id="paymentAmount" placeholder="Belopp att betala" required />
+          <button type="button" id="checkoutSubmitBtn" class="btn">Betala</button>
         </form>
-        <div id="staffLoginStatus" class="status"></div>
-      </div>
+        <div id="checkoutStatus" class="status"></div>
+      </section>
 
-      <div id="staffDashboard" class="hidden">
-        <div class="split">
-          <div class="card">
-            <h3>Min status</h3>
-            <div id="myStaffInfo" class="small"></div>
-            <div class="btn-row">
-              <button id="startShiftBtn" class="btn">Starta shift</button>
-              <button id="pauseShiftBtn" class="btn secondary">Pausa shift</button>
-              <button id="endShiftBtn" class="btn danger">Avsluta shift</button>
-            </div>
-            <div id="staffShiftStatus" class="status"></div>
-          </div>
-          <div class="card">
-            <h3>Aktiva medarbetare</h3>
-            <div id="activeStaffList"></div>
-          </div>
-        </div>
+      <section class="section panel">
+        <h2>Prenumerationer</h2>
+        <p>Välj ett paket och lägg det i kundvagnen. Kunder ser inte beställningslistan här.</p>
+        <div id="publicOrdersList"></div>
+      </section>
+    </section>
 
-        <div class="card" style="margin-top: 16px;">
-          <h3>Ta beställning</h3>
-          <form id="staffOrderForm">
-            <input id="customerName" placeholder="Kundens namn" required />
-            <select id="staffDrinkSelect"></select>
-            <button type="submit" class="btn">Skapa beställning</button>
+    <section id="staff" class="view">
+      <section class="section panel">
+        <h2>Personalportal</h2>
+        <p>Här finns en egen personalyta där personal kan logga in, se shift, ta beställningar och markera dem som klara.</p>
+        <div id="staffLoginBox">
+          <h3>Logga in</h3>
+          <form id="staffLoginForm">
+            <input id="staffUser" placeholder="Användarnamn" required />
+            <input id="staffPass" type="password" placeholder="Lösenord" required />
+            <button type="submit" class="btn secondary">Logga in som personal</button>
           </form>
-          <div id="staffOrderStatus" class="status"></div>
+          <div id="staffLoginStatus" class="status"></div>
         </div>
 
-        <div class="card" style="margin-top: 16px;">
-          <h3>Personalöversikt</h3>
-          <div id="staffRoster"></div>
-        </div>
+        <div id="staffDashboard" class="hidden">
+          <div class="split">
+            <div class="card">
+              <h3>Min status</h3>
+              <div id="myStaffInfo" class="small"></div>
+              <div class="btn-row">
+                <button id="startShiftBtn" class="btn">Starta shift</button>
+                <button id="pauseShiftBtn" class="btn secondary">Pausa shift</button>
+                <button id="endShiftBtn" class="btn danger">Avsluta shift</button>
+              </div>
+              <div id="staffShiftStatus" class="status"></div>
+            </div>
+            <div class="card">
+              <h3>Aktiva medarbetare</h3>
+              <div id="activeStaffList"></div>
+            </div>
+          </div>
 
-        <div class="card" style="margin-top: 16px;">
-          <h3>Beställningar</h3>
-          <div id="staffOrdersList"></div>
-        </div>
+          <div class="card" style="margin-top: 16px;">
+            <h3>Ta beställning</h3>
+            <form id="staffOrderForm">
+              <input id="customerName" placeholder="Kundens namn" required />
+              <select id="staffDrinkSelect"></select>
+              <button type="submit" class="btn">Skapa beställning</button>
+            </form>
+            <div id="staffOrderStatus" class="status"></div>
+          </div>
 
-        <button id="staffLogoutBtn" class="btn secondary" style="margin-top: 12px;">Logga ut</button>
-      </div>
+          <div class="card" style="margin-top: 16px;">
+            <h3>Personalöversikt</h3>
+            <div id="staffRoster"></div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Beställningar</h3>
+            <div id="staffOrdersList"></div>
+          </div>
+
+          <button id="staffLogoutBtn" class="btn secondary" style="margin-top: 12px;">Logga ut</button>
+        </div>
+      </section>
     </section>
 
-    <section id="admin" class="section panel">
-      <h2>Adminportal</h2>
-      <p>Här hanterar admin roller, personalkonton, aktiv personal och orderstatus utan att personalpanelen blandas ihop.</p>
-      <div id="adminLoginBox">
-        <h3>Admin login</h3>
-        <form id="adminLoginForm">
-          <input id="adminUser" placeholder="Admin användarnamn" required />
-          <input id="adminPass" type="password" placeholder="Admin lösenord" required />
-          <button type="submit" class="btn secondary">Logga in som admin</button>
-        </form>
-        <div id="adminLoginStatus" class="status"></div>
-      </div>
+    <section id="admin" class="view">
+      <section class="section panel">
+        <h2>Adminportal</h2>
+        <p>Här hanterar admin roller, personalkonton, aktiv personal och orderstatus utan att personalpanelen blandas ihop.</p>
+        <div id="adminLoginBox">
+          <h3>Admin login</h3>
+          <form id="adminLoginForm">
+            <input id="adminUser" placeholder="Admin användarnamn" required />
+            <input id="adminPass" type="password" placeholder="Admin lösenord" required />
+            <button type="submit" class="btn secondary">Logga in som admin</button>
+          </form>
+          <div id="adminLoginStatus" class="status"></div>
+        </div>
 
-      <div id="adminDashboard" class="hidden">
-        <div class="split">
-          <div class="card">
-            <h3>Skapa ny roll</h3>
-            <form id="createRoleForm">
-              <input id="roleName" placeholder="Rollnamn" required />
-              <button type="submit" class="btn">Lägg till roll</button>
-            </form>
-            <div id="createRoleStatus" class="status"></div>
+        <div id="adminDashboard" class="hidden">
+          <div class="split">
+            <div class="card">
+              <h3>Skapa ny roll</h3>
+              <form id="createRoleForm">
+                <input id="roleName" placeholder="Rollnamn" required />
+                <div class="permission-grid">
+                  <label class="permission-chip"><input type="checkbox" name="rolePermission" value="manage_orders" /> Hantera beställningar</label>
+                  <label class="permission-chip"><input type="checkbox" name="rolePermission" value="manage_staff" /> Hantera personal</label>
+                  <label class="permission-chip"><input type="checkbox" name="rolePermission" value="manage_shifts" /> Hantera shift</label>
+                  <label class="permission-chip"><input type="checkbox" name="rolePermission" value="view_dashboard" /> Se dashboard</label>
+                </div>
+                <button type="submit" class="btn">Lägg till roll</button>
+              </form>
+              <div id="createRoleStatus" class="status"></div>
+              <div id="rolePermissionsList" style="margin-top: 10px;"></div>
+            </div>
+            <div class="card">
+              <h3>Skapa personalkonto</h3>
+              <form id="createStaffForm">
+                <input id="newStaffUser" placeholder="Användarnamn" required />
+                <input id="newStaffPass" placeholder="Lösenord" required />
+                <select id="newStaffRole"></select>
+                <button type="submit" class="btn">Skapa konto</button>
+              </form>
+              <div id="createStaffStatus" class="status"></div>
+            </div>
           </div>
-          <div class="card">
-            <h3>Skapa personalkonto</h3>
-            <form id="createStaffForm">
-              <input id="newStaffUser" placeholder="Användarnamn" required />
-              <input id="newStaffPass" placeholder="Lösenord" required />
-              <select id="newStaffRole"></select>
-              <button type="submit" class="btn">Skapa konto</button>
-            </form>
-            <div id="createStaffStatus" class="status"></div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Redigera startsida</h3>
+            <div class="editable-block">
+              <label class="small" for="editHeadline">Rubrik</label>
+              <input id="editHeadline" type="text" value="Välkommen till caféet i Stockholm city" />
+              <label class="small" for="editIntro" style="margin-top: 8px; display: block;">Introtext</label>
+              <textarea id="editIntro">Här finns en snygg och enkel beställningsupplevelse där kunder kan välja dryck, lägga till i kassan och få tydlig betalningsinfo.</textarea>
+              <button id="saveHomeEditBtn" class="btn" style="margin-top: 10px;">Spara ändringar</button>
+            </div>
           </div>
-        </div>
 
-        <div class="card" style="margin-top: 16px;">
-          <h3>Personal och shift-status</h3>
-          <div id="adminStaffRoster"></div>
-        </div>
+          <div class="card" style="margin-top: 16px;">
+            <h3>Personal och shift-status</h3>
+            <div id="adminStaffRoster"></div>
+          </div>
 
-        <div class="card" style="margin-top: 16px;">
-          <h3>Aktiva personal</h3>
-          <div id="adminActiveStaff"></div>
-        </div>
+          <div class="card" style="margin-top: 16px;">
+            <h3>Aktiva personal</h3>
+            <div id="adminActiveStaff"></div>
+          </div>
 
-        <div class="card" style="margin-top: 16px;">
-          <h3>Beställningar</h3>
-          <div id="adminOrdersList"></div>
-        </div>
+          <div class="card" style="margin-top: 16px;">
+            <h3>Beställningar</h3>
+            <div id="adminOrdersList"></div>
+          </div>
 
-        <button id="adminLogoutBtn" class="btn secondary" style="margin-top: 12px;">Logga ut admin</button>
-      </div>
+          <button id="adminLogoutBtn" class="btn secondary" style="margin-top: 12px;">Logga ut admin</button>
+        </div>
+      </section>
+    </section>
+
+    <section id="contact" class="view">
+      <section class="section panel">
+        <h2>Kontakt</h2>
+        <p>Drifty i Discord DMs för hjälp med support eller frågor om beställningar.</p>
+      </section>
     </section>
   </div>
 
-  <footer id="contact">
+  <footer>
     <strong>Kontakt</strong><br />
     Drifty i Discord DMs för hjälp med support.
   </footer>
 
+  <div id="confirmModal" class="modal-backdrop hidden">
+    <div class="modal-card">
+      <h3>Bekräfta köp</h3>
+      <p>Är du säker på att du vill köpa? Kom ihåg att betala till Driftynordic.</p>
+      <div class="modal-actions">
+        <button id="confirmCheckoutYes" class="btn" type="button">Ja</button>
+        <button id="confirmCheckoutNo" class="btn secondary" type="button">Nej</button>
+      </div>
+    </div>
+  </div>
+
   <script>
+    function createInlineImage(label, accent, kind) {
+      const safeLabel = String(label).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const safeKind = String(kind).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 900 600">
+        <rect width="100%" height="100%" rx="36" fill="#07111f" />
+        <rect x="70" y="70" width="760" height="460" rx="32" fill="#0f1828" stroke="${accent}" stroke-width="6" />
+        <rect x="210" y="150" width="480" height="270" rx="26" fill="${accent}" fill-opacity="0.18" stroke="${accent}" stroke-width="4" />
+        <rect x="250" y="110" width="400" height="115" rx="18" fill="${accent}" />
+        <circle cx="330" cy="360" r="24" fill="${accent}" />
+        <circle cx="570" cy="360" r="24" fill="${accent}" />
+        <rect x="285" y="320" width="330" height="80" rx="18" fill="rgba(255,255,255,0.16)" />
+        <text x="450" y="220" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="34" font-weight="700" fill="${accent}">${safeLabel}</text>
+        <text x="450" y="370" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="24" font-weight="600" fill="#f8fafc">${safeKind}</text>
+      </svg>`;
+      return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+    }
+
+    function createHeroImage() {
+      return createInlineImage('Öl & Glas', '#f1b73f', 'Stockholm City');
+    }
+
+    function createMenuImage(name, kind) {
+      const accent = kind === 'Mat' ? '#ff8b3d' : '#f1b73f';
+      return createInlineImage(name, accent, kind);
+    }
+
     const menu = [
-      { name: 'Storgatan Stark', price: 95 },
-      { name: 'Norrlands Guld', price: 80 },
-      { name: 'Falcon', price: 75 },
-      { name: 'Pripps Blå', price: 70 },
-      { name: 'Pilsner', price: 90 },
-      { name: 'Lager', price: 85 },
-      { name: 'IPA', price: 95 },
-      { name: 'Stout', price: 95 },
-      { name: 'Alkoholfritt Svenskt', price: 55 },
-      { name: 'Alkoholfri Pilsner', price: 65 },
-      { name: 'Alkoholfri IPA', price: 60 }
+      { name: 'Storgatan Stark', price: 95, kind: 'Dryck', description: 'Klassisk öl med mjuk maltig smak.', image: createMenuImage('Storgatan Stark', 'Dryck') },
+      { name: 'Norrlands Guld', price: 80, kind: 'Dryck', description: 'Lätt och fräsch med tydlig humle.', image: createMenuImage('Norrlands Guld', 'Dryck') },
+      { name: 'Falcon', price: 75, kind: 'Dryck', description: 'En balanserad lager som passar till maten.', image: createMenuImage('Falcon', 'Dryck') },
+      { name: 'Pripps Blå', price: 70, kind: 'Dryck', description: 'En enkel och populär klassiker.', image: createMenuImage('Pripps Blå', 'Dryck') },
+      { name: 'Pilsner', price: 90, kind: 'Dryck', description: 'Ren smak med fin kurva och lätt kropp.', image: createMenuImage('Pilsner', 'Dryck') },
+      { name: 'Lager', price: 85, kind: 'Dryck', description: 'Mjuk och uppfriskande för en lugn kväll.', image: createMenuImage('Lager', 'Dryck') },
+      { name: 'IPA', price: 95, kind: 'Dryck', description: 'Starkare humlearom med lite bitterhet.', image: createMenuImage('IPA', 'Dryck') },
+      { name: 'Stout', price: 95, kind: 'Dryck', description: 'Rik, mörk och perfekt till en mysig stund.', image: createMenuImage('Stout', 'Dryck') },
+      { name: 'Alkoholfritt Svenskt', price: 55, kind: 'Dryck', description: 'Alkoholfri klassiker med ren smak.', image: createMenuImage('Alkoholfritt Svenskt', 'Dryck') },
+      { name: 'Alkoholfri Pilsner', price: 65, kind: 'Dryck', description: 'Lätt och svalkande utan alkohol.', image: createMenuImage('Alkoholfri Pilsner', 'Dryck') },
+      { name: 'Alkoholfri IPA', price: 60, kind: 'Dryck', description: 'Fräsch humlesmak för den som vill ha mer.', image: createMenuImage('Alkoholfri IPA', 'Dryck') },
+      { name: 'Classic Burger', price: 135, kind: 'Mat', description: 'Biff, ost, pickles och sallad på mjukt bröd.', image: createMenuImage('Classic Burger', 'Mat') },
+      { name: 'Chicken Wrap', price: 115, kind: 'Mat', description: 'Krispig kyckling med sallad och dressing.', image: createMenuImage('Chicken Wrap', 'Mat') },
+      { name: 'Pommes Frites', price: 75, kind: 'Mat', description: 'Goda pommes med salt och klassisk sås.', image: createMenuImage('Pommes Frites', 'Mat') },
+      { name: 'Nachos', price: 95, kind: 'Mat', description: 'Kryddiga nachos med ost, salsa och guacamole.', image: createMenuImage('Nachos', 'Mat') },
+      { name: 'Club Sandwich', price: 125, kind: 'Mat', description: 'Roastbiff, bacon, sallad och smakrik dressing.', image: createMenuImage('Club Sandwich', 'Mat') }
+    ];
+
+    const packages = [
+      {
+        id: 'standard',
+        name: 'Standard',
+        price: 299,
+        description: '2 gratis Folköl + 1 hamburgare',
+        details: ['2 gratis Folköl', '1 hamburgare']
+      },
+      {
+        id: 'premium',
+        name: 'Premium',
+        price: 599,
+        description: '2 hamburgare + öl eller cider + 1 gratis Folköl',
+        details: ['2 hamburgare', 'Öl eller cider', '1 gratis Folköl']
+      }
     ];
 
     const staffAccountsKey = 'ssrp-staff-accounts';
@@ -259,16 +393,22 @@
     const cartKey = 'ssrp-cart';
     const currentStaffKey = 'ssrp-current-staff';
     const currentAdminKey = 'ssrp-current-admin';
+    const homeContentKey = 'ssrp-home-content';
 
     const drinkSelect = document.getElementById('drinkSelect');
     const staffDrinkSelect = document.getElementById('staffDrinkSelect');
     const addToCartBtn = document.getElementById('addToCartBtn');
+    const menuGrid = document.getElementById('menuGrid');
     const menuStatus = document.getElementById('menuStatus');
     const cartItems = document.getElementById('cartItems');
     const checkoutForm = document.getElementById('checkoutForm');
     const checkoutStatus = document.getElementById('checkoutStatus');
+    const checkoutSubmitBtn = document.getElementById('checkoutSubmitBtn');
     const paymentAmountInput = document.getElementById('paymentAmount');
     const publicOrdersList = document.getElementById('publicOrdersList');
+    const confirmModal = document.getElementById('confirmModal');
+    const confirmCheckoutYes = document.getElementById('confirmCheckoutYes');
+    const confirmCheckoutNo = document.getElementById('confirmCheckoutNo');
 
     const staffLoginBox = document.getElementById('staffLoginBox');
     const staffDashboard = document.getElementById('staffDashboard');
@@ -291,6 +431,13 @@
     const createStaffForm = document.getElementById('createStaffForm');
     const createStaffStatus = document.getElementById('createStaffStatus');
     const newStaffRole = document.getElementById('newStaffRole');
+    const rolePermissionsList = document.getElementById('rolePermissionsList');
+    const heroVisualImage = document.getElementById('heroVisualImage');
+    const homeHeadline = document.getElementById('homeHeadline');
+    const homeIntro = document.getElementById('homeIntro');
+    const editHeadline = document.getElementById('editHeadline');
+    const editIntro = document.getElementById('editIntro');
+    const saveHomeEditBtn = document.getElementById('saveHomeEditBtn');
     const adminStaffRoster = document.getElementById('adminStaffRoster');
     const adminActiveStaff = document.getElementById('adminActiveStaff');
     const adminOrdersList = document.getElementById('adminOrdersList');
@@ -301,8 +448,8 @@
         if (Array.isArray(saved) && saved.length) return saved;
       } catch (e) {}
       return [
-        { username: '555', password: '333', role: 'Personal', shiftStatus: 'Avslutad', active: false },
-        { username: '777', password: '444', role: 'Barista', shiftStatus: 'Avslutad', active: false }
+        { username: '555', password: '333', role: 'Personal', shiftStatus: 'Avslutad', active: false, shiftMinutes: 0, shiftStartedAt: null },
+        { username: '777', password: '444', role: 'Barista', shiftStatus: 'Avslutad', active: false, shiftMinutes: 0, shiftStartedAt: null }
       ];
     }
 
@@ -310,12 +457,33 @@
       localStorage.setItem(staffAccountsKey, JSON.stringify(staffAccounts));
     }
 
+    function normalizeRole(entry) {
+      if (typeof entry === 'string') {
+        return { name: entry, permissions: ['view_dashboard'] };
+      }
+      if (entry && typeof entry === 'object') {
+        return {
+          name: entry.name || 'Roll',
+          permissions: Array.isArray(entry.permissions) ? entry.permissions : []
+        };
+      }
+      return null;
+    }
+
     function loadRoles() {
       try {
         const saved = JSON.parse(localStorage.getItem(rolesKey) || 'null');
-        if (Array.isArray(saved) && saved.length) return saved;
+        if (Array.isArray(saved) && saved.length) {
+          const normalized = saved.map(normalizeRole).filter(Boolean);
+          if (normalized.length) return normalized;
+        }
       } catch (e) {}
-      return ['Personal', 'Barista', 'Säljare', 'Chef'];
+      return [
+        { name: 'Personal', permissions: ['view_dashboard'] },
+        { name: 'Barista', permissions: ['view_dashboard', 'manage_orders'] },
+        { name: 'Säljare', permissions: ['view_dashboard', 'manage_orders'] },
+        { name: 'Chef', permissions: ['view_dashboard', 'manage_orders', 'manage_staff', 'manage_shifts'] }
+      ];
     }
 
     function saveRoles() {
@@ -346,20 +514,101 @@
       localStorage.setItem(cartKey, JSON.stringify(cart));
     }
 
+    function getRoleByName(roleName) {
+      return roles.find(role => role.name.toLowerCase() === (roleName || '').toLowerCase()) || null;
+    }
+
+    function getPermissionLabel(permission) {
+      const labels = {
+        manage_orders: 'Hantera beställningar',
+        manage_staff: 'Hantera personal',
+        manage_shifts: 'Hantera shift',
+        view_dashboard: 'Se dashboard'
+      };
+      return labels[permission] || permission;
+    }
+
+    function loadHomeContent() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(homeContentKey) || 'null');
+        if (saved && typeof saved === 'object') {
+          return {
+            headline: saved.headline || 'Välkommen till caféet i Stockholm city',
+            intro: saved.intro || 'Här finns en snygg och enkel beställningsupplevelse där kunder kan välja dryck, lägga till i kassan och få tydlig betalningsinfo.'
+          };
+        }
+      } catch (e) {}
+      return {
+        headline: 'Välkommen till caféet i Stockholm city',
+        intro: 'Här finns en snygg och enkel beställningsupplevelse där kunder kan välja dryck, lägga till i kassan och få tydlig betalningsinfo.'
+      };
+    }
+
+    function saveHomeContent(content) {
+      localStorage.setItem(homeContentKey, JSON.stringify(content));
+    }
+
+    function applyHomeContent(content) {
+      if (homeHeadline) homeHeadline.textContent = content.headline;
+      if (homeIntro) homeIntro.textContent = content.intro;
+      if (editHeadline) editHeadline.value = content.headline;
+      if (editIntro) editIntro.value = content.intro;
+    }
+
     function renderDrinkOptions() {
-      drinkSelect.innerHTML = menu.map(item => `<option value="${item.name}">${item.name} — ${item.price} kr</option>`).join('');
+      if (drinkSelect) {
+        drinkSelect.innerHTML = menu.map(item => `<option value="${item.name}">${item.name} — ${item.price} kr</option>`).join('');
+      }
       staffDrinkSelect.innerHTML = menu.map(item => `<option value="${item.name}">${item.name} — ${item.price} kr</option>`).join('');
-      newStaffRole.innerHTML = roles.map(role => `<option value="${role}">${role}</option>`).join('');
+      newStaffRole.innerHTML = roles.map(role => `<option value="${role.name}">${role.name}</option>`).join('');
+    }
+
+    function renderRolePermissionsList() {
+      if (!rolePermissionsList) return;
+      rolePermissionsList.innerHTML = roles.length ? roles.map(role => `
+        <div class="list-item">
+          <strong>${role.name}</strong>
+          <div class="small">Behörigheter: ${role.permissions.length ? role.permissions.map(getPermissionLabel).join(', ') : 'Inga'}</div>
+        </div>
+      `).join('') : '<div class="list-item"><strong>Inga roller skapade ännu.</strong></div>';
+    }
+
+    function renderMenuGrid() {
+      if (!menuGrid) return;
+      menuGrid.innerHTML = menu.map(item => `
+        <div class="card menu-card">
+          <img class="menu-image" src="${item.image}" alt="${item.name}" />
+          <div class="card-body">
+            <div class="drink-meta">
+              <div class="menu-tag">${item.kind}</div>
+              <h3>${item.name}</h3>
+              <div class="menu-description">${item.description}</div>
+              <div class="price">${item.price} kr</div>
+            </div>
+            <button class="btn add-item-btn" type="button" data-item-name="${item.name}">Lägg till i kundvagnen</button>
+          </div>
+        </div>
+      `).join('');
     }
 
     let staffAccounts = loadStaffAccounts();
     let roles = loadRoles();
     let orders = loadOrders();
     let cart = loadCart();
+    let homeContent = loadHomeContent();
 
     function getCurrentStaffAccount() {
       const username = localStorage.getItem(currentStaffKey);
       return staffAccounts.find(account => account.username === username) || null;
+    }
+
+    function getShiftMinutes(account) {
+      if (typeof account.shiftMinutes !== 'number') account.shiftMinutes = 0;
+      if (account.shiftStartedAt && account.active) {
+        const elapsed = Math.floor((Date.now() - account.shiftStartedAt) / 60000);
+        return account.shiftMinutes + elapsed;
+      }
+      return account.shiftMinutes;
     }
 
     function renderCart() {
@@ -374,15 +623,21 @@
     }
 
     function renderPublicOrders() {
-      publicOrdersList.innerHTML = orders.length ? orders.map(order => `
-        <div class="list-item">
-          <strong>${order.customerName}</strong> <span class="pill">${order.status}</span>
-          <div class="small">Dryck: ${order.drinkName || '—'}</div>
-          <div class="small">Belopp: ${order.amount || `${order.price || 0} kr`}</div>
-          <div class="small">Discord: ${order.discordName || '—'}</div>
-          <div class="small">Betala till: ${order.paymentNote || 'Driftynordic'}</div>
+      if (!publicOrdersList) return;
+      publicOrdersList.innerHTML = packages.map(pkg => `
+        <div class="card menu-card" style="margin-top: 12px;">
+          <div class="card-body">
+            <div class="drink-meta">
+              <div class="menu-tag">Paket</div>
+              <h3>${pkg.name}</h3>
+              <div class="menu-description">${pkg.description}</div>
+              <div class="small">${pkg.details.join(' • ')}</div>
+              <div class="price">${pkg.price} kr</div>
+            </div>
+            <button class="btn add-package-btn" type="button" data-package-id="${pkg.id}">Lägg till i kundvagnen</button>
+          </div>
         </div>
-      `).join('') : '<div class="list-item"><strong>Inga beställningar ännu.</strong></div>';
+      `).join('');
     }
 
     function renderStaffDashboard() {
@@ -394,28 +649,40 @@
       }
       staffLoginBox.classList.add('hidden');
       staffDashboard.classList.remove('hidden');
-      myStaffInfo.innerHTML = `<strong>${currentStaff.username}</strong><br />Roll: ${currentStaff.role}<br />Shift: ${currentStaff.shiftStatus}<br />Status: ${currentStaff.active ? 'Aktiv' : 'Ej aktiv'}`;
+      const roleDefinition = getRoleByName(currentStaff.role);
+      const permissionsText = roleDefinition && roleDefinition.permissions.length ? roleDefinition.permissions.map(getPermissionLabel).join(', ') : 'Inga';
+      myStaffInfo.innerHTML = `<strong>${currentStaff.username}</strong><br />Roll: ${currentStaff.role}<br />Shift: ${currentStaff.shiftStatus}<br />Status: ${currentStaff.active ? 'Aktiv' : 'Ej aktiv'}<br /><span class="small">Behörigheter: ${permissionsText}</span>`;
       staffShiftStatus.textContent = `Shiftstatus: ${currentStaff.shiftStatus}`;
 
       const active = staffAccounts.filter(account => account.active);
-      activeStaffList.innerHTML = active.length ? active.map(account => `<div class="list-item"><strong>${account.username}</strong><div class="small">Roll: ${account.role} • Shift: ${account.shiftStatus}</div></div>`).join('') : '<div class="list-item"><strong>Inga andra är aktiva just nu.</strong></div>';
+      const sortedByShift = [...staffAccounts].sort((a, b) => getShiftMinutes(b) - getShiftMinutes(a));
+      activeStaffList.innerHTML = active.length ? active.map(account => `<div class="list-item"><strong>${account.username}</strong><div class="small">Roll: ${account.role} • Shift: ${account.shiftStatus} • ${getShiftMinutes(account)} min</div></div>`).join('') : '<div class="list-item"><strong>Inga andra är aktiva just nu.</strong></div>';
 
       staffRoster.innerHTML = staffAccounts.map(account => `
         <div class="list-item">
           <strong>${account.username}</strong> <span class="pill">${account.role}</span>
-          <div class="small">Shift: ${account.shiftStatus} • Aktiv: ${account.active ? 'Ja' : 'Nej'}</div>
+          <div class="small">Shift: ${account.shiftStatus} • Aktiv: ${account.active ? 'Ja' : 'Nej'} • ${getShiftMinutes(account)} min</div>
         </div>
       `).join('');
 
-      staffOrdersList.innerHTML = orders.length ? orders.map(order => `
+      const topShift = sortedByShift[0];
+      const topShiftText = topShift ? `${topShift.username} med ${getShiftMinutes(topShift)} min i shift` : 'Ingen personal registrerad ännu';
+      staffOrdersList.innerHTML = `
         <div class="list-item">
-          <strong>${order.customerName}</strong>
-          <div class="small">${order.drinkName} • ${order.price} kr</div>
-          <div class="small">Skapad av: ${order.staffName}</div>
-          <div class="small">Status: ${order.status}</div>
-          <div class="small">Betala till: ${order.paymentNote || 'Driftynordic'}</div>
+          <strong>Vem har mest i shift?</strong>
+          <div class="small">${topShiftText}</div>
         </div>
-      `).join('') : '<div class="list-item"><strong>Inga beställningar ännu.</strong></div>';
+        ${orders.length ? orders.map(order => `
+          <div class="list-item">
+            <strong>${order.customerName}</strong>
+            <div class="small">${order.drinkName} • ${order.price} kr</div>
+            <div class="small">Skapad av: ${order.staffName}</div>
+            <div class="small">Status: ${order.status}</div>
+            <div class="small">Betala till: ${order.paymentNote || 'Driftynordic'}</div>
+            <button class="btn small" data-order-id="${order.id}" data-action="complete-order" style="margin-top: 8px;">Markera som klar</button>
+          </div>
+        `).join('') : '<div class="list-item"><strong>Inga beställningar ännu.</strong></div>'}
+      `;
     }
 
     function renderAdminDashboard() {
@@ -428,42 +695,86 @@
       adminLoginBox.classList.add('hidden');
       adminDashboard.classList.remove('hidden');
       newStaffRole.innerHTML = roles.map(role => `<option value="${role}">${role}</option>`).join('');
-      adminStaffRoster.innerHTML = staffAccounts.map(account => `
-        <div class="list-item">
-          <strong>${account.username}</strong> <span class="pill">${account.role}</span>
-          <div class="small">Shift: ${account.shiftStatus} • Aktiv: ${account.active ? 'Ja' : 'Nej'}</div>
-        </div>
-      `).join('');
+      adminStaffRoster.innerHTML = staffAccounts.map(account => {
+        const roleDefinition = getRoleByName(account.role);
+        const permissionsText = roleDefinition && roleDefinition.permissions.length ? roleDefinition.permissions.map(getPermissionLabel).join(', ') : 'Inga';
+        return `
+          <div class="list-item staff-row">
+            <div>
+              <strong>${account.username}</strong> <span class="pill">${account.role}</span>
+              <div class="small">Shift: ${account.shiftStatus} • Aktiv: ${account.active ? 'Ja' : 'Nej'} • ${getShiftMinutes(account)} min</div>
+              <div class="small">Behörigheter: ${permissionsText}</div>
+            </div>
+            <span class="status-badge ${account.active ? 'active' : 'inactive'}">${account.active ? 'Aktiv' : 'Inaktiv'}</span>
+          </div>
+        `;
+      }).join('');
       const active = staffAccounts.filter(account => account.active);
-      adminActiveStaff.innerHTML = active.length ? active.map(account => `<div class="list-item"><strong>${account.username}</strong><div class="small">Roll: ${account.role} • Shift: ${account.shiftStatus}</div></div>`).join('') : '<div class="list-item"><strong>Ingen personal är aktiv just nu.</strong></div>';
+      adminActiveStaff.innerHTML = active.length ? active.map(account => `<div class="list-item"><strong>${account.username}</strong><div class="small">Roll: ${account.role} • Shift: ${account.shiftStatus} • ${getShiftMinutes(account)} min</div></div>`).join('') : '<div class="list-item"><strong>Ingen personal är aktiv just nu.</strong></div>';
       adminOrdersList.innerHTML = orders.length ? orders.map(order => `
         <div class="list-item">
           <strong>${order.customerName}</strong>
           <div class="small">${order.drinkName} • ${order.price} kr</div>
           <div class="small">Status: ${order.status}</div>
           <div class="small">Betala till: ${order.paymentNote || 'Driftynordic'}</div>
+          <button class="btn small" data-order-id="${order.id}" data-action="complete-order" style="margin-top: 8px;">Markera som klar</button>
         </div>
       `).join('') : '<div class="list-item"><strong>Inga beställningar ännu.</strong></div>';
     }
 
-    addToCartBtn.addEventListener('click', function () {
-      const selected = drinkSelect.value;
-      const item = menu.find(entry => entry.name === selected);
+    function addItemToCart(itemName) {
+      const item = menu.find(entry => entry.name === itemName);
       if (!item) return;
       cart.push({ name: item.name, price: item.price });
       saveCart();
       renderCart();
-      menuStatus.textContent = `${item.name} lades till i varukorgen.`;
-    });
+      menuStatus.textContent = `${item.name} lades till i kundvagnen.`;
+    }
 
-    checkoutForm.addEventListener('submit', function (event) {
-      event.preventDefault();
+    function addPackageToCart(packageId) {
+      const pkg = packages.find(entry => entry.id === packageId);
+      if (!pkg) return;
+      cart.push({ name: pkg.name, price: pkg.price, type: 'package', description: pkg.description });
+      saveCart();
+      renderCart();
+      menuStatus.textContent = `${pkg.name} paket lades till i kundvagnen.`;
+    }
+
+    if (addToCartBtn) {
+      addToCartBtn.addEventListener('click', function () {
+        const selected = drinkSelect ? drinkSelect.value : '';
+        addItemToCart(selected);
+      });
+    }
+
+    if (menuGrid) {
+      menuGrid.addEventListener('click', function (event) {
+        const trigger = event.target.closest('.add-item-btn');
+        if (!trigger) return;
+        addItemToCart(trigger.getAttribute('data-item-name'));
+      });
+    }
+
+    if (publicOrdersList) {
+      publicOrdersList.addEventListener('click', function (event) {
+        const trigger = event.target.closest('.add-package-btn');
+        if (!trigger) return;
+        addPackageToCart(trigger.getAttribute('data-package-id'));
+      });
+    }
+
+    function submitCheckout() {
       const rpName = document.getElementById('rpName').value.trim();
       const discordName = document.getElementById('discordName').value.trim();
       const amount = paymentAmountInput.value.trim();
       if (!rpName || !discordName || !amount) {
         checkoutStatus.className = 'status error';
         checkoutStatus.textContent = 'Fyll i RP-namn, Discord-namn och belopp.';
+        return;
+      }
+      if (!cart.length) {
+        checkoutStatus.className = 'status error';
+        checkoutStatus.textContent = 'Varukorgen är tom.';
         return;
       }
       const orderItems = cart.map(item => item.name).join(', ');
@@ -480,14 +791,45 @@
       });
       saveOrders();
       checkoutStatus.className = 'status';
-      checkoutStatus.textContent = `Beställning skickad. Betala till Driftynordic för ${amount}.`;
+      checkoutStatus.textContent = `Beställning skickad. Det betalas till Driftynordic för ${amount}.`;
       cart = [];
       saveCart();
       renderCart();
       renderPublicOrders();
       renderStaffDashboard();
       renderAdminDashboard();
-      this.reset();
+      checkoutForm.reset();
+    }
+
+    checkoutForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      submitCheckout();
+    });
+
+    checkoutSubmitBtn.addEventListener('click', function () {
+      if (!cart.length) {
+        checkoutStatus.className = 'status error';
+        checkoutStatus.textContent = 'Lägg till något i kundvagnen innan du betalar.';
+        return;
+      }
+      confirmModal.classList.remove('hidden');
+    });
+
+    confirmCheckoutYes.addEventListener('click', function () {
+      confirmModal.classList.add('hidden');
+      submitCheckout();
+    });
+
+    confirmCheckoutNo.addEventListener('click', function () {
+      confirmModal.classList.add('hidden');
+      checkoutStatus.className = 'status';
+      checkoutStatus.textContent = 'Köpet avbröts.';
+    });
+
+    confirmModal.addEventListener('click', function (event) {
+      if (event.target === confirmModal) {
+        confirmModal.classList.add('hidden');
+      }
     });
 
     staffLoginForm.addEventListener('submit', function (event) {
@@ -502,6 +844,7 @@
       }
       account.active = true;
       account.shiftStatus = account.shiftStatus || 'Avslutad';
+      account.shiftStartedAt = null;
       saveStaffAccounts();
       localStorage.setItem(currentStaffKey, username);
       staffLoginStatus.className = 'status';
@@ -514,6 +857,7 @@
       const currentStaff = getCurrentStaffAccount();
       if (!currentStaff) return;
       currentStaff.shiftStatus = 'På shift';
+      currentStaff.shiftStartedAt = Date.now();
       saveStaffAccounts();
       renderStaffDashboard();
     });
@@ -521,6 +865,10 @@
     document.getElementById('pauseShiftBtn').addEventListener('click', function () {
       const currentStaff = getCurrentStaffAccount();
       if (!currentStaff) return;
+      if (currentStaff.shiftStartedAt) {
+        currentStaff.shiftMinutes = (currentStaff.shiftMinutes || 0) + Math.floor((Date.now() - currentStaff.shiftStartedAt) / 60000);
+        currentStaff.shiftStartedAt = null;
+      }
       currentStaff.shiftStatus = 'Pausad';
       saveStaffAccounts();
       renderStaffDashboard();
@@ -529,6 +877,10 @@
     document.getElementById('endShiftBtn').addEventListener('click', function () {
       const currentStaff = getCurrentStaffAccount();
       if (!currentStaff) return;
+      if (currentStaff.shiftStartedAt) {
+        currentStaff.shiftMinutes = (currentStaff.shiftMinutes || 0) + Math.floor((Date.now() - currentStaff.shiftStartedAt) / 60000);
+        currentStaff.shiftStartedAt = null;
+      }
       currentStaff.shiftStatus = 'Avslutad';
       saveStaffAccounts();
       renderStaffDashboard();
@@ -557,14 +909,19 @@
       saveOrders();
       renderStaffDashboard();
       renderAdminDashboard();
+      renderPublicOrders();
       staffOrderStatus.className = 'status';
-      staffOrderStatus.textContent = `Beställning skapad för ${customerName}. Betala till Driftynordic.`;
+      staffOrderStatus.textContent = `Beställning skapad för ${customerName}. Det betalas till Driftynordic.`;
       this.reset();
     });
 
     document.getElementById('staffLogoutBtn').addEventListener('click', function () {
       const currentStaff = getCurrentStaffAccount();
       if (currentStaff) {
+        if (currentStaff.shiftStartedAt) {
+          currentStaff.shiftMinutes = (currentStaff.shiftMinutes || 0) + Math.floor((Date.now() - currentStaff.shiftStartedAt) / 60000);
+          currentStaff.shiftStartedAt = null;
+        }
         currentStaff.active = false;
         saveStaffAccounts();
       }
@@ -596,10 +953,12 @@
         createRoleStatus.textContent = 'Skriv in ett rollnamn.';
         return;
       }
-      if (!roles.includes(roleName)) {
-        roles.push(roleName);
+      const permissions = Array.from(document.querySelectorAll('input[name="rolePermission"]:checked')).map(input => input.value);
+      if (!roles.some(role => role.name.toLowerCase() === roleName.toLowerCase())) {
+        roles.push({ name: roleName, permissions });
         saveRoles();
         renderDrinkOptions();
+        renderRolePermissionsList();
         createRoleStatus.className = 'status';
         createRoleStatus.textContent = `Rollen ${roleName} skapades.`;
       } else {
@@ -625,7 +984,7 @@
         createStaffStatus.textContent = 'Det användarnamnet finns redan.';
         return;
       }
-      staffAccounts.push({ username, password, role, shiftStatus: 'Avslutad', active: false });
+      staffAccounts.push({ username, password, role, shiftStatus: 'Avslutad', active: false, shiftMinutes: 0, shiftStartedAt: null });
       saveStaffAccounts();
       renderStaffDashboard();
       renderAdminDashboard();
@@ -639,11 +998,5300 @@
       renderAdminDashboard();
     });
 
+    if (saveHomeEditBtn) {
+      saveHomeEditBtn.addEventListener('click', function () {
+        homeContent = {
+          headline: editHeadline ? editHeadline.value.trim() || 'Välkommen till caféet i Stockholm city' : homeContent.headline,
+          intro: editIntro ? editIntro.value.trim() || 'Här finns en snygg och enkel beställningsupplevelse där kunder kan välja dryck, lägga till i kassan och få tydlig betalningsinfo.' : homeContent.intro
+        };
+        saveHomeContent(homeContent);
+        applyHomeContent(homeContent);
+      });
+    }
+
+    document.addEventListener('click', function (event) {
+      const trigger = event.target.closest('[data-action="complete-order"]');
+      if (!trigger) return;
+      const orderId = trigger.getAttribute('data-order-id');
+      const order = orders.find(entry => entry.id === orderId);
+      if (!order) return;
+      order.status = 'Slutförd';
+      saveOrders();
+      renderPublicOrders();
+      renderStaffDashboard();
+      renderAdminDashboard();
+    });
+
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', function (event) {
+        event.preventDefault();
+        const target = this.getAttribute('data-view');
+        showView(target);
+      });
+    });
+
+    function showView(viewName) {
+      document.querySelectorAll('.view').forEach(view => view.classList.toggle('active', view.id === viewName));
+      document.querySelectorAll('.nav-link').forEach(link => link.classList.toggle('active', link.getAttribute('data-view') === viewName));
+    }
+
+    applyHomeContent(homeContent);
+    if (heroVisualImage) heroVisualImage.src = createHeroImage();
+    document.body.style.backgroundImage = `linear-gradient(rgba(4,9,15,0.72), rgba(4,9,15,0.82)), url('${createHeroImage()}')`;
     renderDrinkOptions();
+    renderRolePermissionsList();
+    renderMenuGrid();
     renderCart();
     renderPublicOrders();
     renderStaffDashboard();
     renderAdminDashboard();
+    showView('home');
   </script>
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stockholm Sweden RP — Café & Bar</title>
+  <style>
+    :root {
+      --bg: #05090e;
+      --panel: rgba(13, 21, 34, 0.95);
+      --panel-2: rgba(23, 36, 57, 0.95);
+      --text: #f8fafc;
+      --muted: #b8c3d2;
+      --gold: #f1b73f;
+      --blue: #2f7df6;
+      --green: #4ade80;
+      --red: #ff6b6b;
+      --border: rgba(255,255,255,0.12);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text);
+      background: linear-gradient(rgba(4,9,15,0.72), rgba(4,9,15,0.82)), #05090e;
+      min-height: 100vh;
+      background-size: cover;
+      background-attachment: fixed;
+    }
+    .topbar { position: sticky; top: 0; z-index: 10; display: flex; justify-content: space-between; align-items: center; padding: 14px 24px; background: rgba(4,9,15,0.9); border-bottom: 1px solid var(--border); }
+    .brand { font-weight: 800; color: var(--gold); letter-spacing: 0.04em; }
+    nav a { color: var(--text); text-decoration: none; margin-left: 12px; font-weight: 600; }
+    nav a:hover { color: var(--gold); }
+    .page { max-width: 1200px; margin: 0 auto; padding: 24px; }
+    .hero, .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 22px; box-shadow: 0 18px 46px rgba(0,0,0,0.28); }
+    .hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: 20px; padding: 42px 28px; margin-bottom: 24px; }
+    .hero h1 { margin: 0 0 10px; font-size: clamp(2rem, 4vw, 3rem); }
+    .hero-visual { border-radius: 18px; overflow: hidden; border: 1px solid var(--border); min-height: 280px; }
+    .hero-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .editable-block { border: 1px dashed rgba(241,183,63,0.35); padding: 10px; border-radius: 12px; background: rgba(241,183,63,0.07); }
+    .editable-block textarea { min-height: 90px; resize: vertical; }
+    .hero p, .section p, .muted { color: var(--muted); line-height: 1.6; }
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+    .btn { border: none; border-radius: 999px; padding: 11px 16px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; color: #07111f; background: linear-gradient(135deg, var(--gold), #ffd77a); }
+    .btn.secondary { color: var(--text); background: linear-gradient(135deg, var(--blue), #6aa7ff); }
+    .btn.danger { color: var(--text); background: linear-gradient(135deg, var(--red), #ff8b8b); }
+    .btn.small { padding: 8px 12px; font-size: 0.9rem; }
+    .panel { padding: 24px; margin-bottom: 24px; }
+    .section h2 { margin-top: 0; margin-bottom: 6px; }
+    .grid { display: grid; gap: 16px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .card { padding: 16px; border-radius: 16px; background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); border: 1px solid var(--border); }
+    .card h3 { margin-top: 0; margin-bottom: 8px; }
+    .price { font-size: 1.2rem; color: var(--gold); font-weight: 700; margin-top: 6px; }
+    .menu-grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-top: 16px; }
+    .menu-card { display: flex; flex-direction: column; height: 100%; transition: transform 180ms ease, border-color 180ms ease; padding: 12px; }
+    .menu-card:hover { transform: translateY(-2px); border-color: rgba(241,183,63,0.4); }
+    .menu-image { width: 100%; aspect-ratio: 5 / 4; object-fit: cover; border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--border); background: rgba(255,255,255,0.04); max-height: 170px; }
+    .card-body { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+    .drink-meta { display: flex; flex-direction: column; gap: 6px; }
+    .menu-tag { display: inline-block; width: fit-content; padding: 6px 10px; border-radius: 999px; background: rgba(241,183,63,0.15); color: var(--gold); font-size: 0.8rem; font-weight: 700; border: 1px solid rgba(241,183,63,0.25); }
+    .menu-description { color: var(--muted); font-size: 0.95rem; line-height: 1.45; }
+    .menu-card .btn { width: 100%; text-align: center; margin-top: auto; }
+    .permission-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 6px; }
+    .permission-chip { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 999px; border: 1px solid var(--border); background: rgba(255,255,255,0.04); font-size: 0.92rem; }
+    .permission-chip input { width: auto; accent-color: var(--gold); margin: 0; }
+    .staff-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .status-badge { display: inline-block; padding: 6px 10px; border-radius: 999px; font-size: 0.8rem; font-weight: 700; }
+    .status-badge.active { background: rgba(74, 222, 128, 0.16); color: var(--green); border: 1px solid rgba(74, 222, 128, 0.24); }
+    .status-badge.inactive { background: rgba(255, 107, 107, 0.16); color: var(--red); border: 1px solid rgba(255, 107, 107, 0.24); }
+    form { display: grid; gap: 12px; margin-top: 12px; }
+    input, select, button { font: inherit; border-radius: 12px; border: 1px solid var(--border); padding: 12px 14px; background: var(--panel-2); color: var(--text); }
+    input::placeholder { color: #8ea2bd; }
+    .status { min-height: 20px; margin-top: 8px; color: var(--green); font-weight: 600; }
+    .status.error { color: var(--red); }
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(2,6,12,0.74); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 50; }
+    .modal-card { background: var(--panel); border: 1px solid var(--border); border-radius: 18px; padding: 22px; width: min(420px, 100%); box-shadow: 0 24px 50px rgba(0,0,0,0.35); }
+    .modal-actions { display: flex; gap: 10px; margin-top: 14px; }
+    .modal-actions .btn { flex: 1; justify-content: center; }
+    .hidden { display: none; }
+    .list-item { padding: 12px; border-radius: 14px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); margin-top: 10px; }
+    .pill { display: inline-block; padding: 6px 10px; border-radius: 999px; font-size: 0.8rem; background: rgba(47,125,246,0.2); color: #8dc4ff; border: 1px solid rgba(47,125,246,0.25); margin-left: 6px; }
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .small { font-size: 0.95rem; color: var(--muted); }
+    .nav-link { color: var(--text); text-decoration: none; margin-left: 12px; font-weight: 600; }
+    .nav-link:hover, .nav-link.active { color: var(--gold); }
+    .view { display: none; }
+    .view.active { display: block; }
+    .accent { color: var(--gold); font-weight: 700; }
+    footer { padding: 24px; text-align: center; color: var(--muted); border-top: 1px solid var(--border); margin-top: 20px; }
+    @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } .grid { grid-template-columns: 1fr 1fr; } .split { grid-template-columns: 1fr; } }
+    @media (max-width: 600px) { .topbar { flex-direction: column; gap: 8px; } .page { padding: 16px; } .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">Stockholm Sweden RP</div>
+    <nav>
+      <a href="#" class="nav-link active" data-view="home">Hem</a>
+      <a href="#" class="nav-link" data-view="order">Beställ</a>
+      <a href="#" class="nav-link" data-view="staff">Personal</a>
+      <a href="#" class="nav-link" data-view="admin">Admin</a>
+      <a href="#" class="nav-link" data-view="contact">Kontakt</a>
+    </nav>
+  </div>
+
+  <div class="page">
+    <section id="home" class="view active">
+      <section class="hero">
+        <div>
+          <h1 id="homeHeadline">Välkommen till caféet i Stockholm city</h1>
+          <p id="homeIntro">Här finns en snygg och enkel beställningsupplevelse där kunder kan välja dryck, lägga till i kassan och få tydlig betalningsinfo.</p>
+          <div class="btn-row">
+            <a class="btn" href="#" data-view="order">Gå till beställning</a>
+            <a class="btn secondary" href="#" data-view="staff">Personalportal</a>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="hero-visual">
+            <img id="heroVisualImage" src="" alt="Kollage med folk, öl och glas på ett träbord" />
+          </div>
+          <h3 style="margin-top: 12px;">Så fungerar det</h3>
+          <p>• Välj dryck<br />• Lägg till i kassan<br />• Fyll i RP-namn och Discord-namn<br />• Beställningen syns för personalen</p>
+        </div>
+      </section>
+
+      <section class="section panel">
+        <h2>En cool struktur</h2>
+        <p>Beställning, personal och admin är nu uppdelade i egna sidor så det känns mer professionellt och lättare att använda.</p>
+        <div class="grid">
+          <div class="card"><h3>Beställ</h3><div class="small">Kunder får en egen sida där det tydligt står att det betalas till Driftynordic.</div></div>
+          <div class="card"><h3>Personal</h3><div class="small">Personal kan logga in, se shift, ta beställningar och markera dem som klara.</div></div>
+          <div class="card"><h3>Admin</h3><div class="small">Admin kan skapa roller, personalkonton och följa personalens shift-status.</div></div>
+        </div>
+      </section>
+    </section>
+
+    <section id="order" class="view">
+      <section class="section panel">
+        <h2>Beställning</h2>
+        <p class="accent">Det betalas till Driftynordic</p>
+        <p>Välj vad du vill ha och skicka din beställning till personalen.</p>
+        <div id="menuGrid" class="menu-grid"></div>
+        <div style="margin-top: 16px;">
+          <select id="drinkSelect" class="hidden"></select>
+          <button id="addToCartBtn" class="btn" style="margin-top: 8px;">Lägg till i kundvagnen</button>
+        </div>
+        <div id="menuStatus" class="status"></div>
+      </section>
+
+      <section class="section panel">
+        <h2>Kassa</h2>
+        <div id="cartItems"></div>
+        <form id="checkoutForm">
+          <input id="rpName" placeholder="RP-namn" required />
+          <input id="discordName" placeholder="Discord-namn" required />
+          <input id="paymentAmount" placeholder="Belopp att betala" required />
+          <button type="button" id="checkoutSubmitBtn" class="btn">Betala</button>
+        </form>
+        <div id="checkoutStatus" class="status"></div>
+      </section>
+
+      <section class="section panel">
+        <h2>Prenumerationer</h2>
+        <p>Välj ett paket och lägg det i kundvagnen. Kunder ser inte beställningslistan här.</p>
+        <div id="publicOrdersList"></div>
+      </section>
+    </section>
+
+    <section id="staff" class="view">
+      <section class="section panel">
+        <h2>Personalportal</h2>
+        <p>Här finns en egen personalyta där personal kan logga in, se shift, ta beställningar och markera dem som klara.</p>
+        <div id="staffLoginBox">
+          <h3>Logga in</h3>
+          <form id="staffLoginForm">
+            <input id="staffUser" placeholder="Användarnamn" required />
+            <input id="staffPass" type="password" placeholder="Lösenord" required />
+            <button type="submit" class="btn secondary">Logga in som personal</button>
+          </form>
+          <div id="staffLoginStatus" class="status"></div>
+        </div>
+
+        <div id="staffDashboard" class="hidden">
+          <div class="split">
+            <div class="card">
+              <h3>Min status</h3>
+              <div id="myStaffInfo" class="small"></div>
+              <div class="btn-row">
+                <button id="startShiftBtn" class="btn">Starta shift</button>
+                <button id="pauseShiftBtn" class="btn secondary">Pausa shift</button>
+                <button id="endShiftBtn" class="btn danger">Avsluta shift</button>
+              </div>
+              <div id="staffShiftStatus" class="status"></div>
+            </div>
+            <div class="card">
+              <h3>Aktiva medarbetare</h3>
+              <div id="activeStaffList"></div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Ta beställning</h3>
+            <form id="staffOrderForm">
+              <input id="customerName" placeholder="Kundens namn" required />
+              <select id="staffDrinkSelect"></select>
+              <button type="submit" class="btn">Skapa beställning</button>
+            </form>
+            <div id="staffOrderStatus" class="status"></div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Personalöversikt</h3>
+            <div id="staffRoster"></div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Beställningar</h3>
+            <div id="staffOrdersList"></div>
+          </div>
+
+          <button id="staffLogoutBtn" class="btn secondary" style="margin-top: 12px;">Logga ut</button>
+        </div>
+      </section>
+    </section>
+
+    <section id="admin" class="view">
+      <section class="section panel">
+        <h2>Adminportal</h2>
+        <p>Här hanterar admin roller, personalkonton, aktiv personal och orderstatus utan att personalpanelen blandas ihop.</p>
+        <div id="adminLoginBox">
+          <h3>Admin login</h3>
+          <form id="adminLoginForm">
+            <input id="adminUser" placeholder="Admin användarnamn" required />
+            <input id="adminPass" type="password" placeholder="Admin lösenord" required />
+            <button type="submit" class="btn secondary">Logga in som admin</button>
+          </form>
+          <div id="adminLoginStatus" class="status"></div>
+        </div>
+
+        <div id="adminDashboard" class="hidden">
+          <div class="split">
+            <div class="card">
+              <h3>Skapa ny roll</h3>
+              <form id="createRoleForm">
+                <input id="roleName" placeholder="Rollnamn" required />
+                <div class="permission-grid">
+                  <label class="permission-chip"><input type="checkbox" name="rolePermission" value="manage_orders" /> Hantera beställningar</label>
+                  <label class="permission-chip"><input type="checkbox" name="rolePermission" value="manage_staff" /> Hantera personal</label>
+                  <label class="permission-chip"><input type="checkbox" name="rolePermission" value="manage_shifts" /> Hantera shift</label>
+                  <label class="permission-chip"><input type="checkbox" name="rolePermission" value="view_dashboard" /> Se dashboard</label>
+                </div>
+                <button type="submit" class="btn">Lägg till roll</button>
+              </form>
+              <div id="createRoleStatus" class="status"></div>
+              <div id="rolePermissionsList" style="margin-top: 10px;"></div>
+            </div>
+            <div class="card">
+              <h3>Skapa personalkonto</h3>
+              <form id="createStaffForm">
+                <input id="newStaffUser" placeholder="Användarnamn" required />
+                <input id="newStaffPass" placeholder="Lösenord" required />
+                <select id="newStaffRole"></select>
+                <button type="submit" class="btn">Skapa konto</button>
+              </form>
+              <div id="createStaffStatus" class="status"></div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Redigera startsida</h3>
+            <div class="editable-block">
+              <label class="small" for="editHeadline">Rubrik</label>
+              <input id="editHeadline" type="text" value="Välkommen till caféet i Stockholm city" />
+              <label class="small" for="editIntro" style="margin-top: 8px; display: block;">Introtext</label>
+              <textarea id="editIntro">Här finns en snygg och enkel beställningsupplevelse där kunder kan välja dryck, lägga till i kassan och få tydlig betalningsinfo.</textarea>
+              <button id="saveHomeEditBtn" class="btn" style="margin-top: 10px;">Spara ändringar</button>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Personal och shift-status</h3>
+            <div id="adminStaffRoster"></div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Aktiva personal</h3>
+            <div id="adminActiveStaff"></div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Beställningar</h3>
+            <div id="adminOrdersList"></div>
+          </div>
+
+          <button id="adminLogoutBtn" class="btn secondary" style="margin-top: 12px;">Logga ut admin</button>
+        </div>
+      </section>
+    </section>
+
+    <section id="contact" class="view">
+      <section class="section panel">
+        <h2>Kontakt</h2>
+        <p>Drifty i Discord DMs för hjälp med support eller frågor om beställningar.</p>
+      </section>
+    </section>
+  </div>
+
+  <footer>
+    <strong>Kontakt</strong><br />
+    Drifty i Discord DMs för hjälp med support.
+  </footer>
+
+  <div id="confirmModal" class="modal-backdrop hidden">
+    <div class="modal-card">
+      <h3>Bekräfta köp</h3>
+      <p>Är du säker på att du vill köpa? Kom ihåg att betala till Driftynordic.</p>
+      <div class="modal-actions">
+        <button id="confirmCheckoutYes" class="btn" type="button">Ja</button>
+        <button id="confirmCheckoutNo" class="btn secondary" type="button">Nej</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function createInlineImage(label, accent, kind) {
+      const safeLabel = String(label).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const safeKind = String(kind).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 900 600">
+        <rect width="100%" height="100%" rx="36" fill="#07111f" />
+        <rect x="70" y="70" width="760" height="460" rx="32" fill="#0f1828" stroke="${accent}" stroke-width="6" />
+        <rect x="210" y="150" width="480" height="270" rx="26" fill="${accent}" fill-opacity="0.18" stroke="${accent}" stroke-width="4" />
+        <rect x="250" y="110" width="400" height="115" rx="18" fill="${accent}" />
+        <circle cx="330" cy="360" r="24" fill="${accent}" />
+        <circle cx="570" cy="360" r="24" fill="${accent}" />
+        <rect x="285" y="320" width="330" height="80" rx="18" fill="rgba(255,255,255,0.16)" />
+        <text x="450" y="220" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="34" font-weight="700" fill="${accent}">${safeLabel}</text>
+        <text x="450" y="370" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="24" font-weight="600" fill="#f8fafc">${safeKind}</text>
+      </svg>`;
+      return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+    }
+
+    function createHeroImage() {
+      return createInlineImage('Öl & Glas', '#f1b73f', 'Stockholm City');
+    }
+
+    function createMenuImage(name, kind) {
+      const accent = kind === 'Mat' ? '#ff8b3d' : '#f1b73f';
+      return createInlineImage(name, accent, kind);
+    }
+
+    const menu = [
+      { name: 'Storgatan Stark', price: 95, kind: 'Dryck', description: 'Klassisk öl med mjuk maltig smak.', image: createMenuImage('Storgatan Stark', 'Dryck') },
+      { name: 'Norrlands Guld', price: 80, kind: 'Dryck', description: 'Lätt och fräsch med tydlig humle.', image: createMenuImage('Norrlands Guld', 'Dryck') },
+      { name: 'Falcon', price: 75, kind: 'Dryck', description: 'En balanserad lager som passar till maten.', image: createMenuImage('Falcon', 'Dryck') },
+      { name: 'Pripps Blå', price: 70, kind: 'Dryck', description: 'En enkel och populär klassiker.', image: createMenuImage('Pripps Blå', 'Dryck') },
+      { name: 'Pilsner', price: 90, kind: 'Dryck', description: 'Ren smak med fin kurva och lätt kropp.', image: createMenuImage('Pilsner', 'Dryck') },
+      { name: 'Lager', price: 85, kind: 'Dryck', description: 'Mjuk och uppfriskande för en lugn kväll.', image: createMenuImage('Lager', 'Dryck') },
+      { name: 'IPA', price: 95, kind: 'Dryck', description: 'Starkare humlearom med lite bitterhet.', image: createMenuImage('IPA', 'Dryck') },
+      { name: 'Stout', price: 95, kind: 'Dryck', description: 'Rik, mörk och perfekt till en mysig stund.', image: createMenuImage('Stout', 'Dryck') },
+      { name: 'Alkoholfritt Svenskt', price: 55, kind: 'Dryck', description: 'Alkoholfri klassiker med ren smak.', image: createMenuImage('Alkoholfritt Svenskt', 'Dryck') },
+      { name: 'Alkoholfri Pilsner', price: 65, kind: 'Dryck', description: 'Lätt och svalkande utan alkohol.', image: createMenuImage('Alkoholfri Pilsner', 'Dryck') },
+      { name: 'Alkoholfri IPA', price: 60, kind: 'Dryck', description: 'Fräsch humlesmak för den som vill ha mer.', image: createMenuImage('Alkoholfri IPA', 'Dryck') },
+      { name: 'Classic Burger', price: 135, kind: 'Mat', description: 'Biff, ost, pickles och sallad på mjukt bröd.', image: createMenuImage('Classic Burger', 'Mat') },
+      { name: 'Chicken Wrap', price: 115, kind: 'Mat', description: 'Krispig kyckling med sallad och dressing.', image: createMenuImage('Chicken Wrap', 'Mat') },
+      { name: 'Pommes Frites', price: 75, kind: 'Mat', description: 'Goda pommes med salt och klassisk sås.', image: createMenuImage('Pommes Frites', 'Mat') },
+      { name: 'Nachos', price: 95, kind: 'Mat', description: 'Kryddiga nachos med ost, salsa och guacamole.', image: createMenuImage('Nachos', 'Mat') },
+      { name: 'Club Sandwich', price: 125, kind: 'Mat', description: 'Roastbiff, bacon, sallad och smakrik dressing.', image: createMenuImage('Club Sandwich', 'Mat') }
+    ];
+
+    const packages = [
+      {
+        id: 'standard',
+        name: 'Standard',
+        price: 299,
+        description: '2 gratis Folköl + 1 hamburgare',
+        details: ['2 gratis Folköl', '1 hamburgare']
+      },
+      {
+        id: 'premium',
+        name: 'Premium',
+        price: 599,
+        description: '2 hamburgare + öl eller cider + 1 gratis Folköl',
+        details: ['2 hamburgare', 'Öl eller cider', '1 gratis Folköl']
+      }
+    ];
+
+    const staffAccountsKey = 'ssrp-staff-accounts';
+    const rolesKey = 'ssrp-roles';
+    const ordersKey = 'ssrp-orders';
+    const cartKey = 'ssrp-cart';
+    const currentStaffKey = 'ssrp-current-staff';
+    const currentAdminKey = 'ssrp-current-admin';
+    const homeContentKey = 'ssrp-home-content';
+
+    const drinkSelect = document.getElementById('drinkSelect');
+    const staffDrinkSelect = document.getElementById('staffDrinkSelect');
+    const addToCartBtn = document.getElementById('addToCartBtn');
+    const menuGrid = document.getElementById('menuGrid');
+    const menuStatus = document.getElementById('menuStatus');
+    const cartItems = document.getElementById('cartItems');
+    const checkoutForm = document.getElementById('checkoutForm');
+    const checkoutStatus = document.getElementById('checkoutStatus');
+    const checkoutSubmitBtn = document.getElementById('checkoutSubmitBtn');
+    const paymentAmountInput = document.getElementById('paymentAmount');
+    const publicOrdersList = document.getElementById('publicOrdersList');
+    const confirmModal = document.getElementById('confirmModal');
+    const confirmCheckoutYes = document.getElementById('confirmCheckoutYes');
+    const confirmCheckoutNo = document.getElementById('confirmCheckoutNo');
+
+    const staffLoginBox = document.getElementById('staffLoginBox');
+    const staffDashboard = document.getElementById('staffDashboard');
+    const staffLoginForm = document.getElementById('staffLoginForm');
+    const staffLoginStatus = document.getElementById('staffLoginStatus');
+    const myStaffInfo = document.getElementById('myStaffInfo');
+    const activeStaffList = document.getElementById('activeStaffList');
+    const staffShiftStatus = document.getElementById('staffShiftStatus');
+    const staffRoster = document.getElementById('staffRoster');
+    const staffOrderForm = document.getElementById('staffOrderForm');
+    const staffOrderStatus = document.getElementById('staffOrderStatus');
+    const staffOrdersList = document.getElementById('staffOrdersList');
+
+    const adminLoginBox = document.getElementById('adminLoginBox');
+    const adminDashboard = document.getElementById('adminDashboard');
+    const adminLoginForm = document.getElementById('adminLoginForm');
+    const adminLoginStatus = document.getElementById('adminLoginStatus');
+    const createRoleForm = document.getElementById('createRoleForm');
+    const createRoleStatus = document.getElementById('createRoleStatus');
+    const createStaffForm = document.getElementById('createStaffForm');
+    const createStaffStatus = document.getElementById('createStaffStatus');
+    const newStaffRole = document.getElementById('newStaffRole');
+    const rolePermissionsList = document.getElementById('rolePermissionsList');
+    const heroVisualImage = document.getElementById('heroVisualImage');
+    const homeHeadline = document.getElementById('homeHeadline');
+    const homeIntro = document.getElementById('homeIntro');
+    const editHeadline = document.getElementById('editHeadline');
+    const editIntro = document.getElementById('editIntro');
+    const saveHomeEditBtn = document.getElementById('saveHomeEditBtn');
+    const adminStaffRoster = document.getElementById('adminStaffRoster');
+    const adminActiveStaff = document.getElementById('adminActiveStaff');
+    const adminOrdersList = document.getElementById('adminOrdersList');
+
+    function loadStaffAccounts() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(staffAccountsKey) || 'null');
+        if (Array.isArray(saved) && saved.length) return saved;
+      } catch (e) {}
+      return [
+        { username: '555', password: '333', role: 'Personal', shiftStatus: 'Avslutad', active: false, shiftMinutes: 0, shiftStartedAt: null },
+        { username: '777', password: '444', role: 'Barista', shiftStatus: 'Avslutad', active: false, shiftMinutes: 0, shiftStartedAt: null }
+      ];
+    }
+
+    function saveStaffAccounts() {
+      localStorage.setItem(staffAccountsKey, JSON.stringify(staffAccounts));
+    }
+
+    function normalizeRole(entry) {
+      if (typeof entry === 'string') {
+        return { name: entry, permissions: ['view_dashboard'] };
+      }
+      if (entry && typeof entry === 'object') {
+        return {
+          name: entry.name || 'Roll',
+          permissions: Array.isArray(entry.permissions) ? entry.permissions : []
+        };
+      }
+      return null;
+    }
+
+    function loadRoles() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(rolesKey) || 'null');
+        if (Array.isArray(saved) && saved.length) {
+          const normalized = saved.map(normalizeRole).filter(Boolean);
+          if (normalized.length) return normalized;
+        }
+      } catch (e) {}
+      return [
+        { name: 'Personal', permissions: ['view_dashboard'] },
+        { name: 'Barista', permissions: ['view_dashboard', 'manage_orders'] },
+        { name: 'Säljare', permissions: ['view_dashboard', 'manage_orders'] },
+        { name: 'Chef', permissions: ['view_dashboard', 'manage_orders', 'manage_staff', 'manage_shifts'] }
+      ];
+    }
+
+    function saveRoles() {
+      localStorage.setItem(rolesKey, JSON.stringify(roles));
+    }
+
+    function loadOrders() {
+      try {
+        return JSON.parse(localStorage.getItem(ordersKey) || '[]');
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveOrders() {
+      localStorage.setItem(ordersKey, JSON.stringify(orders));
+    }
+
+    function loadCart() {
+      try {
+        return JSON.parse(localStorage.getItem(cartKey) || '[]');
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveCart() {
+      localStorage.setItem(cartKey, JSON.stringify(cart));
+    }
+
+    function getRoleByName(roleName) {
+      return roles.find(role => role.name.toLowerCase() === (roleName || '').toLowerCase()) || null;
+    }
+
+    function getPermissionLabel(permission) {
+      const labels = {
+        manage_orders: 'Hantera beställningar',
+        manage_staff: 'Hantera personal',
+        manage_shifts: 'Hantera shift',
+        view_dashboard: 'Se dashboard'
+      };
+      return labels[permission] || permission;
+    }
+
+    function loadHomeContent() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(homeContentKey) || 'null');
+        if (saved && typeof saved === 'object') {
+          return {
+            headline: saved.headline || 'Välkommen till caféet i Stockholm city',
+            intro: saved.intro || 'Här finns en snygg och enkel beställningsupplevelse där kunder kan välja dryck, lägga till i kassan och få tydlig betalningsinfo.'
+          };
+        }
+      } catch (e) {}
+      return {
+        headline: 'Välkommen till caféet i Stockholm city',
+        intro: 'Här finns en snygg och enkel beställningsupplevelse där kunder kan välja dryck, lägga till i kassan och få tydlig betalningsinfo.'
+      };
+    }
+
+    function saveHomeContent(content) {
+      localStorage.setItem(homeContentKey, JSON.stringify(content));
+    }
+
+    function applyHomeContent(content) {
+      if (homeHeadline) homeHeadline.textContent = content.headline;
+      if (homeIntro) homeIntro.textContent = content.intro;
+      if (editHeadline) editHeadline.value = content.headline;
+      if (editIntro) editIntro.value = content.intro;
+    }
+
+    function renderDrinkOptions() {
+      if (drinkSelect) {
+        drinkSelect.innerHTML = menu.map(item => `<option value="${item.name}">${item.name} — ${item.price} kr</option>`).join('');
+      }
+      staffDrinkSelect.innerHTML = menu.map(item => `<option value="${item.name}">${item.name} — ${item.price} kr</option>`).join('');
+      newStaffRole.innerHTML = roles.map(role => `<option value="${role.name}">${role.name}</option>`).join('');
+    }
+
+    function renderRolePermissionsList() {
+      if (!rolePermissionsList) return;
+      rolePermissionsList.innerHTML = roles.length ? roles.map(role => `
+        <div class="list-item">
+          <strong>${role.name}</strong>
+          <div class="small">Behörigheter: ${role.permissions.length ? role.permissions.map(getPermissionLabel).join(', ') : 'Inga'}</div>
+        </div>
+      `).join('') : '<div class="list-item"><strong>Inga roller skapade ännu.</strong></div>';
+    }
+
+    function renderMenuGrid() {
+      if (!menuGrid) return;
+      menuGrid.innerHTML = menu.map(item => `
+        <div class="card menu-card">
+          <img class="menu-image" src="${item.image}" alt="${item.name}" />
+          <div class="card-body">
+            <div class="drink-meta">
+              <div class="menu-tag">${item.kind}</div>
+              <h3>${item.name}</h3>
+              <div class="menu-description">${item.description}</div>
+              <div class="price">${item.price} kr</div>
+            </div>
+            <button class="btn add-item-btn" type="button" data-item-name="${item.name}">Lägg till i kundvagnen</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    let staffAccounts = loadStaffAccounts();
+    let roles = loadRoles();
+    let orders = loadOrders();
+    let cart = loadCart();
+    let homeContent = loadHomeContent();
+
+    function getCurrentStaffAccount() {
+      const username = localStorage.getItem(currentStaffKey);
+      return staffAccounts.find(account => account.username === username) || null;
+    }
+
+    function getShiftMinutes(account) {
+      if (typeof account.shiftMinutes !== 'number') account.shiftMinutes = 0;
+      if (account.shiftStartedAt && account.active) {
+        const elapsed = Math.floor((Date.now() - account.shiftStartedAt) / 60000);
+        return account.shiftMinutes + elapsed;
+      }
+      return account.shiftMinutes;
+    }
+
+    function renderCart() {
+      if (!cart.length) {
+        cartItems.innerHTML = '<div class="list-item"><strong>Varukorgen är tom.</strong></div>';
+        paymentAmountInput.value = '';
+        return;
+      }
+      const total = cart.reduce((sum, item) => sum + item.price, 0);
+      cartItems.innerHTML = cart.map(item => `<div class="list-item"><strong>${item.name}</strong><div class="small">${item.price} kr</div></div>`).join('') + `<div class="list-item"><strong>Totalt</strong><div class="small">${total} kr</div></div>`;
+      paymentAmountInput.value = `${total} kr`;
+    }
+
+    function renderPublicOrders() {
+      if (!publicOrdersList) return;
+      publicOrdersList.innerHTML = packages.map(pkg => `
+        <div class="card menu-card" style="margin-top: 12px;">
+          <div class="card-body">
+            <div class="drink-meta">
+              <div class="menu-tag">Paket</div>
+              <h3>${pkg.name}</h3>
+              <div class="menu-description">${pkg.description}</div>
+              <div class="small">${pkg.details.join(' • ')}</div>
+              <div class="price">${pkg.price} kr</div>
+            </div>
+            <button class="btn add-package-btn" type="button" data-package-id="${pkg.id}">Lägg till i kundvagnen</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderStaffDashboard() {
+      const currentStaff = getCurrentStaffAccount();
+      if (!currentStaff) {
+        staffLoginBox.classList.remove('hidden');
+        staffDashboard.classList.add('hidden');
+        return;
+      }
+      staffLoginBox.classList.add('hidden');
+      staffDashboard.classList.remove('hidden');
+      const roleDefinition = getRoleByName(currentStaff.role);
+      const permissionsText = roleDefinition && roleDefinition.permissions.length ? roleDefinition.permissions.map(getPermissionLabel).join(', ') : 'Inga';
+      myStaffInfo.innerHTML = `<strong>${currentStaff.username}</strong><br />Roll: ${currentStaff.role}<br />Shift: ${currentStaff.shiftStatus}<br />Status: ${currentStaff.active ? 'Aktiv' : 'Ej aktiv'}<br /><span class="small">Behörigheter: ${permissionsText}</span>`;
+      staffShiftStatus.textContent = `Shiftstatus: ${currentStaff.shiftStatus}`;
+
+      const active = staffAccounts.filter(account => account.active);
+      const sortedByShift = [...staffAccounts].sort((a, b) => getShiftMinutes(b) - getShiftMinutes(a));
+      activeStaffList.innerHTML = active.length ? active.map(account => `<div class="list-item"><strong>${account.username}</strong><div class="small">Roll: ${account.role} • Shift: ${account.shiftStatus} • ${getShiftMinutes(account)} min</div></div>`).join('') : '<div class="list-item"><strong>Inga andra är aktiva just nu.</strong></div>';
+
+      staffRoster.innerHTML = staffAccounts.map(account => `
+        <div class="list-item">
+          <strong>${account.username}</strong> <span class="pill">${account.role}</span>
+          <div class="small">Shift: ${account.shiftStatus} • Aktiv: ${account.active ? 'Ja' : 'Nej'} • ${getShiftMinutes(account)} min</div>
+        </div>
+      `).join('');
+
+      const topShift = sortedByShift[0];
+      const topShiftText = topShift ? `${topShift.username} med ${getShiftMinutes(topShift)} min i shift` : 'Ingen personal registrerad ännu';
+      staffOrdersList.innerHTML = `
+        <div class="list-item">
+          <strong>Vem har mest i shift?</strong>
+          <div class="small">${topShiftText}</div>
+        </div>
+        ${orders.length ? orders.map(order => `
+          <div class="list-item">
+            <strong>${order.customerName}</strong>
+            <div class="small">${order.drinkName} • ${order.price} kr</div>
+            <div class="small">Skapad av: ${order.staffName}</div>
+            <div class="small">Status: ${order.status}</div>
+            <div class="small">Betala till: ${order.paymentNote || 'Driftynordic'}</div>
+            <button class="btn small" data-order-id="${order.id}" data-action="complete-order" style="margin-top: 8px;">Markera som klar</button>
+          </div>
+        `).join('') : '<div class="list-item"><strong>Inga beställningar ännu.</strong></div>'}
+      `;
+    }
+
+    function renderAdminDashboard() {
+      const isLoggedIn = localStorage.getItem(currentAdminKey);
+      if (!isLoggedIn) {
+        adminLoginBox.classList.remove('hidden');
+        adminDashboard.classList.add('hidden');
+        return;
+      }
+      adminLoginBox.classList.add('hidden');
+      adminDashboard.classList.remove('hidden');
+      newStaffRole.innerHTML = roles.map(role => `<option value="${role}">${role}</option>`).join('');
+      adminStaffRoster.innerHTML = staffAccounts.map(account => {
+        const roleDefinition = getRoleByName(account.role);
+        const permissionsText = roleDefinition && roleDefinition.permissions.length ? roleDefinition.permissions.map(getPermissionLabel).join(', ') : 'Inga';
+        return `
+          <div class="list-item staff-row">
+            <div>
+              <strong>${account.username}</strong> <span class="pill">${account.role}</span>
+              <div class="small">Shift: ${account.shiftStatus} • Aktiv: ${account.active ? 'Ja' : 'Nej'} • ${getShiftMinutes(account)} min</div>
+              <div class="small">Behörigheter: ${permissionsText}</div>
+            </div>
+            <span class="status-badge ${account.active ? 'active' : 'inactive'}">${account.active ? 'Aktiv' : 'Inaktiv'}</span>
+          </div>
+        `;
+      }).join('');
+      const active = staffAccounts.filter(account => account.active);
+      adminActiveStaff.innerHTML = active.length ? active.map(account => `<div class="list-item"><strong>${account.username}</strong><div class="small">Roll: ${account.role} • Shift: ${account.shiftStatus} • ${getShiftMinutes(account)} min</div></div>`).join('') : '<div class="list-item"><strong>Ingen personal är aktiv just nu.</strong></div>';
+      adminOrdersList.innerHTML = orders.length ? orders.map(order => `
+        <div class="list-item">
+          <strong>${order.customerName}</strong>
+          <div class="small">${order.drinkName} • ${order.price} kr</div>
+          <div class="small">Status: ${order.status}</div>
+          <div class="small">Betala till: ${order.paymentNote || 'Driftynordic'}</div>
+          <button class="btn small" data-order-id="${order.id}" data-action="complete-order" style="margin-top: 8px;">Markera som klar</button>
+        </div>
+      `).join('') : '<div class="list-item"><strong>Inga beställningar ännu.</strong></div>';
+    }
+
+    function addItemToCart(itemName) {
+      const item = menu.find(entry => entry.name === itemName);
+      if (!item) return;
+      cart.push({ name: item.name, price: item.price });
+      saveCart();
+      renderCart();
+      menuStatus.textContent = `${item.name} lades till i kundvagnen.`;
+    }
+
+    function addPackageToCart(packageId) {
+      const pkg = packages.find(entry => entry.id === packageId);
+      if (!pkg) return;
+      cart.push({ name: pkg.name, price: pkg.price, type: 'package', description: pkg.description });
+      saveCart();
+      renderCart();
+      menuStatus.textContent = `${pkg.name} paket lades till i kundvagnen.`;
+    }
+
+    if (addToCartBtn) {
+      addToCartBtn.addEventListener('click', function () {
+        const selected = drinkSelect ? drinkSelect.value : '';
+        addItemToCart(selected);
+      });
+    }
+
+    if (menuGrid) {
+      menuGrid.addEventListener('click', function (event) {
+        const trigger = event.target.closest('.add-item-btn');
+        if (!trigger) return;
+        addItemToCart(trigger.getAttribute('data-item-name'));
+      });
+    }
+
+    if (publicOrdersList) {
+      publicOrdersList.addEventListener('click', function (event) {
+        const trigger = event.target.closest('.add-package-btn');
+        if (!trigger) return;
+        addPackageToCart(trigger.getAttribute('data-package-id'));
+      });
+    }
+
+    function submitCheckout() {
+      const rpName = document.getElementById('rpName').value.trim();
+      const discordName = document.getElementById('discordName').value.trim();
+      const amount = paymentAmountInput.value.trim();
+      if (!rpName || !discordName || !amount) {
+        checkoutStatus.className = 'status error';
+        checkoutStatus.textContent = 'Fyll i RP-namn, Discord-namn och belopp.';
+        return;
+      }
+      if (!cart.length) {
+        checkoutStatus.className = 'status error';
+        checkoutStatus.textContent = 'Varukorgen är tom.';
+        return;
+      }
+      const orderItems = cart.map(item => item.name).join(', ');
+      orders.unshift({
+        id: Date.now().toString(),
+        customerName: rpName,
+        discordName: discordName,
+        drinkName: orderItems || 'Kundval',
+        price: cart.reduce((sum, item) => sum + item.price, 0),
+        amount: amount,
+        status: 'Ny',
+        staffName: 'Kund',
+        paymentNote: 'Betala till Driftynordic'
+      });
+      saveOrders();
+      checkoutStatus.className = 'status';
+      checkoutStatus.textContent = `Beställning skickad. Det betalas till Driftynordic för ${amount}.`;
+      cart = [];
+      saveCart();
+      renderCart();
+      renderPublicOrders();
+      renderStaffDashboard();
+      renderAdminDashboard();
+      checkoutForm.reset();
+    }
+
+    checkoutForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      submitCheckout();
+    });
+
+    checkoutSubmitBtn.addEventListener('click', function () {
+      if (!cart.length) {
+        checkoutStatus.className = 'status error';
+        checkoutStatus.textContent = 'Lägg till något i kundvagnen innan du betalar.';
+        return;
+      }
+      confirmModal.classList.remove('hidden');
+    });
+
+    confirmCheckoutYes.addEventListener('click', function () {
+      confirmModal.classList.add('hidden');
+      submitCheckout();
+    });
+
+    confirmCheckoutNo.addEventListener('click', function () {
+      confirmModal.classList.add('hidden');
+      checkoutStatus.className = 'status';
+      checkoutStatus.textContent = 'Köpet avbröts.';
+    });
+
+    confirmModal.addEventListener('click', function (event) {
+      if (event.target === confirmModal) {
+        confirmModal.classList.add('hidden');
+      }
+    });
+
+    staffLoginForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const username = document.getElementById('staffUser').value.trim();
+      const password = document.getElementById('staffPass').value;
+      const account = staffAccounts.find(entry => entry.username === username && entry.password === password);
+      if (!account) {
+        staffLoginStatus.className = 'status error';
+        staffLoginStatus.textContent = 'Fel användarnamn eller lösenord.';
+        return;
+      }
+      account.active = true;
+      account.shiftStatus = account.shiftStatus || 'Avslutad';
+      account.shiftStartedAt = null;
+      saveStaffAccounts();
+      localStorage.setItem(currentStaffKey, username);
+      staffLoginStatus.className = 'status';
+      staffLoginStatus.textContent = `Inloggad som ${username}.`;
+      renderStaffDashboard();
+      this.reset();
+    });
+
+    document.getElementById('startShiftBtn').addEventListener('click', function () {
+      const currentStaff = getCurrentStaffAccount();
+      if (!currentStaff) return;
+      currentStaff.shiftStatus = 'På shift';
+      currentStaff.shiftStartedAt = Date.now();
+      saveStaffAccounts();
+      renderStaffDashboard();
+    });
+
+    document.getElementById('pauseShiftBtn').addEventListener('click', function () {
+      const currentStaff = getCurrentStaffAccount();
+      if (!currentStaff) return;
+      if (currentStaff.shiftStartedAt) {
+        currentStaff.shiftMinutes = (currentStaff.shiftMinutes || 0) + Math.floor((Date.now() - currentStaff.shiftStartedAt) / 60000);
+        currentStaff.shiftStartedAt = null;
+      }
+      currentStaff.shiftStatus = 'Pausad';
+      saveStaffAccounts();
+      renderStaffDashboard();
+    });
+
+    document.getElementById('endShiftBtn').addEventListener('click', function () {
+      const currentStaff = getCurrentStaffAccount();
+      if (!currentStaff) return;
+      if (currentStaff.shiftStartedAt) {
+        currentStaff.shiftMinutes = (currentStaff.shiftMinutes || 0) + Math.floor((Date.now() - currentStaff.shiftStartedAt) / 60000);
+        currentStaff.shiftStartedAt = null;
+      }
+      currentStaff.shiftStatus = 'Avslutad';
+      saveStaffAccounts();
+      renderStaffDashboard();
+    });
+
+    staffOrderForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const currentStaff = getCurrentStaffAccount();
+      const customerName = document.getElementById('customerName').value.trim();
+      const drinkName = staffDrinkSelect.value;
+      const chosen = menu.find(entry => entry.name === drinkName);
+      if (!currentStaff || !customerName || !chosen) {
+        staffOrderStatus.className = 'status error';
+        staffOrderStatus.textContent = 'Välj kund, dryck och se till att du är inloggad.';
+        return;
+      }
+      orders.unshift({
+        id: Date.now().toString(),
+        customerName,
+        drinkName: chosen.name,
+        price: chosen.price,
+        status: 'Ny',
+        staffName: currentStaff.username,
+        paymentNote: 'Betala till Driftynordic'
+      });
+      saveOrders();
+      renderStaffDashboard();
+      renderAdminDashboard();
+      renderPublicOrders();
+      staffOrderStatus.className = 'status';
+      staffOrderStatus.textContent = `Beställning skapad för ${customerName}. Det betalas till Driftynordic.`;
+      this.reset();
+    });
+
+    document.getElementById('staffLogoutBtn').addEventListener('click', function () {
+      const currentStaff = getCurrentStaffAccount();
+      if (currentStaff) {
+        if (currentStaff.shiftStartedAt) {
+          currentStaff.shiftMinutes = (currentStaff.shiftMinutes || 0) + Math.floor((Date.now() - currentStaff.shiftStartedAt) / 60000);
+          currentStaff.shiftStartedAt = null;
+        }
+        currentStaff.active = false;
+        saveStaffAccounts();
+      }
+      localStorage.removeItem(currentStaffKey);
+      renderStaffDashboard();
+    });
+
+    adminLoginForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const username = document.getElementById('adminUser').value.trim();
+      const password = document.getElementById('adminPass').value;
+      if (username === 'ADMINSSRP' && password === 'DUVET') {
+        localStorage.setItem(currentAdminKey, 'true');
+        adminLoginStatus.className = 'status';
+        adminLoginStatus.textContent = 'Inloggad som admin.';
+        renderAdminDashboard();
+        this.reset();
+      } else {
+        adminLoginStatus.className = 'status error';
+        adminLoginStatus.textContent = 'Fel admininlogg.';
+      }
+    });
+
+    createRoleForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const roleName = document.getElementById('roleName').value.trim();
+      if (!roleName) {
+        createRoleStatus.className = 'status error';
+        createRoleStatus.textContent = 'Skriv in ett rollnamn.';
+        return;
+      }
+      const permissions = Array.from(document.querySelectorAll('input[name="rolePermission"]:checked')).map(input => input.value);
+      if (!roles.some(role => role.name.toLowerCase() === roleName.toLowerCase())) {
+        roles.push({ name: roleName, permissions });
+        saveRoles();
+        renderDrinkOptions();
+        renderRolePermissionsList();
+        createRoleStatus.className = 'status';
+        createRoleStatus.textContent = `Rollen ${roleName} skapades.`;
+      } else {
+        createRoleStatus.className = 'status error';
+        createRoleStatus.textContent = 'Den rollen finns redan.';
+      }
+      this.reset();
+    });
+
+    createStaffForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const username = document.getElementById('newStaffUser').value.trim();
+      const password = document.getElementById('newStaffPass').value;
+      const role = newStaffRole.value;
+      if (!username || !password) {
+        createStaffStatus.className = 'status error';
+        createStaffStatus.textContent = 'Fyll i användarnamn och lösenord.';
+        return;
+      }
+      const exists = staffAccounts.some(account => account.username.toLowerCase() === username.toLowerCase());
+      if (exists) {
+        createStaffStatus.className = 'status error';
+        createStaffStatus.textContent = 'Det användarnamnet finns redan.';
+        return;
+      }
+      staffAccounts.push({ username, password, role, shiftStatus: 'Avslutad', active: false, shiftMinutes: 0, shiftStartedAt: null });
+      saveStaffAccounts();
+      renderStaffDashboard();
+      renderAdminDashboard();
+      createStaffStatus.className = 'status';
+      createStaffStatus.textContent = `Kontot ${username} skapades med rollen ${role}.`;
+      this.reset();
+    });
+
+    document.getElementById('adminLogoutBtn').addEventListener('click', function () {
+      localStorage.removeItem(currentAdminKey);
+      renderAdminDashboard();
+    });
+
+    if (saveHomeEditBtn) {
+      saveHomeEditBtn.addEventListener('click', function () {
+        homeContent = {
+          headline: editHeadline ? editHeadline.value.trim() || 'Välkommen till caféet i Stockholm city' : homeContent.headline,
+          intro: editIntro ? editIntro.value.trim() || 'Här finns en snygg och enkel beställningsupplevelse där kunder kan välja dryck, lägga till i kassan och få tydlig betalningsinfo.' : homeContent.intro
+        };
+        saveHomeContent(homeContent);
+        applyHomeContent(homeContent);
+      });
+    }
+
+    document.addEventListener('click', function (event) {
+      const trigger = event.target.closest('[data-action="complete-order"]');
+      if (!trigger) return;
+      const orderId = trigger.getAttribute('data-order-id');
+      const order = orders.find(entry => entry.id === orderId);
+      if (!order) return;
+      order.status = 'Slutförd';
+      saveOrders();
+      renderPublicOrders();
+      renderStaffDashboard();
+      renderAdminDashboard();
+    });
+
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', function (event) {
+        event.preventDefault();
+        const target = this.getAttribute('data-view');
+        showView(target);
+      });
+    });
+
+    function showView(viewName) {
+      document.querySelectorAll('.view').forEach(view => view.classList.toggle('active', view.id === viewName));
+      document.querySelectorAll('.nav-link').forEach(link => link.classList.toggle('active', link.getAttribute('data-view') === viewName));
+    }
+
+    applyHomeContent(homeContent);
+    if (heroVisualImage) heroVisualImage.src = createHeroImage();
+    document.body.style.backgroundImage = `linear-gradient(rgba(4,9,15,0.72), rgba(4,9,15,0.82)), url('${createHeroImage()}')`;
+    renderDrinkOptions();
+    renderRolePermissionsList();
+    renderMenuGrid();
+    renderCart();
+    renderPublicOrders();
+    renderStaffDashboard();
+    renderAdminDashboard();
+    showView('home');
+  </script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stockholm Sweden RP — Café & Bar</title>
+  <style>
+    :root {
+      --bg: #05090e;
+      --panel: rgba(13, 21, 34, 0.95);
+      --panel-2: rgba(23, 36, 57, 0.95);
+      --text: #f8fafc;
+      --muted: #b8c3d2;
+      --gold: #f1b73f;
+      --blue: #2f7df6;
+      --green: #4ade80;
+      --red: #ff6b6b;
+      --border: rgba(255,255,255,0.12);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text);
+      background: linear-gradient(rgba(4,9,15,0.72), rgba(4,9,15,0.82)), #05090e;
+      min-height: 100vh;
+      background-size: cover;
+      background-attachment: fixed;
+    }
+    .topbar { position: sticky; top: 0; z-index: 10; display: flex; justify-content: space-between; align-items: center; padding: 14px 24px; background: rgba(4,9,15,0.9); border-bottom: 1px solid var(--border); }
+    .brand { font-weight: 800; color: var(--gold); letter-spacing: 0.04em; }
+    nav a { color: var(--text); text-decoration: none; margin-left: 12px; font-weight: 600; }
+    nav a:hover { color: var(--gold); }
+    .page { max-width: 1200px; margin: 0 auto; padding: 24px; }
+    .hero, .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 22px; box-shadow: 0 18px 46px rgba(0,0,0,0.28); }
+    .hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: 20px; padding: 42px 28px; margin-bottom: 24px; }
+    .hero h1 { margin: 0 0 10px; font-size: clamp(2rem, 4vw, 3rem); }
+    .hero-visual { border-radius: 18px; overflow: hidden; border: 1px solid var(--border); min-height: 280px; }
+    .hero-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .editable-block { border: 1px dashed rgba(241,183,63,0.35); padding: 10px; border-radius: 12px; background: rgba(241,183,63,0.07); }
+    .editable-block textarea { min-height: 90px; resize: vertical; }
+    .hero p, .section p, .muted { color: var(--muted); line-height: 1.6; }
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+    .btn { border: none; border-radius: 999px; padding: 11px 16px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; color: #07111f; background: linear-gradient(135deg, var(--gold), #ffd77a); }
+    .btn.secondary { color: var(--text); background: linear-gradient(135deg, var(--blue), #6aa7ff); }
+    .btn.danger { color: var(--text); background: linear-gradient(135deg, var(--red), #ff8b8b); }
+    .btn.small { padding: 8px 12px; font-size: 0.9rem; }
+    .panel { padding: 24px; margin-bottom: 24px; }
+    .section h2 { margin-top: 0; margin-bottom: 6px; }
+    .grid { display: grid; gap: 16px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .card { padding: 16px; border-radius: 16px; background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); border: 1px solid var(--border); }
+    .card h3 { margin-top: 0; margin-bottom: 8px; }
+    .price { font-size: 1.2rem; color: var(--gold); font-weight: 700; margin-top: 6px; }
+    .menu-grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-top: 16px; }
+    .menu-card { display: flex; flex-direction: column; height: 100%; transition: transform 180ms ease, border-color 180ms ease; padding: 12px; }
+    .menu-card:hover { transform: translateY(-2px); border-color: rgba(241,183,63,0.4); }
+    .menu-image { width: 100%; aspect-ratio: 5 / 4; object-fit: cover; border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--border); background: rgba(255,255,255,0.04); max-height: 170px; }
+    .card-body { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+    .drink-meta { display: flex; flex-direction: column; gap: 6px; }
+    .menu-tag { display: inline-block; width: fit-content; padding: 6px 10px; border-radius: 999px; background: rgba(241,183,63,0.15); color: var(--gold); font-size: 0.8rem; font-weight: 700; border: 1px solid rgba(241,183,63,0.25); }
+    .menu-description { color: var(--muted); font-size: 0.95rem; line-height: 1.45; }
+    .menu-card .btn { width: 100%; text-align: center; margin-top: auto; }
+    .permission-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 6px; }
+    .permission-chip { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 999px; border: 1px solid var(--border); background: rgba(255,255,255,0.04); font-size: 0.92rem; }
+    .permission-chip input { width: auto; accent-color: var(--gold); margin: 0; }
+    .staff-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .status-badge { display: inline-block; padding: 6px 10px; border-radius: 999px; font-size: 0.8rem; font-weight: 700; }
+    .status-badge.active { background: rgba(74, 222, 128, 0.16); color: var(--green); border: 1px solid rgba(74, 222, 128, 0.24); }
+    .status-badge.inactive { background: rgba(255, 107, 107, 0.16); color: var(--red); border: 1px solid rgba(255, 107, 107, 0.24); }
+    form { display: grid; gap: 12px; margin-top: 12px; }
+    input, select, button { font: inherit; border-radius: 12px; border: 1px solid var(--border); padding: 12px 14px; background: var(--panel-2); color: var(--text); }
+    input::placeholder { color: #8ea2bd; }
+    .status { min-height: 20px; margin-top: 8px; color: var(--green); font-weight: 600; }
+    .status.error { color: var(--red); }
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(2,6,12,0.74); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 50; }
+    .modal-card { background: var(--panel); border: 1px solid var(--border); border-radius: 18px; padding: 22px; width: min(420px, 100%); box-shadow: 0 24px 50px rgba(0,0,0,0.35); }
+    .modal-actions { display: flex; gap: 10px; margin-top: 14px; }
+    .modal-actions .btn { flex: 1; justify-content: center; }
+    .hidden { display: none; }
+    .list-item { padding: 12px; border-radius: 14px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); margin-top: 10px; }
+    .pill { display: inline-block; padding: 6px 10px; border-radius: 999px; font-size: 0.8rem; background: rgba(47,125,246,0.2); color: #8dc4ff; border: 1px solid rgba(47,125,246,0.25); margin-left: 6px; }
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .small { font-size: 0.95rem; color: var(--muted); }
+    .nav-link { color: var(--text); text-decoration: none; margin-left: 12px; font-weight: 600; }
+    .nav-link:hover, .nav-link.active { color: var(--gold); }
+    .view { display: none; }
+    .view.active { display: block; }
+    .accent { color: var(--gold); font-weight: 700; }
+    footer { padding: 24px; text-align: center; color: var(--muted); border-top: 1px solid var(--border); margin-top: 20px; }
+    @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } .grid { grid-template-columns: 1fr 1fr; } .split { grid-template-columns: 1fr; } }
+    @media (max-width: 600px) { .topbar { flex-direction: column; gap: 8px; } .page { padding: 16px; } .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">Stockholm Sweden RP</div>
+    <nav>
+      <a href="#" class="nav-link active" data-view="home">Hem</a>
+      <a href="#" class="nav-link" data-view="order">Beställ</a>
+      <a href="#" class="nav-link" data-view="staff">Personal</a>
+      <a href="#" class="nav-link" data-view="admin">Admin</a>
+      <a href="#" class="nav-link" data-view="contact">Kontakt</a>
+    </nav>
+  </div>
+
+  <div class="page">
+    <section id="home" class="view active">
+      <section class="hero">
+        <div>
+          <h1 id="homeHeadline">Välkommen till caféet i Stockholm city</h1>
+          <p id="homeIntro">Här finns en snygg och enkel beställningsupplevelse där kunder kan välja dryck, lägga till i kassan och få tydlig betalningsinfo.</p>
+          <div class="btn-row">
+            <a class="btn" href="#" data-view="order">Gå till beställning</a>
+            <a class="btn secondary" href="#" data-view="staff">Personalportal</a>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="hero-visual">
+            <img id="heroVisualImage" src="" alt="Kollage med folk, öl och glas på ett träbord" />
+          </div>
+          <h3 style="margin-top: 12px;">Så fungerar det</h3>
+          <p>• Välj dryck<br />• Lägg till i kassan<br />• Fyll i RP-namn och Discord-namn<br />• Beställningen syns för personalen</p>
+        </div>
+      </section>
+
+      <section class="section panel">
+        <h2>En cool struktur</h2>
+        <p>Beställning, personal och admin är nu uppdelade i egna sidor så det känns mer professionellt och lättare att använda.</p>
+        <div class="grid">
+          <div class="card"><h3>Beställ</h3><div class="small">Kunder får en egen sida där det tydligt står att det betalas till Driftynordic.</div></div>
+          <div class="card"><h3>Personal</h3><div class="small">Personal kan logga in, se shift, ta beställningar och markera dem som klara.</div></div>
+          <div class="card"><h3>Admin</h3><div class="small">Admin kan skapa roller, personalkonton och följa personalens shift-status.</div></div>
+        </div>
+      </section>
+    </section>
+
+    <section id="order" class="view">
+      <section class="section panel">
+        <h2>Beställning</h2>
+        <p class="accent">Det betalas till Driftynordic</p>
+        <p>Välj vad du vill ha och skicka din beställning till personalen.</p>
+        <div id="menuGrid" class="menu-grid"></div>
+        <div style="margin-top: 16px;">
+          <select id="drinkSelect" class="hidden"></select>
+          <button id="addToCartBtn" class="btn" style="margin-top: 8px;">Lägg till i kundvagnen</button>
+        </div>
+        <div id="menuStatus" class="status"></div>
+      </section>
+
+      <section class="section panel">
+        <h2>Kassa</h2>
+        <div id="cartItems"></div>
+        <form id="checkoutForm">
+          <input id="rpName" placeholder="RP-namn" required />
+          <input id="discordName" placeholder="Discord-namn" required />
+          <input id="paymentAmount" placeholder="Belopp att betala" required />
+          <button type="button" id="checkoutSubmitBtn" class="btn">Betala</button>
+        </form>
+        <div id="checkoutStatus" class="status"></div>
+      </section>
+
+      <section class="section panel">
+        <h2>Prenumerationer</h2>
+        <p>Välj ett paket och lägg det i kundvagnen. Kunder ser inte beställningslistan här.</p>
+        <div id="publicOrdersList"></div>
+      </section>
+    </section>
+
+    <section id="staff" class="view">
+      <section class="section panel">
+        <h2>Personalportal</h2>
+        <p>Här finns en egen personalyta där personal kan logga in, se shift, ta beställningar och markera dem som klara.</p>
+        <div id="staffLoginBox">
+          <h3>Logga in</h3>
+          <form id="staffLoginForm">
+            <input id="staffUser" placeholder="Användarnamn" required />
+            <input id="staffPass" type="password" placeholder="Lösenord" required />
+            <button type="submit" class="btn secondary">Logga in som personal</button>
+          </form>
+          <div id="staffLoginStatus" class="status"></div>
+        </div>
+
+        <div id="staffDashboard" class="hidden">
+          <div class="split">
+            <div class="card">
+              <h3>Min status</h3>
+              <div id="myStaffInfo" class="small"></div>
+              <div class="btn-row">
+                <button id="startShiftBtn" class="btn">Starta shift</button>
+                <button id="pauseShiftBtn" class="btn secondary">Pausa shift</button>
+                <button id="endShiftBtn" class="btn danger">Avsluta shift</button>
+              </div>
+              <div id="staffShiftStatus" class="status"></div>
+            </div>
+            <div class="card">
+              <h3>Aktiva medarbetare</h3>
+              <div id="activeStaffList"></div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Ta beställning</h3>
+            <form id="staffOrderForm">
+              <input id="customerName" placeholder="Kundens namn" required />
+              <select id="staffDrinkSelect"></select>
+              <button type="submit" class="btn">Skapa beställning</button>
+            </form>
+            <div id="staffOrderStatus" class="status"></div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Personalöversikt</h3>
+            <div id="staffRoster"></div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Beställningar</h3>
+            <div id="staffOrdersList"></div>
+          </div>
+
+          <button id="staffLogoutBtn" class="btn secondary" style="margin-top: 12px;">Logga ut</button>
+        </div>
+      </section>
+    </section>
+
+    <section id="admin" class="view">
+      <section class="section panel">
+        <h2>Adminportal</h2>
+        <p>Här hanterar admin roller, personalkonton, aktiv personal och orderstatus utan att personalpanelen blandas ihop.</p>
+        <div id="adminLoginBox">
+          <h3>Admin login</h3>
+          <form id="adminLoginForm">
+            <input id="adminUser" placeholder="Admin användarnamn" required />
+            <input id="adminPass" type="password" placeholder="Admin lösenord" required />
+            <button type="submit" class="btn secondary">Logga in som admin</button>
+          </form>
+          <div id="adminLoginStatus" class="status"></div>
+        </div>
+
+        <div id="adminDashboard" class="hidden">
+          <div class="split">
+            <div class="card">
+              <h3>Skapa ny roll</h3>
+              <form id="createRoleForm">
+                <input id="roleName" placeholder="Rollnamn" required />
+                <div class="permission-grid">
+                  <label class="permission-chip"><input type="checkbox" name="rolePermission" value="manage_orders" /> Hantera beställningar</label>
+                  <label class="permission-chip"><input type="checkbox" name="rolePermission" value="manage_staff" /> Hantera personal</label>
+                  <label class="permission-chip"><input type="checkbox" name="rolePermission" value="manage_shifts" /> Hantera shift</label>
+                  <label class="permission-chip"><input type="checkbox" name="rolePermission" value="view_dashboard" /> Se dashboard</label>
+                </div>
+                <button type="submit" class="btn">Lägg till roll</button>
+              </form>
+              <div id="createRoleStatus" class="status"></div>
+              <div id="rolePermissionsList" style="margin-top: 10px;"></div>
+            </div>
+            <div class="card">
+              <h3>Skapa personalkonto</h3>
+              <form id="createStaffForm">
+                <input id="newStaffUser" placeholder="Användarnamn" required />
+                <input id="newStaffPass" placeholder="Lösenord" required />
+                <select id="newStaffRole"></select>
+                <button type="submit" class="btn">Skapa konto</button>
+              </form>
+              <div id="createStaffStatus" class="status"></div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Redigera startsida</h3>
+            <div class="editable-block">
+              <label class="small" for="editHeadline">Rubrik</label>
+              <input id="editHeadline" type="text" value="Välkommen till caféet i Stockholm city" />
+              <label class="small" for="editIntro" style="margin-top: 8px; display: block;">Introtext</label>
+              <textarea id="editIntro">Här finns en snygg och enkel beställningsupplevelse där kunder kan välja dryck, lägga till i kassan och få tydlig betalningsinfo.</textarea>
+              <button id="saveHomeEditBtn" class="btn" style="margin-top: 10px;">Spara ändringar</button>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Personal och shift-status</h3>
+            <div id="adminStaffRoster"></div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Aktiva personal</h3>
+            <div id="adminActiveStaff"></div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Beställningar</h3>
+            <div id="adminOrdersList"></div>
+          </div>
+
+          <button id="adminLogoutBtn" class="btn secondary" style="margin-top: 12px;">Logga ut admin</button>
+        </div>
+      </section>
+    </section>
+
+    <section id="contact" class="view">
+      <section class="section panel">
+        <h2>Kontakt</h2>
+        <p>Drifty i Discord DMs för hjälp med support eller frågor om beställningar.</p>
+      </section>
+    </section>
+  </div>
+
+  <footer>
+    <strong>Kontakt</strong><br />
+    Drifty i Discord DMs för hjälp med support.
+  </footer>
+
+  <div id="confirmModal" class="modal-backdrop hidden">
+    <div class="modal-card">
+      <h3>Bekräfta köp</h3>
+      <p>Är du säker på att du vill köpa? Kom ihåg att betala till Driftynordic.</p>
+      <div class="modal-actions">
+        <button id="confirmCheckoutYes" class="btn" type="button">Ja</button>
+        <button id="confirmCheckoutNo" class="btn secondary" type="button">Nej</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function createInlineImage(label, accent, kind) {
+      const safeLabel = String(label).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const safeKind = String(kind).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 900 600">
+        <rect width="100%" height="100%" rx="36" fill="#07111f" />
+        <rect x="70" y="70" width="760" height="460" rx="32" fill="#0f1828" stroke="${accent}" stroke-width="6" />
+        <rect x="210" y="150" width="480" height="270" rx="26" fill="${accent}" fill-opacity="0.18" stroke="${accent}" stroke-width="4" />
+        <rect x="250" y="110" width="400" height="115" rx="18" fill="${accent}" />
+        <circle cx="330" cy="360" r="24" fill="${accent}" />
+        <circle cx="570" cy="360" r="24" fill="${accent}" />
+        <rect x="285" y="320" width="330" height="80" rx="18" fill="rgba(255,255,255,0.16)" />
+        <text x="450" y="220" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="34" font-weight="700" fill="${accent}">${safeLabel}</text>
+        <text x="450" y="370" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="24" font-weight="600" fill="#f8fafc">${safeKind}</text>
+      </svg>`;
+      return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+    }
+
+    function createHeroImage() {
+      return createInlineImage('Öl & Glas', '#f1b73f', 'Stockholm City');
+    }
+
+    function createMenuImage(name, kind) {
+      const accent = kind === 'Mat' ? '#ff8b3d' : '#f1b73f';
+      return createInlineImage(name, accent, kind);
+    }
+
+    const menu = [
+      { name: 'Storgatan Stark', price: 95, kind: 'Dryck', description: 'Klassisk öl med mjuk maltig smak.', image: createMenuImage('Storgatan Stark', 'Dryck') },
+      { name: 'Norrlands Guld', price: 80, kind: 'Dryck', description: 'Lätt och fräsch med tydlig humle.', image: createMenuImage('Norrlands Guld', 'Dryck') },
+      { name: 'Falcon', price: 75, kind: 'Dryck', description: 'En balanserad lager som passar till maten.', image: createMenuImage('Falcon', 'Dryck') },
+      { name: 'Pripps Blå', price: 70, kind: 'Dryck', description: 'En enkel och populär klassiker.', image: createMenuImage('Pripps Blå', 'Dryck') },
+      { name: 'Pilsner', price: 90, kind: 'Dryck', description: 'Ren smak med fin kurva och lätt kropp.', image: createMenuImage('Pilsner', 'Dryck') },
+      { name: 'Lager', price: 85, kind: 'Dryck', description: 'Mjuk och uppfriskande för en lugn kväll.', image: createMenuImage('Lager', 'Dryck') },
+      { name: 'IPA', price: 95, kind: 'Dryck', description: 'Starkare humlearom med lite bitterhet.', image: createMenuImage('IPA', 'Dryck') },
+      { name: 'Stout', price: 95, kind: 'Dryck', description: 'Rik, mörk och perfekt till en mysig stund.', image: createMenuImage('Stout', 'Dryck') },
+      { name: 'Alkoholfritt Svenskt', price: 55, kind: 'Dryck', description: 'Alkoholfri klassiker med ren smak.', image: createMenuImage('Alkoholfritt Svenskt', 'Dryck') },
+      { name: 'Alkoholfri Pilsner', price: 65, kind: 'Dryck', description: 'Lätt och svalkande utan alkohol.', image: createMenuImage('Alkoholfri Pilsner', 'Dryck') },
+      { name: 'Alkoholfri IPA', price: 60, kind: 'Dryck', description: 'Fräsch humlesmak för den som vill ha mer.', image: createMenuImage('Alkoholfri IPA', 'Dryck') },
+      { name: 'Classic Burger', price: 135, kind: 'Mat', description: 'Biff, ost, pickles och sallad på mjukt bröd.', image: createMenuImage('Classic Burger', 'Mat') },
+      { name: 'Chicken Wrap', price: 115, kind: 'Mat', description: 'Krispig kyckling med sallad och dressing.', image: createMenuImage('Chicken Wrap', 'Mat') },
+      { name: 'Pommes Frites', price: 75, kind: 'Mat', description: 'Goda pommes med salt och klassisk sås.', image: createMenuImage('Pommes Frites', 'Mat') },
+      { name: 'Nachos', price: 95, kind: 'Mat', description: 'Kryddiga nachos med ost, salsa och guacamole.', image: createMenuImage('Nachos', 'Mat') },
+      { name: 'Club Sandwich', price: 125, kind: 'Mat', description: 'Roastbiff, bacon, sallad och smakrik dressing.', image: createMenuImage('Club Sandwich', 'Mat') }
+    ];
+
+    const packages = [
+      {
+        id: 'standard',
+        name: 'Standard',
+        price: 299,
+        description: '2 gratis Folköl + 1 hamburgare',
+        details: ['2 gratis Folköl', '1 hamburgare']
+      },
+      {
+        id: 'premium',
+        name: 'Premium',
+        price: 599,
+        description: '2 hamburgare + öl eller cider + 1 gratis Folköl',
+        details: ['2 hamburgare', 'Öl eller cider', '1 gratis Folköl']
+      }
+    ];
+
+    const staffAccountsKey = 'ssrp-staff-accounts';
+    const rolesKey = 'ssrp-roles';
+    const ordersKey = 'ssrp-orders';
+    const cartKey = 'ssrp-cart';
+    const currentStaffKey = 'ssrp-current-staff';
+    const currentAdminKey = 'ssrp-current-admin';
+    const homeContentKey = 'ssrp-home-content';
+
+    const drinkSelect = document.getElementById('drinkSelect');
+    const staffDrinkSelect = document.getElementById('staffDrinkSelect');
+    const addToCartBtn = document.getElementById('addToCartBtn');
+    const menuGrid = document.getElementById('menuGrid');
+    const menuStatus = document.getElementById('menuStatus');
+    const cartItems = document.getElementById('cartItems');
+    const checkoutForm = document.getElementById('checkoutForm');
+    const checkoutStatus = document.getElementById('checkoutStatus');
+    const checkoutSubmitBtn = document.getElementById('checkoutSubmitBtn');
+    const paymentAmountInput = document.getElementById('paymentAmount');
+    const publicOrdersList = document.getElementById('publicOrdersList');
+    const confirmModal = document.getElementById('confirmModal');
+    const confirmCheckoutYes = document.getElementById('confirmCheckoutYes');
+    const confirmCheckoutNo = document.getElementById('confirmCheckoutNo');
+
+    const staffLoginBox = document.getElementById('staffLoginBox');
+    const staffDashboard = document.getElementById('staffDashboard');
+    const staffLoginForm = document.getElementById('staffLoginForm');
+    const staffLoginStatus = document.getElementById('staffLoginStatus');
+    const myStaffInfo = document.getElementById('myStaffInfo');
+    const activeStaffList = document.getElementById('activeStaffList');
+    const staffShiftStatus = document.getElementById('staffShiftStatus');
+    const staffRoster = document.getElementById('staffRoster');
+    const staffOrderForm = document.getElementById('staffOrderForm');
+    const staffOrderStatus = document.getElementById('staffOrderStatus');
+    const staffOrdersList = document.getElementById('staffOrdersList');
+
+    const adminLoginBox = document.getElementById('adminLoginBox');
+    const adminDashboard = document.getElementById('adminDashboard');
+    const adminLoginForm = document.getElementById('adminLoginForm');
+    const adminLoginStatus = document.getElementById('adminLoginStatus');
+    const createRoleForm = document.getElementById('createRoleForm');
+    const createRoleStatus = document.getElementById('createRoleStatus');
+    const createStaffForm = document.getElementById('createStaffForm');
+    const createStaffStatus = document.getElementById('createStaffStatus');
+    const newStaffRole = document.getElementById('newStaffRole');
+    const rolePermissionsList = document.getElementById('rolePermissionsList');
+    const heroVisualImage = document.getElementById('heroVisualImage');
+    const homeHeadline = document.getElementById('homeHeadline');
+    const homeIntro = document.getElementById('homeIntro');
+    const editHeadline = document.getElementById('editHeadline');
+    const editIntro = document.getElementById('editIntro');
+    const saveHomeEditBtn = document.getElementById('saveHomeEditBtn');
+    const adminStaffRoster = document.getElementById('adminStaffRoster');
+    const adminActiveStaff = document.getElementById('adminActiveStaff');
+    const adminOrdersList = document.getElementById('adminOrdersList');
+
+    function loadStaffAccounts() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(staffAccountsKey) || 'null');
+        if (Array.isArray(saved) && saved.length) return saved;
+      } catch (e) {}
+      return [
+        { username: '555', password: '333', role: 'Personal', shiftStatus: 'Avslutad', active: false, shiftMinutes: 0, shiftStartedAt: null },
+        { username: '777', password: '444', role: 'Barista', shiftStatus: 'Avslutad', active: false, shiftMinutes: 0, shiftStartedAt: null }
+      ];
+    }
+
+    function saveStaffAccounts() {
+      localStorage.setItem(staffAccountsKey, JSON.stringify(staffAccounts));
+    }
+
+    function normalizeRole(entry) {
+      if (typeof entry === 'string') {
+        return { name: entry, permissions: ['view_dashboard'] };
+      }
+      if (entry && typeof entry === 'object') {
+        return {
+          name: entry.name || 'Roll',
+          permissions: Array.isArray(entry.permissions) ? entry.permissions : []
+        };
+      }
+      return null;
+    }
+
+    function loadRoles() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(rolesKey) || 'null');
+        if (Array.isArray(saved) && saved.length) {
+          const normalized = saved.map(normalizeRole).filter(Boolean);
+          if (normalized.length) return normalized;
+        }
+      } catch (e) {}
+      return [
+        { name: 'Personal', permissions: ['view_dashboard'] },
+        { name: 'Barista', permissions: ['view_dashboard', 'manage_orders'] },
+        { name: 'Säljare', permissions: ['view_dashboard', 'manage_orders'] },
+        { name: 'Chef', permissions: ['view_dashboard', 'manage_orders', 'manage_staff', 'manage_shifts'] }
+      ];
+    }
+
+    function saveRoles() {
+      localStorage.setItem(rolesKey, JSON.stringify(roles));
+    }
+
+    function loadOrders() {
+      try {
+        return JSON.parse(localStorage.getItem(ordersKey) || '[]');
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveOrders() {
+      localStorage.setItem(ordersKey, JSON.stringify(orders));
+    }
+
+    function loadCart() {
+      try {
+        return JSON.parse(localStorage.getItem(cartKey) || '[]');
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveCart() {
+      localStorage.setItem(cartKey, JSON.stringify(cart));
+    }
+
+    function getRoleByName(roleName) {
+      return roles.find(role => role.name.toLowerCase() === (roleName || '').toLowerCase()) || null;
+    }
+
+    function getPermissionLabel(permission) {
+      const labels = {
+        manage_orders: 'Hantera beställningar',
+        manage_staff: 'Hantera personal',
+        manage_shifts: 'Hantera shift',
+        view_dashboard: 'Se dashboard'
+      };
+      return labels[permission] || permission;
+    }
+
+    function loadHomeContent() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(homeContentKey) || 'null');
+        if (saved && typeof saved === 'object') {
+          return {
+            headline: saved.headline || 'Välkommen till caféet i Stockholm city',
+            intro: saved.intro || 'Här finns en snygg och enkel beställningsupplevelse där kunder kan välja dryck, lägga till i kassan och få tydlig betalningsinfo.'
+          };
+        }
+      } catch (e) {}
+      return {
+        headline: 'Välkommen till caféet i Stockholm city',
+        intro: 'Här finns en snygg och enkel beställningsupplevelse där kunder kan välja dryck, lägga till i kassan och få tydlig betalningsinfo.'
+      };
+    }
+
+    function saveHomeContent(content) {
+      localStorage.setItem(homeContentKey, JSON.stringify(content));
+    }
+
+    function applyHomeContent(content) {
+      if (homeHeadline) homeHeadline.textContent = content.headline;
+      if (homeIntro) homeIntro.textContent = content.intro;
+      if (editHeadline) editHeadline.value = content.headline;
+      if (editIntro) editIntro.value = content.intro;
+    }
+
+    function renderDrinkOptions() {
+      if (drinkSelect) {
+        drinkSelect.innerHTML = menu.map(item => `<option value="${item.name}">${item.name} — ${item.price} kr</option>`).join('');
+      }
+      staffDrinkSelect.innerHTML = menu.map(item => `<option value="${item.name}">${item.name} — ${item.price} kr</option>`).join('');
+      newStaffRole.innerHTML = roles.map(role => `<option value="${role.name}">${role.name}</option>`).join('');
+    }
+
+    function renderRolePermissionsList() {
+      if (!rolePermissionsList) return;
+      rolePermissionsList.innerHTML = roles.length ? roles.map(role => `
+        <div class="list-item">
+          <strong>${role.name}</strong>
+          <div class="small">Behörigheter: ${role.permissions.length ? role.permissions.map(getPermissionLabel).join(', ') : 'Inga'}</div>
+        </div>
+      `).join('') : '<div class="list-item"><strong>Inga roller skapade ännu.</strong></div>';
+    }
+
+    function renderMenuGrid() {
+      if (!menuGrid) return;
+      menuGrid.innerHTML = menu.map(item => `
+        <div class="card menu-card">
+          <img class="menu-image" src="${item.image}" alt="${item.name}" />
+          <div class="card-body">
+            <div class="drink-meta">
+              <div class="menu-tag">${item.kind}</div>
+              <h3>${item.name}</h3>
+              <div class="menu-description">${item.description}</div>
+              <div class="price">${item.price} kr</div>
+            </div>
+            <button class="btn add-item-btn" type="button" data-item-name="${item.name}">Lägg till i kundvagnen</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    let staffAccounts = loadStaffAccounts();
+    let roles = loadRoles();
+    let orders = loadOrders();
+    let cart = loadCart();
+    let homeContent = loadHomeContent();
+
+    function getCurrentStaffAccount() {
+      const username = localStorage.getItem(currentStaffKey);
+      return staffAccounts.find(account => account.username === username) || null;
+    }
+
+    function getShiftMinutes(account) {
+      if (typeof account.shiftMinutes !== 'number') account.shiftMinutes = 0;
+      if (account.shiftStartedAt && account.active) {
+        const elapsed = Math.floor((Date.now() - account.shiftStartedAt) / 60000);
+        return account.shiftMinutes + elapsed;
+      }
+      return account.shiftMinutes;
+    }
+
+    function renderCart() {
+      if (!cart.length) {
+        cartItems.innerHTML = '<div class="list-item"><strong>Varukorgen är tom.</strong></div>';
+        paymentAmountInput.value = '';
+        return;
+      }
+      const total = cart.reduce((sum, item) => sum + item.price, 0);
+      cartItems.innerHTML = cart.map(item => `<div class="list-item"><strong>${item.name}</strong><div class="small">${item.price} kr</div></div>`).join('') + `<div class="list-item"><strong>Totalt</strong><div class="small">${total} kr</div></div>`;
+      paymentAmountInput.value = `${total} kr`;
+    }
+
+    function renderPublicOrders() {
+      if (!publicOrdersList) return;
+      publicOrdersList.innerHTML = packages.map(pkg => `
+        <div class="card menu-card" style="margin-top: 12px;">
+          <div class="card-body">
+            <div class="drink-meta">
+              <div class="menu-tag">Paket</div>
+              <h3>${pkg.name}</h3>
+              <div class="menu-description">${pkg.description}</div>
+              <div class="small">${pkg.details.join(' • ')}</div>
+              <div class="price">${pkg.price} kr</div>
+            </div>
+            <button class="btn add-package-btn" type="button" data-package-id="${pkg.id}">Lägg till i kundvagnen</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderStaffDashboard() {
+      const currentStaff = getCurrentStaffAccount();
+      if (!currentStaff) {
+        staffLoginBox.classList.remove('hidden');
+        staffDashboard.classList.add('hidden');
+        return;
+      }
+      staffLoginBox.classList.add('hidden');
+      staffDashboard.classList.remove('hidden');
+      const roleDefinition = getRoleByName(currentStaff.role);
+      const permissionsText = roleDefinition && roleDefinition.permissions.length ? roleDefinition.permissions.map(getPermissionLabel).join(', ') : 'Inga';
+      myStaffInfo.innerHTML = `<strong>${currentStaff.username}</strong><br />Roll: ${currentStaff.role}<br />Shift: ${currentStaff.shiftStatus}<br />Status: ${currentStaff.active ? 'Aktiv' : 'Ej aktiv'}<br /><span class="small">Behörigheter: ${permissionsText}</span>`;
+      staffShiftStatus.textContent = `Shiftstatus: ${currentStaff.shiftStatus}`;
+
+      const active = staffAccounts.filter(account => account.active);
+      const sortedByShift = [...staffAccounts].sort((a, b) => getShiftMinutes(b) - getShiftMinutes(a));
+      activeStaffList.innerHTML = active.length ? active.map(account => `<div class="list-item"><strong>${account.username}</strong><div class="small">Roll: ${account.role} • Shift: ${account.shiftStatus} • ${getShiftMinutes(account)} min</div></div>`).join('') : '<div class="list-item"><strong>Inga andra är aktiva just nu.</strong></div>';
+
+      staffRoster.innerHTML = staffAccounts.map(account => `
+        <div class="list-item">
+          <strong>${account.username}</strong> <span class="pill">${account.role}</span>
+          <div class="small">Shift: ${account.shiftStatus} • Aktiv: ${account.active ? 'Ja' : 'Nej'} • ${getShiftMinutes(account)} min</div>
+        </div>
+      `).join('');
+
+      const topShift = sortedByShift[0];
+      const topShiftText = topShift ? `${topShift.username} med ${getShiftMinutes(topShift)} min i shift` : 'Ingen personal registrerad ännu';
+      staffOrdersList.innerHTML = `
+        <div class="list-item">
+          <strong>Vem har mest i shift?</strong>
+          <div class="small">${topShiftText}</div>
+        </div>
+        ${orders.length ? orders.map(order => `
+          <div class="list-item">
+            <strong>${order.customerName}</strong>
+            <div class="small">${order.drinkName} • ${order.price} kr</div>
+            <div class="small">Skapad av: ${order.staffName}</div>
+            <div class="small">Status: ${order.status}</div>
+            <div class="small">Betala till: ${order.paymentNote || 'Driftynordic'}</div>
+            <button class="btn small" data-order-id="${order.id}" data-action="complete-order" style="margin-top: 8px;">Markera som klar</button>
+          </div>
+        `).join('') : '<div class="list-item"><strong>Inga beställningar ännu.</strong></div>'}
+      `;
+    }
+
+    function renderAdminDashboard() {
+      const isLoggedIn = localStorage.getItem(currentAdminKey);
+      if (!isLoggedIn) {
+        adminLoginBox.classList.remove('hidden');
+        adminDashboard.classList.add('hidden');
+        return;
+      }
+      adminLoginBox.classList.add('hidden');
+      adminDashboard.classList.remove('hidden');
+      newStaffRole.innerHTML = roles.map(role => `<option value="${role}">${role}</option>`).join('');
+      adminStaffRoster.innerHTML = staffAccounts.map(account => {
+        const roleDefinition = getRoleByName(account.role);
+        const permissionsText = roleDefinition && roleDefinition.permissions.length ? roleDefinition.permissions.map(getPermissionLabel).join(', ') : 'Inga';
+        return `
+          <div class="list-item staff-row">
+            <div>
+              <strong>${account.username}</strong> <span class="pill">${account.role}</span>
+              <div class="small">Shift: ${account.shiftStatus} • Aktiv: ${account.active ? 'Ja' : 'Nej'} • ${getShiftMinutes(account)} min</div>
+              <div class="small">Behörigheter: ${permissionsText}</div>
+            </div>
+            <span class="status-badge ${account.active ? 'active' : 'inactive'}">${account.active ? 'Aktiv' : 'Inaktiv'}</span>
+          </div>
+        `;
+      }).join('');
+      const active = staffAccounts.filter(account => account.active);
+      adminActiveStaff.innerHTML = active.length ? active.map(account => `<div class="list-item"><strong>${account.username}</strong><div class="small">Roll: ${account.role} • Shift: ${account.shiftStatus} • ${getShiftMinutes(account)} min</div></div>`).join('') : '<div class="list-item"><strong>Ingen personal är aktiv just nu.</strong></div>';
+      adminOrdersList.innerHTML = orders.length ? orders.map(order => `
+        <div class="list-item">
+          <strong>${order.customerName}</strong>
+          <div class="small">${order.drinkName} • ${order.price} kr</div>
+          <div class="small">Status: ${order.status}</div>
+          <div class="small">Betala till: ${order.paymentNote || 'Driftynordic'}</div>
+          <button class="btn small" data-order-id="${order.id}" data-action="complete-order" style="margin-top: 8px;">Markera som klar</button>
+        </div>
+      `).join('') : '<div class="list-item"><strong>Inga beställningar ännu.</strong></div>';
+    }
+
+    function addItemToCart(itemName) {
+      const item = menu.find(entry => entry.name === itemName);
+      if (!item) return;
+      cart.push({ name: item.name, price: item.price });
+      saveCart();
+      renderCart();
+      menuStatus.textContent = `${item.name} lades till i kundvagnen.`;
+    }
+
+    function addPackageToCart(packageId) {
+      const pkg = packages.find(entry => entry.id === packageId);
+      if (!pkg) return;
+      cart.push({ name: pkg.name, price: pkg.price, type: 'package', description: pkg.description });
+      saveCart();
+      renderCart();
+      menuStatus.textContent = `${pkg.name} paket lades till i kundvagnen.`;
+    }
+
+    if (addToCartBtn) {
+      addToCartBtn.addEventListener('click', function () {
+        const selected = drinkSelect ? drinkSelect.value : '';
+        addItemToCart(selected);
+      });
+    }
+
+    if (menuGrid) {
+      menuGrid.addEventListener('click', function (event) {
+        const trigger = event.target.closest('.add-item-btn');
+        if (!trigger) return;
+        addItemToCart(trigger.getAttribute('data-item-name'));
+      });
+    }
+
+    if (publicOrdersList) {
+      publicOrdersList.addEventListener('click', function (event) {
+        const trigger = event.target.closest('.add-package-btn');
+        if (!trigger) return;
+        addPackageToCart(trigger.getAttribute('data-package-id'));
+      });
+    }
+
+    function submitCheckout() {
+      const rpName = document.getElementById('rpName').value.trim();
+      const discordName = document.getElementById('discordName').value.trim();
+      const amount = paymentAmountInput.value.trim();
+      if (!rpName || !discordName || !amount) {
+        checkoutStatus.className = 'status error';
+        checkoutStatus.textContent = 'Fyll i RP-namn, Discord-namn och belopp.';
+        return;
+      }
+      if (!cart.length) {
+        checkoutStatus.className = 'status error';
+        checkoutStatus.textContent = 'Varukorgen är tom.';
+        return;
+      }
+      const orderItems = cart.map(item => item.name).join(', ');
+      orders.unshift({
+        id: Date.now().toString(),
+        customerName: rpName,
+        discordName: discordName,
+        drinkName: orderItems || 'Kundval',
+        price: cart.reduce((sum, item) => sum + item.price, 0),
+        amount: amount,
+        status: 'Ny',
+        staffName: 'Kund',
+        paymentNote: 'Betala till Driftynordic'
+      });
+      saveOrders();
+      checkoutStatus.className = 'status';
+      checkoutStatus.textContent = `Beställning skickad. Det betalas till Driftynordic för ${amount}.`;
+      cart = [];
+      saveCart();
+      renderCart();
+      renderPublicOrders();
+      renderStaffDashboard();
+      renderAdminDashboard();
+      checkoutForm.reset();
+    }
+
+    checkoutForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      submitCheckout();
+    });
+
+    checkoutSubmitBtn.addEventListener('click', function () {
+      if (!cart.length) {
+        checkoutStatus.className = 'status error';
+        checkoutStatus.textContent = 'Lägg till något i kundvagnen innan du betalar.';
+        return;
+      }
+      confirmModal.classList.remove('hidden');
+    });
+
+    confirmCheckoutYes.addEventListener('click', function () {
+      confirmModal.classList.add('hidden');
+      submitCheckout();
+    });
+
+    confirmCheckoutNo.addEventListener('click', function () {
+      confirmModal.classList.add('hidden');
+      checkoutStatus.className = 'status';
+      checkoutStatus.textContent = 'Köpet avbröts.';
+    });
+
+    confirmModal.addEventListener('click', function (event) {
+      if (event.target === confirmModal) {
+        confirmModal.classList.add('hidden');
+      }
+    });
+
+    staffLoginForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const username = document.getElementById('staffUser').value.trim();
+      const password = document.getElementById('staffPass').value;
+      const account = staffAccounts.find(entry => entry.username === username && entry.password === password);
+      if (!account) {
+        staffLoginStatus.className = 'status error';
+        staffLoginStatus.textContent = 'Fel användarnamn eller lösenord.';
+        return;
+      }
+      account.active = true;
+      account.shiftStatus = account.shiftStatus || 'Avslutad';
+      account.shiftStartedAt = null;
+      saveStaffAccounts();
+      localStorage.setItem(currentStaffKey, username);
+      staffLoginStatus.className = 'status';
+      staffLoginStatus.textContent = `Inloggad som ${username}.`;
+      renderStaffDashboard();
+      this.reset();
+    });
+
+    document.getElementById('startShiftBtn').addEventListener('click', function () {
+      const currentStaff = getCurrentStaffAccount();
+      if (!currentStaff) return;
+      currentStaff.shiftStatus = 'På shift';
+      currentStaff.shiftStartedAt = Date.now();
+      saveStaffAccounts();
+      renderStaffDashboard();
+    });
+
+    document.getElementById('pauseShiftBtn').addEventListener('click', function () {
+      const currentStaff = getCurrentStaffAccount();
+      if (!currentStaff) return;
+      if (currentStaff.shiftStartedAt) {
+        currentStaff.shiftMinutes = (currentStaff.shiftMinutes || 0) + Math.floor((Date.now() - currentStaff.shiftStartedAt) / 60000);
+        currentStaff.shiftStartedAt = null;
+      }
+      currentStaff.shiftStatus = 'Pausad';
+      saveStaffAccounts();
+      renderStaffDashboard();
+    });
+
+    document.getElementById('endShiftBtn').addEventListener('click', function () {
+      const currentStaff = getCurrentStaffAccount();
+      if (!currentStaff) return;
+      if (currentStaff.shiftStartedAt) {
+        currentStaff.shiftMinutes = (currentStaff.shiftMinutes || 0) + Math.floor((Date.now() - currentStaff.shiftStartedAt) / 60000);
+        currentStaff.shiftStartedAt = null;
+      }
+      currentStaff.shiftStatus = 'Avslutad';
+      saveStaffAccounts();
+      renderStaffDashboard();
+    });
+
+    staffOrderForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const currentStaff = getCurrentStaffAccount();
+      const customerName = document.getElementById('customerName').value.trim();
+      const drinkName = staffDrinkSelect.value;
+      const chosen = menu.find(entry => entry.name === drinkName);
+      if (!currentStaff || !customerName || !chosen) {
+        staffOrderStatus.className = 'status error';
+        staffOrderStatus.textContent = 'Välj kund, dryck och se till att du är inloggad.';
+        return;
+      }
+      orders.unshift({
+        id: Date.now().toString(),
+        customerName,
+        drinkName: chosen.name,
+        price: chosen.price,
+        status: 'Ny',
+        staffName: currentStaff.username,
+        paymentNote: 'Betala till Driftynordic'
+      });
+      saveOrders();
+      renderStaffDashboard();
+      renderAdminDashboard();
+      renderPublicOrders();
+      staffOrderStatus.className = 'status';
+      staffOrderStatus.textContent = `Beställning skapad för ${customerName}. Det betalas till Driftynordic.`;
+      this.reset();
+    });
+
+    document.getElementById('staffLogoutBtn').addEventListener('click', function () {
+      const currentStaff = getCurrentStaffAccount();
+      if (currentStaff) {
+        if (currentStaff.shiftStartedAt) {
+          currentStaff.shiftMinutes = (currentStaff.shiftMinutes || 0) + Math.floor((Date.now() - currentStaff.shiftStartedAt) / 60000);
+          currentStaff.shiftStartedAt = null;
+        }
+        currentStaff.active = false;
+        saveStaffAccounts();
+      }
+      localStorage.removeItem(currentStaffKey);
+      renderStaffDashboard();
+    });
+
+    adminLoginForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const username = document.getElementById('adminUser').value.trim();
+      const password = document.getElementById('adminPass').value;
+      if (username === 'ADMINSSRP' && password === 'DUVET') {
+        localStorage.setItem(currentAdminKey, 'true');
+        adminLoginStatus.className = 'status';
+        adminLoginStatus.textContent = 'Inloggad som admin.';
+        renderAdminDashboard();
+        this.reset();
+      } else {
+        adminLoginStatus.className = 'status error';
+        adminLoginStatus.textContent = 'Fel admininlogg.';
+      }
+    });
+
+    createRoleForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const roleName = document.getElementById('roleName').value.trim();
+      if (!roleName) {
+        createRoleStatus.className = 'status error';
+        createRoleStatus.textContent = 'Skriv in ett rollnamn.';
+        return;
+      }
+      const permissions = Array.from(document.querySelectorAll('input[name="rolePermission"]:checked')).map(input => input.value);
+      if (!roles.some(role => role.name.toLowerCase() === roleName.toLowerCase())) {
+        roles.push({ name: roleName, permissions });
+        saveRoles();
+        renderDrinkOptions();
+        renderRolePermissionsList();
+        createRoleStatus.className = 'status';
+        createRoleStatus.textContent = `Rollen ${roleName} skapades.`;
+      } else {
+        createRoleStatus.className = 'status error';
+        createRoleStatus.textContent = 'Den rollen finns redan.';
+      }
+      this.reset();
+    });
+
+    createStaffForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const username = document.getElementById('newStaffUser').value.trim();
+      const password = document.getElementById('newStaffPass').value;
+      const role = newStaffRole.value;
+      if (!username || !password) {
+        createStaffStatus.className = 'status error';
+        createStaffStatus.textContent = 'Fyll i användarnamn och lösenord.';
+        return;
+      }
+      const exists = staffAccounts.some(account => account.username.toLowerCase() === username.toLowerCase());
+      if (exists) {
+        createStaffStatus.className = 'status error';
+        createStaffStatus.textContent = 'Det användarnamnet finns redan.';
+        return;
+      }
+      staffAccounts.push({ username, password, role, shiftStatus: 'Avslutad', active: false, shiftMinutes: 0, shiftStartedAt: null });
+      saveStaffAccounts();
+      renderStaffDashboard();
+      renderAdminDashboard();
+      createStaffStatus.className = 'status';
+      createStaffStatus.textContent = `Kontot ${username} skapades med rollen ${role}.`;
+      this.reset();
+    });
+
+    document.getElementById('adminLogoutBtn').addEventListener('click', function () {
+      localStorage.removeItem(currentAdminKey);
+      renderAdminDashboard();
+    });
+
+    if (saveHomeEditBtn) {
+      saveHomeEditBtn.addEventListener('click', function () {
+        homeContent = {
+          headline: editHeadline ? editHeadline.value.trim() || 'Välkommen till caféet i Stockholm city' : homeContent.headline,
+          intro: editIntro ? editIntro.value.trim() || 'Här finns en snygg och enkel beställningsupplevelse där kunder kan välja dryck, lägga till i kassan och få tydlig betalningsinfo.' : homeContent.intro
+        };
+        saveHomeContent(homeContent);
+        applyHomeContent(homeContent);
+      });
+    }
+
+    document.addEventListener('click', function (event) {
+      const trigger = event.target.closest('[data-action="complete-order"]');
+      if (!trigger) return;
+      const orderId = trigger.getAttribute('data-order-id');
+      const order = orders.find(entry => entry.id === orderId);
+      if (!order) return;
+      order.status = 'Slutförd';
+      saveOrders();
+      renderPublicOrders();
+      renderStaffDashboard();
+      renderAdminDashboard();
+    });
+
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', function (event) {
+        event.preventDefault();
+        const target = this.getAttribute('data-view');
+        showView(target);
+      });
+    });
+
+    function showView(viewName) {
+      document.querySelectorAll('.view').forEach(view => view.classList.toggle('active', view.id === viewName));
+      document.querySelectorAll('.nav-link').forEach(link => link.classList.toggle('active', link.getAttribute('data-view') === viewName));
+    }
+
+    applyHomeContent(homeContent);
+    if (heroVisualImage) heroVisualImage.src = createHeroImage();
+    document.body.style.backgroundImage = `linear-gradient(rgba(4,9,15,0.72), rgba(4,9,15,0.82)), url('${createHeroImage()}')`;
+    renderDrinkOptions();
+    renderRolePermissionsList();
+    renderMenuGrid();
+    renderCart();
+    renderPublicOrders();
+    renderStaffDashboard();
+    renderAdminDashboard();
+    showView('home');
+  </script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stockholm Sweden RP — Café & Bar</title>
+  <style>
+    :root {
+      --bg: #05090e;
+      --panel: rgba(13, 21, 34, 0.95);
+      --panel-2: rgba(23, 36, 57, 0.95);
+      --text: #f8fafc;
+      --muted: #b8c3d2;
+      --gold: #f1b73f;
+      --blue: #2f7df6;
+      --green: #4ade80;
+      --red: #ff6b6b;
+      --border: rgba(255,255,255,0.12);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text);
+      background: linear-gradient(rgba(4,9,15,0.72), rgba(4,9,15,0.82)), #05090e;
+      min-height: 100vh;
+      background-size: cover;
+      background-attachment: fixed;
+    }
+    .topbar { position: sticky; top: 0; z-index: 10; display: flex; justify-content: space-between; align-items: center; padding: 14px 24px; background: rgba(4,9,15,0.9); border-bottom: 1px solid var(--border); }
+    .brand { font-weight: 800; color: var(--gold); letter-spacing: 0.04em; }
+    nav a { color: var(--text); text-decoration: none; margin-left: 12px; font-weight: 600; }
+    nav a:hover { color: var(--gold); }
+    .page { max-width: 1200px; margin: 0 auto; padding: 24px; }
+    .hero, .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 22px; box-shadow: 0 18px 46px rgba(0,0,0,0.28); }
+    .hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: 20px; padding: 42px 28px; margin-bottom: 24px; }
+    .hero h1 { margin: 0 0 10px; font-size: clamp(2rem, 4vw, 3rem); }
+    .hero-visual { border-radius: 18px; overflow: hidden; border: 1px solid var(--border); min-height: 280px; }
+    .hero-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .editable-block { border: 1px dashed rgba(241,183,63,0.35); padding: 10px; border-radius: 12px; background: rgba(241,183,63,0.07); }
+    .editable-block textarea { min-height: 90px; resize: vertical; }
+    .hero p, .section p, .muted { color: var(--muted); line-height: 1.6; }
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+    .btn { border: none; border-radius: 999px; padding: 11px 16px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; color: #07111f; background: linear-gradient(135deg, var(--gold), #ffd77a); }
+    .btn.secondary { color: var(--text); background: linear-gradient(135deg, var(--blue), #6aa7ff); }
+    .btn.danger { color: var(--text); background: linear-gradient(135deg, var(--red), #ff8b8b); }
+    .btn.small { padding: 8px 12px; font-size: 0.9rem; }
+    .panel { padding: 24px; margin-bottom: 24px; }
+    .section h2 { margin-top: 0; margin-bottom: 6px; }
+    .grid { display: grid; gap: 16px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .card { padding: 16px; border-radius: 16px; background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); border: 1px solid var(--border); }
+    .card h3 { margin-top: 0; margin-bottom: 8px; }
+    .price { font-size: 1.2rem; color: var(--gold); font-weight: 700; margin-top: 6px; }
+    .menu-grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-top: 16px; }
+    .menu-card { display: flex; flex-direction: column; height: 100%; transition: transform 180ms ease, border-color 180ms ease; padding: 12px; }
+    .menu-card:hover { transform: translateY(-2px); border-color: rgba(241,183,63,0.4); }
+    .menu-image { width: 100%; aspect-ratio: 5 / 4; object-fit: cover; border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--border); background: rgba(255,255,255,0.04); max-height: 170px; }
+    .card-body { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+    .drink-meta { display: flex; flex-direction: column; gap: 6px; }
+    .menu-tag { display: inline-block; width: fit-content; padding: 6px 10px; border-radius: 999px; background: rgba(241,183,63,0.15); color: var(--gold); font-size: 0.8rem; font-weight: 700; border: 1px solid rgba(241,183,63,0.25); }
+    .menu-description { color: var(--muted); font-size: 0.95rem; line-height: 1.45; }
+    .menu-card .btn { width: 100%; text-align: center; margin-top: auto; }
+    .permission-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 6px; }
+    .permission-chip { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 999px; border: 1px solid var(--border); background: rgba(255,255,255,0.04); font-size: 0.92rem; }
+    .permission-chip input { width: auto; accent-color: var(--gold); margin: 0; }
+    .staff-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .status-badge { display: inline-block; padding: 6px 10px; border-radius: 999px; font-size: 0.8rem; font-weight: 700; }
+    .status-badge.active { background: rgba(74, 222, 128, 0.16); color: var(--green); border: 1px solid rgba(74, 222, 128, 0.24); }
+    .status-badge.inactive { background: rgba(255, 107, 107, 0.16); color: var(--red); border: 1px solid rgba(255, 107, 107, 0.24); }
+    form { display: grid; gap: 12px; margin-top: 12px; }
+    input, select, button { font: inherit; border-radius: 12px; border: 1px solid var(--border); padding: 12px 14px; background: var(--panel-2); color: var(--text); }
+    input::placeholder { color: #8ea2bd; }
+    .status { min-height: 20px; margin-top: 8px; color: var(--green); font-weight: 600; }
+    .status.error { color: var(--red); }
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(2,6,12,0.74); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 50; }
+    .modal-card { background: var(--panel); border: 1px solid var(--border); border-radius: 18px; padding: 22px; width: min(420px, 100%); box-shadow: 0 24px 50px rgba(0,0,0,0.35); }
+    .modal-actions { display: flex; gap: 10px; margin-top: 14px; }
+    .modal-actions .btn { flex: 1; justify-content: center; }
+    .hidden { display: none; }
+    .list-item { padding: 12px; border-radius: 14px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); margin-top: 10px; }
+    .pill { display: inline-block; padding: 6px 10px; border-radius: 999px; font-size: 0.8rem; background: rgba(47,125,246,0.2); color: #8dc4ff; border: 1px solid rgba(47,125,246,0.25); margin-left: 6px; }
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .small { font-size: 0.95rem; color: var(--muted); }
+    .nav-link { color: var(--text); text-decoration: none; margin-left: 12px; font-weight: 600; }
+    .nav-link:hover, .nav-link.active { color: var(--gold); }
+    .view { display: none; }
+    .view.active { display: block; }
+    .accent { color: var(--gold); font-weight: 700; }
+    footer { padding: 24px; text-align: center; color: var(--muted); border-top: 1px solid var(--border); margin-top: 20px; }
+    @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } .grid { grid-template-columns: 1fr 1fr; } .split { grid-template-columns: 1fr; } }
+    @media (max-width: 600px) { .topbar { flex-direction: column; gap: 8px; } .page { padding: 16px; } .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">Stockholm Sweden RP</div>
+    <nav>
+      <a href="#" class="nav-link active" data-view="home">Hem</a>
+      <a href="#" class="nav-link" data-view="order">Beställ</a>
+      <a href="#" class="nav-link" data-view="staff">Personal</a>
+      <a href="#" class="nav-link" data-view="admin">Admin</a>
+      <a href="#" class="nav-link" data-view="contact">Kontakt</a>
+    </nav>
+  </div>
+
+  <div class="page">
+    <section id="home" class="view active">
+      <section class="hero">
+        <div>
+          <h1 id="homeHeadline">Välkommen till caféet i Stockholm city</h1>
+          <p id="homeIntro">Här finns en snygg och enkel beställningsupplevelse där kunder kan välja dryck, lägga till i kassan och få tydlig betalningsinfo.</p>
+          <div class="btn-row">
+            <a class="btn" href="#" data-view="order">Gå till beställning</a>
+            <a class="btn secondary" href="#" data-view="staff">Personalportal</a>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="hero-visual">
+            <img id="heroVisualImage" src="" alt="Kollage med folk, öl och glas på ett träbord" />
+          </div>
+          <h3 style="margin-top: 12px;">Så fungerar det</h3>
+          <p>• Välj dryck<br />• Lägg till i kassan<br />• Fyll i RP-namn och Discord-namn<br />• Beställningen syns för personalen</p>
+        </div>
+      </section>
+
+      <section class="section panel">
+        <h2>En cool struktur</h2>
+        <p>Beställning, personal och admin är nu uppdelade i egna sidor så det känns mer professionellt och lättare att använda.</p>
+        <div class="grid">
+          <div class="card"><h3>Beställ</h3><div class="small">Kunder får en egen sida där det tydligt står att det betalas till Driftynordic.</div></div>
+          <div class="card"><h3>Personal</h3><div class="small">Personal kan logga in, se shift, ta beställningar och markera dem som klara.</div></div>
+          <div class="card"><h3>Admin</h3><div class="small">Admin kan skapa roller, personalkonton och följa personalens shift-status.</div></div>
+        </div>
+      </section>
+    </section>
+
+    <section id="order" class="view">
+      <section class="section panel">
+        <h2>Beställning</h2>
+        <p class="accent">Det betalas till Driftynordic</p>
+        <p>Välj vad du vill ha och skicka din beställning till personalen.</p>
+        <div id="menuGrid" class="menu-grid"></div>
+        <div style="margin-top: 16px;">
+          <select id="drinkSelect" class="hidden"></select>
+          <button id="addToCartBtn" class="btn" style="margin-top: 8px;">Lägg till i kundvagnen</button>
+        </div>
+        <div id="menuStatus" class="status"></div>
+      </section>
+
+      <section class="section panel">
+        <h2>Kassa</h2>
+        <div id="cartItems"></div>
+        <form id="checkoutForm">
+          <input id="rpName" placeholder="RP-namn" required />
+          <input id="discordName" placeholder="Discord-namn" required />
+          <input id="paymentAmount" placeholder="Belopp att betala" required />
+          <button type="button" id="checkoutSubmitBtn" class="btn">Betala</button>
+        </form>
+        <div id="checkoutStatus" class="status"></div>
+      </section>
+
+      <section class="section panel">
+        <h2>Prenumerationer</h2>
+        <p>Välj ett paket och lägg det i kundvagnen. Kunder ser inte beställningslistan här.</p>
+        <div id="publicOrdersList"></div>
+      </section>
+    </section>
+
+    <section id="staff" class="view">
+      <section class="section panel">
+        <h2>Personalportal</h2>
+        <p>Här finns en egen personalyta där personal kan logga in, se shift, ta beställningar och markera dem som klara.</p>
+        <div id="staffLoginBox">
+          <h3>Logga in</h3>
+          <form id="staffLoginForm">
+            <input id="staffUser" placeholder="Användarnamn" required />
+            <input id="staffPass" type="password" placeholder="Lösenord" required />
+            <button type="submit" class="btn secondary">Logga in som personal</button>
+          </form>
+          <div id="staffLoginStatus" class="status"></div>
+        </div>
+
+        <div id="staffDashboard" class="hidden">
+          <div class="split">
+            <div class="card">
+              <h3>Min status</h3>
+              <div id="myStaffInfo" class="small"></div>
+              <div class="btn-row">
+                <button id="startShiftBtn" class="btn">Starta shift</button>
+                <button id="pauseShiftBtn" class="btn secondary">Pausa shift</button>
+                <button id="endShiftBtn" class="btn danger">Avsluta shift</button>
+              </div>
+              <div id="staffShiftStatus" class="status"></div>
+            </div>
+            <div class="card">
+              <h3>Aktiva medarbetare</h3>
+              <div id="activeStaffList"></div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Ta beställning</h3>
+            <form id="staffOrderForm">
+              <input id="customerName" placeholder="Kundens namn" required />
+              <select id="staffDrinkSelect"></select>
+              <button type="submit" class="btn">Skapa beställning</button>
+            </form>
+            <div id="staffOrderStatus" class="status"></div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Personalöversikt</h3>
+            <div id="staffRoster"></div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Beställningar</h3>
+            <div id="staffOrdersList"></div>
+          </div>
+
+          <button id="staffLogoutBtn" class="btn secondary" style="margin-top: 12px;">Logga ut</button>
+        </div>
+      </section>
+    </section>
+
+    <section id="admin" class="view">
+      <section class="section panel">
+        <h2>Adminportal</h2>
+        <p>Här hanterar admin roller, personalkonton, aktiv personal och orderstatus utan att personalpanelen blandas ihop.</p>
+        <div id="adminLoginBox">
+          <h3>Admin login</h3>
+          <form id="adminLoginForm">
+            <input id="adminUser" placeholder="Admin användarnamn" required />
+            <input id="adminPass" type="password" placeholder="Admin lösenord" required />
+            <button type="submit" class="btn secondary">Logga in som admin</button>
+          </form>
+          <div id="adminLoginStatus" class="status"></div>
+        </div>
+
+        <div id="adminDashboard" class="hidden">
+          <div class="split">
+            <div class="card">
+              <h3>Skapa ny roll</h3>
+              <form id="createRoleForm">
+                <input id="roleName" placeholder="Rollnamn" required />
+                <div class="permission-grid">
+                  <label class="permission-chip"><input type="checkbox" name="rolePermission" value="manage_orders" /> Hantera beställningar</label>
+                  <label class="permission-chip"><input type="checkbox" name="rolePermission" value="manage_staff" /> Hantera personal</label>
+                  <label class="permission-chip"><input type="checkbox" name="rolePermission" value="manage_shifts" /> Hantera shift</label>
+                  <label class="permission-chip"><input type="checkbox" name="rolePermission" value="view_dashboard" /> Se dashboard</label>
+                </div>
+                <button type="submit" class="btn">Lägg till roll</button>
+              </form>
+              <div id="createRoleStatus" class="status"></div>
+              <div id="rolePermissionsList" style="margin-top: 10px;"></div>
+            </div>
+            <div class="card">
+              <h3>Skapa personalkonto</h3>
+              <form id="createStaffForm">
+                <input id="newStaffUser" placeholder="Användarnamn" required />
+                <input id="newStaffPass" placeholder="Lösenord" required />
+                <select id="newStaffRole"></select>
+                <button type="submit" class="btn">Skapa konto</button>
+              </form>
+              <div id="createStaffStatus" class="status"></div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Redigera startsida</h3>
+            <div class="editable-block">
+              <label class="small" for="editHeadline">Rubrik</label>
+              <input id="editHeadline" type="text" value="Välkommen till caféet i Stockholm city" />
+              <label class="small" for="editIntro" style="margin-top: 8px; display: block;">Introtext</label>
+              <textarea id="editIntro">Här finns en snygg och enkel beställningsupplevelse där kunder kan välja dryck, lägga till i kassan och få tydlig betalningsinfo.</textarea>
+              <button id="saveHomeEditBtn" class="btn" style="margin-top: 10px;">Spara ändringar</button>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Personal och shift-status</h3>
+            <div id="adminStaffRoster"></div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Aktiva personal</h3>
+            <div id="adminActiveStaff"></div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Beställningar</h3>
+            <div id="adminOrdersList"></div>
+          </div>
+
+          <button id="adminLogoutBtn" class="btn secondary" style="margin-top: 12px;">Logga ut admin</button>
+        </div>
+      </section>
+    </section>
+
+    <section id="contact" class="view">
+      <section class="section panel">
+        <h2>Kontakt</h2>
+        <p>Drifty i Discord DMs för hjälp med support eller frågor om beställningar.</p>
+      </section>
+    </section>
+  </div>
+
+  <footer>
+    <strong>Kontakt</strong><br />
+    Drifty i Discord DMs för hjälp med support.
+  </footer>
+
+  <div id="confirmModal" class="modal-backdrop hidden">
+    <div class="modal-card">
+      <h3>Bekräfta köp</h3>
+      <p>Är du säker på att du vill köpa? Kom ihåg att betala till Driftynordic.</p>
+      <div class="modal-actions">
+        <button id="confirmCheckoutYes" class="btn" type="button">Ja</button>
+        <button id="confirmCheckoutNo" class="btn secondary" type="button">Nej</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function createInlineImage(label, accent, kind) {
+      const safeLabel = String(label).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const safeKind = String(kind).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 900 600">
+        <rect width="100%" height="100%" rx="36" fill="#07111f" />
+        <rect x="70" y="70" width="760" height="460" rx="32" fill="#0f1828" stroke="${accent}" stroke-width="6" />
+        <rect x="210" y="150" width="480" height="270" rx="26" fill="${accent}" fill-opacity="0.18" stroke="${accent}" stroke-width="4" />
+        <rect x="250" y="110" width="400" height="115" rx="18" fill="${accent}" />
+        <circle cx="330" cy="360" r="24" fill="${accent}" />
+        <circle cx="570" cy="360" r="24" fill="${accent}" />
+        <rect x="285" y="320" width="330" height="80" rx="18" fill="rgba(255,255,255,0.16)" />
+        <text x="450" y="220" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="34" font-weight="700" fill="${accent}">${safeLabel}</text>
+        <text x="450" y="370" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="24" font-weight="600" fill="#f8fafc">${safeKind}</text>
+      </svg>`;
+      return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+    }
+
+    function createHeroImage() {
+      return createInlineImage('Öl & Glas', '#f1b73f', 'Stockholm City');
+    }
+
+    function createMenuImage(name, kind) {
+      const accent = kind === 'Mat' ? '#ff8b3d' : '#f1b73f';
+      return createInlineImage(name, accent, kind);
+    }
+
+    const menu = [
+      { name: 'Storgatan Stark', price: 95, kind: 'Dryck', description: 'Klassisk öl med mjuk maltig smak.', image: createMenuImage('Storgatan Stark', 'Dryck') },
+      { name: 'Norrlands Guld', price: 80, kind: 'Dryck', description: 'Lätt och fräsch med tydlig humle.', image: createMenuImage('Norrlands Guld', 'Dryck') },
+      { name: 'Falcon', price: 75, kind: 'Dryck', description: 'En balanserad lager som passar till maten.', image: createMenuImage('Falcon', 'Dryck') },
+      { name: 'Pripps Blå', price: 70, kind: 'Dryck', description: 'En enkel och populär klassiker.', image: createMenuImage('Pripps Blå', 'Dryck') },
+      { name: 'Pilsner', price: 90, kind: 'Dryck', description: 'Ren smak med fin kurva och lätt kropp.', image: createMenuImage('Pilsner', 'Dryck') },
+      { name: 'Lager', price: 85, kind: 'Dryck', description: 'Mjuk och uppfriskande för en lugn kväll.', image: createMenuImage('Lager', 'Dryck') },
+      { name: 'IPA', price: 95, kind: 'Dryck', description: 'Starkare humlearom med lite bitterhet.', image: createMenuImage('IPA', 'Dryck') },
+      { name: 'Stout', price: 95, kind: 'Dryck', description: 'Rik, mörk och perfekt till en mysig stund.', image: createMenuImage('Stout', 'Dryck') },
+      { name: 'Alkoholfritt Svenskt', price: 55, kind: 'Dryck', description: 'Alkoholfri klassiker med ren smak.', image: createMenuImage('Alkoholfritt Svenskt', 'Dryck') },
+      { name: 'Alkoholfri Pilsner', price: 65, kind: 'Dryck', description: 'Lätt och svalkande utan alkohol.', image: createMenuImage('Alkoholfri Pilsner', 'Dryck') },
+      { name: 'Alkoholfri IPA', price: 60, kind: 'Dryck', description: 'Fräsch humlesmak för den som vill ha mer.', image: createMenuImage('Alkoholfri IPA', 'Dryck') },
+      { name: 'Classic Burger', price: 135, kind: 'Mat', description: 'Biff, ost, pickles och sallad på mjukt bröd.', image: createMenuImage('Classic Burger', 'Mat') },
+      { name: 'Chicken Wrap', price: 115, kind: 'Mat', description: 'Krispig kyckling med sallad och dressing.', image: createMenuImage('Chicken Wrap', 'Mat') },
+      { name: 'Pommes Frites', price: 75, kind: 'Mat', description: 'Goda pommes med salt och klassisk sås.', image: createMenuImage('Pommes Frites', 'Mat') },
+      { name: 'Nachos', price: 95, kind: 'Mat', description: 'Kryddiga nachos med ost, salsa och guacamole.', image: createMenuImage('Nachos', 'Mat') },
+      { name: 'Club Sandwich', price: 125, kind: 'Mat', description: 'Roastbiff, bacon, sallad och smakrik dressing.', image: createMenuImage('Club Sandwich', 'Mat') }
+    ];
+
+    const packages = [
+      {
+        id: 'standard',
+        name: 'Standard',
+        price: 299,
+        description: '2 gratis Folköl + 1 hamburgare',
+        details: ['2 gratis Folköl', '1 hamburgare']
+      },
+      {
+        id: 'premium',
+        name: 'Premium',
+        price: 599,
+        description: '2 hamburgare + öl eller cider + 1 gratis Folköl',
+        details: ['2 hamburgare', 'Öl eller cider', '1 gratis Folköl']
+      }
+    ];
+
+    const staffAccountsKey = 'ssrp-staff-accounts';
+    const rolesKey = 'ssrp-roles';
+    const ordersKey = 'ssrp-orders';
+    const cartKey = 'ssrp-cart';
+    const currentStaffKey = 'ssrp-current-staff';
+    const currentAdminKey = 'ssrp-current-admin';
+    const homeContentKey = 'ssrp-home-content';
+
+    const drinkSelect = document.getElementById('drinkSelect');
+    const staffDrinkSelect = document.getElementById('staffDrinkSelect');
+    const addToCartBtn = document.getElementById('addToCartBtn');
+    const menuGrid = document.getElementById('menuGrid');
+    const menuStatus = document.getElementById('menuStatus');
+    const cartItems = document.getElementById('cartItems');
+    const checkoutForm = document.getElementById('checkoutForm');
+    const checkoutStatus = document.getElementById('checkoutStatus');
+    const checkoutSubmitBtn = document.getElementById('checkoutSubmitBtn');
+    const paymentAmountInput = document.getElementById('paymentAmount');
+    const publicOrdersList = document.getElementById('publicOrdersList');
+    const confirmModal = document.getElementById('confirmModal');
+    const confirmCheckoutYes = document.getElementById('confirmCheckoutYes');
+    const confirmCheckoutNo = document.getElementById('confirmCheckoutNo');
+
+    const staffLoginBox = document.getElementById('staffLoginBox');
+    const staffDashboard = document.getElementById('staffDashboard');
+    const staffLoginForm = document.getElementById('staffLoginForm');
+    const staffLoginStatus = document.getElementById('staffLoginStatus');
+    const myStaffInfo = document.getElementById('myStaffInfo');
+    const activeStaffList = document.getElementById('activeStaffList');
+    const staffShiftStatus = document.getElementById('staffShiftStatus');
+    const staffRoster = document.getElementById('staffRoster');
+    const staffOrderForm = document.getElementById('staffOrderForm');
+    const staffOrderStatus = document.getElementById('staffOrderStatus');
+    const staffOrdersList = document.getElementById('staffOrdersList');
+
+    const adminLoginBox = document.getElementById('adminLoginBox');
+    const adminDashboard = document.getElementById('adminDashboard');
+    const adminLoginForm = document.getElementById('adminLoginForm');
+    const adminLoginStatus = document.getElementById('adminLoginStatus');
+    const createRoleForm = document.getElementById('createRoleForm');
+    const createRoleStatus = document.getElementById('createRoleStatus');
+    const createStaffForm = document.getElementById('createStaffForm');
+    const createStaffStatus = document.getElementById('createStaffStatus');
+    const newStaffRole = document.getElementById('newStaffRole');
+    const rolePermissionsList = document.getElementById('rolePermissionsList');
+    const heroVisualImage = document.getElementById('heroVisualImage');
+    const homeHeadline = document.getElementById('homeHeadline');
+    const homeIntro = document.getElementById('homeIntro');
+    const editHeadline = document.getElementById('editHeadline');
+    const editIntro = document.getElementById('editIntro');
+    const saveHomeEditBtn = document.getElementById('saveHomeEditBtn');
+    const adminStaffRoster = document.getElementById('adminStaffRoster');
+    const adminActiveStaff = document.getElementById('adminActiveStaff');
+    const adminOrdersList = document.getElementById('adminOrdersList');
+
+    function loadStaffAccounts() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(staffAccountsKey) || 'null');
+        if (Array.isArray(saved) && saved.length) return saved;
+      } catch (e) {}
+      return [
+        { username: '555', password: '333', role: 'Personal', shiftStatus: 'Avslutad', active: false, shiftMinutes: 0, shiftStartedAt: null },
+        { username: '777', password: '444', role: 'Barista', shiftStatus: 'Avslutad', active: false, shiftMinutes: 0, shiftStartedAt: null }
+      ];
+    }
+
+    function saveStaffAccounts() {
+      localStorage.setItem(staffAccountsKey, JSON.stringify(staffAccounts));
+    }
+
+    function normalizeRole(entry) {
+      if (typeof entry === 'string') {
+        return { name: entry, permissions: ['view_dashboard'] };
+      }
+      if (entry && typeof entry === 'object') {
+        return {
+          name: entry.name || 'Roll',
+          permissions: Array.isArray(entry.permissions) ? entry.permissions : []
+        };
+      }
+      return null;
+    }
+
+    function loadRoles() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(rolesKey) || 'null');
+        if (Array.isArray(saved) && saved.length) {
+          const normalized = saved.map(normalizeRole).filter(Boolean);
+          if (normalized.length) return normalized;
+        }
+      } catch (e) {}
+      return [
+        { name: 'Personal', permissions: ['view_dashboard'] },
+        { name: 'Barista', permissions: ['view_dashboard', 'manage_orders'] },
+        { name: 'Säljare', permissions: ['view_dashboard', 'manage_orders'] },
+        { name: 'Chef', permissions: ['view_dashboard', 'manage_orders', 'manage_staff', 'manage_shifts'] }
+      ];
+    }
+
+    function saveRoles() {
+      localStorage.setItem(rolesKey, JSON.stringify(roles));
+    }
+
+    function loadOrders() {
+      try {
+        return JSON.parse(localStorage.getItem(ordersKey) || '[]');
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveOrders() {
+      localStorage.setItem(ordersKey, JSON.stringify(orders));
+    }
+
+    function loadCart() {
+      try {
+        return JSON.parse(localStorage.getItem(cartKey) || '[]');
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveCart() {
+      localStorage.setItem(cartKey, JSON.stringify(cart));
+    }
+
+    function getRoleByName(roleName) {
+      return roles.find(role => role.name.toLowerCase() === (roleName || '').toLowerCase()) || null;
+    }
+
+    function getPermissionLabel(permission) {
+      const labels = {
+        manage_orders: 'Hantera beställningar',
+        manage_staff: 'Hantera personal',
+        manage_shifts: 'Hantera shift',
+        view_dashboard: 'Se dashboard'
+      };
+      return labels[permission] || permission;
+    }
+
+    function loadHomeContent() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(homeContentKey) || 'null');
+        if (saved && typeof saved === 'object') {
+          return {
+            headline: saved.headline || 'Välkommen till caféet i Stockholm city',
+            intro: saved.intro || 'Här finns en snygg och enkel beställningsupplevelse där kunder kan välja dryck, lägga till i kassan och få tydlig betalningsinfo.'
+          };
+        }
+      } catch (e) {}
+      return {
+        headline: 'Välkommen till caféet i Stockholm city',
+        intro: 'Här finns en snygg och enkel beställningsupplevelse där kunder kan välja dryck, lägga till i kassan och få tydlig betalningsinfo.'
+      };
+    }
+
+    function saveHomeContent(content) {
+      localStorage.setItem(homeContentKey, JSON.stringify(content));
+    }
+
+    function applyHomeContent(content) {
+      if (homeHeadline) homeHeadline.textContent = content.headline;
+      if (homeIntro) homeIntro.textContent = content.intro;
+      if (editHeadline) editHeadline.value = content.headline;
+      if (editIntro) editIntro.value = content.intro;
+    }
+
+    function renderDrinkOptions() {
+      if (drinkSelect) {
+        drinkSelect.innerHTML = menu.map(item => `<option value="${item.name}">${item.name} — ${item.price} kr</option>`).join('');
+      }
+      staffDrinkSelect.innerHTML = menu.map(item => `<option value="${item.name}">${item.name} — ${item.price} kr</option>`).join('');
+      newStaffRole.innerHTML = roles.map(role => `<option value="${role.name}">${role.name}</option>`).join('');
+    }
+
+    function renderRolePermissionsList() {
+      if (!rolePermissionsList) return;
+      rolePermissionsList.innerHTML = roles.length ? roles.map(role => `
+        <div class="list-item">
+          <strong>${role.name}</strong>
+          <div class="small">Behörigheter: ${role.permissions.length ? role.permissions.map(getPermissionLabel).join(', ') : 'Inga'}</div>
+        </div>
+      `).join('') : '<div class="list-item"><strong>Inga roller skapade ännu.</strong></div>';
+    }
+
+    function renderMenuGrid() {
+      if (!menuGrid) return;
+      menuGrid.innerHTML = menu.map(item => `
+        <div class="card menu-card">
+          <img class="menu-image" src="${item.image}" alt="${item.name}" />
+          <div class="card-body">
+            <div class="drink-meta">
+              <div class="menu-tag">${item.kind}</div>
+              <h3>${item.name}</h3>
+              <div class="menu-description">${item.description}</div>
+              <div class="price">${item.price} kr</div>
+            </div>
+            <button class="btn add-item-btn" type="button" data-item-name="${item.name}">Lägg till i kundvagnen</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    let staffAccounts = loadStaffAccounts();
+    let roles = loadRoles();
+    let orders = loadOrders();
+    let cart = loadCart();
+    let homeContent = loadHomeContent();
+
+    function getCurrentStaffAccount() {
+      const username = localStorage.getItem(currentStaffKey);
+      return staffAccounts.find(account => account.username === username) || null;
+    }
+
+    function getShiftMinutes(account) {
+      if (typeof account.shiftMinutes !== 'number') account.shiftMinutes = 0;
+      if (account.shiftStartedAt && account.active) {
+        const elapsed = Math.floor((Date.now() - account.shiftStartedAt) / 60000);
+        return account.shiftMinutes + elapsed;
+      }
+      return account.shiftMinutes;
+    }
+
+    function renderCart() {
+      if (!cart.length) {
+        cartItems.innerHTML = '<div class="list-item"><strong>Varukorgen är tom.</strong></div>';
+        paymentAmountInput.value = '';
+        return;
+      }
+      const total = cart.reduce((sum, item) => sum + item.price, 0);
+      cartItems.innerHTML = cart.map(item => `<div class="list-item"><strong>${item.name}</strong><div class="small">${item.price} kr</div></div>`).join('') + `<div class="list-item"><strong>Totalt</strong><div class="small">${total} kr</div></div>`;
+      paymentAmountInput.value = `${total} kr`;
+    }
+
+    function renderPublicOrders() {
+      if (!publicOrdersList) return;
+      publicOrdersList.innerHTML = packages.map(pkg => `
+        <div class="card menu-card" style="margin-top: 12px;">
+          <div class="card-body">
+            <div class="drink-meta">
+              <div class="menu-tag">Paket</div>
+              <h3>${pkg.name}</h3>
+              <div class="menu-description">${pkg.description}</div>
+              <div class="small">${pkg.details.join(' • ')}</div>
+              <div class="price">${pkg.price} kr</div>
+            </div>
+            <button class="btn add-package-btn" type="button" data-package-id="${pkg.id}">Lägg till i kundvagnen</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderStaffDashboard() {
+      const currentStaff = getCurrentStaffAccount();
+      if (!currentStaff) {
+        staffLoginBox.classList.remove('hidden');
+        staffDashboard.classList.add('hidden');
+        return;
+      }
+      staffLoginBox.classList.add('hidden');
+      staffDashboard.classList.remove('hidden');
+      const roleDefinition = getRoleByName(currentStaff.role);
+      const permissionsText = roleDefinition && roleDefinition.permissions.length ? roleDefinition.permissions.map(getPermissionLabel).join(', ') : 'Inga';
+      myStaffInfo.innerHTML = `<strong>${currentStaff.username}</strong><br />Roll: ${currentStaff.role}<br />Shift: ${currentStaff.shiftStatus}<br />Status: ${currentStaff.active ? 'Aktiv' : 'Ej aktiv'}<br /><span class="small">Behörigheter: ${permissionsText}</span>`;
+      staffShiftStatus.textContent = `Shiftstatus: ${currentStaff.shiftStatus}`;
+
+      const active = staffAccounts.filter(account => account.active);
+      const sortedByShift = [...staffAccounts].sort((a, b) => getShiftMinutes(b) - getShiftMinutes(a));
+      activeStaffList.innerHTML = active.length ? active.map(account => `<div class="list-item"><strong>${account.username}</strong><div class="small">Roll: ${account.role} • Shift: ${account.shiftStatus} • ${getShiftMinutes(account)} min</div></div>`).join('') : '<div class="list-item"><strong>Inga andra är aktiva just nu.</strong></div>';
+
+      staffRoster.innerHTML = staffAccounts.map(account => `
+        <div class="list-item">
+          <strong>${account.username}</strong> <span class="pill">${account.role}</span>
+          <div class="small">Shift: ${account.shiftStatus} • Aktiv: ${account.active ? 'Ja' : 'Nej'} • ${getShiftMinutes(account)} min</div>
+        </div>
+      `).join('');
+
+      const topShift = sortedByShift[0];
+      const topShiftText = topShift ? `${topShift.username} med ${getShiftMinutes(topShift)} min i shift` : 'Ingen personal registrerad ännu';
+      staffOrdersList.innerHTML = `
+        <div class="list-item">
+          <strong>Vem har mest i shift?</strong>
+          <div class="small">${topShiftText}</div>
+        </div>
+        ${orders.length ? orders.map(order => `
+          <div class="list-item">
+            <strong>${order.customerName}</strong>
+            <div class="small">${order.drinkName} • ${order.price} kr</div>
+            <div class="small">Skapad av: ${order.staffName}</div>
+            <div class="small">Status: ${order.status}</div>
+            <div class="small">Betala till: ${order.paymentNote || 'Driftynordic'}</div>
+            <button class="btn small" data-order-id="${order.id}" data-action="complete-order" style="margin-top: 8px;">Markera som klar</button>
+          </div>
+        `).join('') : '<div class="list-item"><strong>Inga beställningar ännu.</strong></div>'}
+      `;
+    }
+
+    function renderAdminDashboard() {
+      const isLoggedIn = localStorage.getItem(currentAdminKey);
+      if (!isLoggedIn) {
+        adminLoginBox.classList.remove('hidden');
+        adminDashboard.classList.add('hidden');
+        return;
+      }
+      adminLoginBox.classList.add('hidden');
+      adminDashboard.classList.remove('hidden');
+      newStaffRole.innerHTML = roles.map(role => `<option value="${role}">${role}</option>`).join('');
+      adminStaffRoster.innerHTML = staffAccounts.map(account => {
+        const roleDefinition = getRoleByName(account.role);
+        const permissionsText = roleDefinition && roleDefinition.permissions.length ? roleDefinition.permissions.map(getPermissionLabel).join(', ') : 'Inga';
+        return `
+          <div class="list-item staff-row">
+            <div>
+              <strong>${account.username}</strong> <span class="pill">${account.role}</span>
+              <div class="small">Shift: ${account.shiftStatus} • Aktiv: ${account.active ? 'Ja' : 'Nej'} • ${getShiftMinutes(account)} min</div>
+              <div class="small">Behörigheter: ${permissionsText}</div>
+            </div>
+            <span class="status-badge ${account.active ? 'active' : 'inactive'}">${account.active ? 'Aktiv' : 'Inaktiv'}</span>
+          </div>
+        `;
+      }).join('');
+      const active = staffAccounts.filter(account => account.active);
+      adminActiveStaff.innerHTML = active.length ? active.map(account => `<div class="list-item"><strong>${account.username}</strong><div class="small">Roll: ${account.role} • Shift: ${account.shiftStatus} • ${getShiftMinutes(account)} min</div></div>`).join('') : '<div class="list-item"><strong>Ingen personal är aktiv just nu.</strong></div>';
+      adminOrdersList.innerHTML = orders.length ? orders.map(order => `
+        <div class="list-item">
+          <strong>${order.customerName}</strong>
+          <div class="small">${order.drinkName} • ${order.price} kr</div>
+          <div class="small">Status: ${order.status}</div>
+          <div class="small">Betala till: ${order.paymentNote || 'Driftynordic'}</div>
+          <button class="btn small" data-order-id="${order.id}" data-action="complete-order" style="margin-top: 8px;">Markera som klar</button>
+        </div>
+      `).join('') : '<div class="list-item"><strong>Inga beställningar ännu.</strong></div>';
+    }
+
+    function addItemToCart(itemName) {
+      const item = menu.find(entry => entry.name === itemName);
+      if (!item) return;
+      cart.push({ name: item.name, price: item.price });
+      saveCart();
+      renderCart();
+      menuStatus.textContent = `${item.name} lades till i kundvagnen.`;
+    }
+
+    function addPackageToCart(packageId) {
+      const pkg = packages.find(entry => entry.id === packageId);
+      if (!pkg) return;
+      cart.push({ name: pkg.name, price: pkg.price, type: 'package', description: pkg.description });
+      saveCart();
+      renderCart();
+      menuStatus.textContent = `${pkg.name} paket lades till i kundvagnen.`;
+    }
+
+    if (addToCartBtn) {
+      addToCartBtn.addEventListener('click', function () {
+        const selected = drinkSelect ? drinkSelect.value : '';
+        addItemToCart(selected);
+      });
+    }
+
+    if (menuGrid) {
+      menuGrid.addEventListener('click', function (event) {
+        const trigger = event.target.closest('.add-item-btn');
+        if (!trigger) return;
+        addItemToCart(trigger.getAttribute('data-item-name'));
+      });
+    }
+
+    if (publicOrdersList) {
+      publicOrdersList.addEventListener('click', function (event) {
+        const trigger = event.target.closest('.add-package-btn');
+        if (!trigger) return;
+        addPackageToCart(trigger.getAttribute('data-package-id'));
+      });
+    }
+
+    function submitCheckout() {
+      const rpName = document.getElementById('rpName').value.trim();
+      const discordName = document.getElementById('discordName').value.trim();
+      const amount = paymentAmountInput.value.trim();
+      if (!rpName || !discordName || !amount) {
+        checkoutStatus.className = 'status error';
+        checkoutStatus.textContent = 'Fyll i RP-namn, Discord-namn och belopp.';
+        return;
+      }
+      if (!cart.length) {
+        checkoutStatus.className = 'status error';
+        checkoutStatus.textContent = 'Varukorgen är tom.';
+        return;
+      }
+      const orderItems = cart.map(item => item.name).join(', ');
+      orders.unshift({
+        id: Date.now().toString(),
+        customerName: rpName,
+        discordName: discordName,
+        drinkName: orderItems || 'Kundval',
+        price: cart.reduce((sum, item) => sum + item.price, 0),
+        amount: amount,
+        status: 'Ny',
+        staffName: 'Kund',
+        paymentNote: 'Betala till Driftynordic'
+      });
+      saveOrders();
+      checkoutStatus.className = 'status';
+      checkoutStatus.textContent = `Beställning skickad. Det betalas till Driftynordic för ${amount}.`;
+      cart = [];
+      saveCart();
+      renderCart();
+      renderPublicOrders();
+      renderStaffDashboard();
+      renderAdminDashboard();
+      checkoutForm.reset();
+    }
+
+    checkoutForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      submitCheckout();
+    });
+
+    checkoutSubmitBtn.addEventListener('click', function () {
+      if (!cart.length) {
+        checkoutStatus.className = 'status error';
+        checkoutStatus.textContent = 'Lägg till något i kundvagnen innan du betalar.';
+        return;
+      }
+      confirmModal.classList.remove('hidden');
+    });
+
+    confirmCheckoutYes.addEventListener('click', function () {
+      confirmModal.classList.add('hidden');
+      submitCheckout();
+    });
+
+    confirmCheckoutNo.addEventListener('click', function () {
+      confirmModal.classList.add('hidden');
+      checkoutStatus.className = 'status';
+      checkoutStatus.textContent = 'Köpet avbröts.';
+    });
+
+    confirmModal.addEventListener('click', function (event) {
+      if (event.target === confirmModal) {
+        confirmModal.classList.add('hidden');
+      }
+    });
+
+    staffLoginForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const username = document.getElementById('staffUser').value.trim();
+      const password = document.getElementById('staffPass').value;
+      const account = staffAccounts.find(entry => entry.username === username && entry.password === password);
+      if (!account) {
+        staffLoginStatus.className = 'status error';
+        staffLoginStatus.textContent = 'Fel användarnamn eller lösenord.';
+        return;
+      }
+      account.active = true;
+      account.shiftStatus = account.shiftStatus || 'Avslutad';
+      account.shiftStartedAt = null;
+      saveStaffAccounts();
+      localStorage.setItem(currentStaffKey, username);
+      staffLoginStatus.className = 'status';
+      staffLoginStatus.textContent = `Inloggad som ${username}.`;
+      renderStaffDashboard();
+      this.reset();
+    });
+
+    document.getElementById('startShiftBtn').addEventListener('click', function () {
+      const currentStaff = getCurrentStaffAccount();
+      if (!currentStaff) return;
+      currentStaff.shiftStatus = 'På shift';
+      currentStaff.shiftStartedAt = Date.now();
+      saveStaffAccounts();
+      renderStaffDashboard();
+    });
+
+    document.getElementById('pauseShiftBtn').addEventListener('click', function () {
+      const currentStaff = getCurrentStaffAccount();
+      if (!currentStaff) return;
+      if (currentStaff.shiftStartedAt) {
+        currentStaff.shiftMinutes = (currentStaff.shiftMinutes || 0) + Math.floor((Date.now() - currentStaff.shiftStartedAt) / 60000);
+        currentStaff.shiftStartedAt = null;
+      }
+      currentStaff.shiftStatus = 'Pausad';
+      saveStaffAccounts();
+      renderStaffDashboard();
+    });
+
+    document.getElementById('endShiftBtn').addEventListener('click', function () {
+      const currentStaff = getCurrentStaffAccount();
+      if (!currentStaff) return;
+      if (currentStaff.shiftStartedAt) {
+        currentStaff.shiftMinutes = (currentStaff.shiftMinutes || 0) + Math.floor((Date.now() - currentStaff.shiftStartedAt) / 60000);
+        currentStaff.shiftStartedAt = null;
+      }
+      currentStaff.shiftStatus = 'Avslutad';
+      saveStaffAccounts();
+      renderStaffDashboard();
+    });
+
+    staffOrderForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const currentStaff = getCurrentStaffAccount();
+      const customerName = document.getElementById('customerName').value.trim();
+      const drinkName = staffDrinkSelect.value;
+      const chosen = menu.find(entry => entry.name === drinkName);
+      if (!currentStaff || !customerName || !chosen) {
+        staffOrderStatus.className = 'status error';
+        staffOrderStatus.textContent = 'Välj kund, dryck och se till att du är inloggad.';
+        return;
+      }
+      orders.unshift({
+        id: Date.now().toString(),
+        customerName,
+        drinkName: chosen.name,
+        price: chosen.price,
+        status: 'Ny',
+        staffName: currentStaff.username,
+        paymentNote: 'Betala till Driftynordic'
+      });
+      saveOrders();
+      renderStaffDashboard();
+      renderAdminDashboard();
+      renderPublicOrders();
+      staffOrderStatus.className = 'status';
+      staffOrderStatus.textContent = `Beställning skapad för ${customerName}. Det betalas till Driftynordic.`;
+      this.reset();
+    });
+
+    document.getElementById('staffLogoutBtn').addEventListener('click', function () {
+      const currentStaff = getCurrentStaffAccount();
+      if (currentStaff) {
+        if (currentStaff.shiftStartedAt) {
+          currentStaff.shiftMinutes = (currentStaff.shiftMinutes || 0) + Math.floor((Date.now() - currentStaff.shiftStartedAt) / 60000);
+          currentStaff.shiftStartedAt = null;
+        }
+        currentStaff.active = false;
+        saveStaffAccounts();
+      }
+      localStorage.removeItem(currentStaffKey);
+      renderStaffDashboard();
+    });
+
+    adminLoginForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const username = document.getElementById('adminUser').value.trim();
+      const password = document.getElementById('adminPass').value;
+      if (username === 'ADMINSSRP' && password === 'DUVET') {
+        localStorage.setItem(currentAdminKey, 'true');
+        adminLoginStatus.className = 'status';
+        adminLoginStatus.textContent = 'Inloggad som admin.';
+        renderAdminDashboard();
+        this.reset();
+      } else {
+        adminLoginStatus.className = 'status error';
+        adminLoginStatus.textContent = 'Fel admininlogg.';
+      }
+    });
+
+    createRoleForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const roleName = document.getElementById('roleName').value.trim();
+      if (!roleName) {
+        createRoleStatus.className = 'status error';
+        createRoleStatus.textContent = 'Skriv in ett rollnamn.';
+        return;
+      }
+      const permissions = Array.from(document.querySelectorAll('input[name="rolePermission"]:checked')).map(input => input.value);
+      if (!roles.some(role => role.name.toLowerCase() === roleName.toLowerCase())) {
+        roles.push({ name: roleName, permissions });
+        saveRoles();
+        renderDrinkOptions();
+        renderRolePermissionsList();
+        createRoleStatus.className = 'status';
+        createRoleStatus.textContent = `Rollen ${roleName} skapades.`;
+      } else {
+        createRoleStatus.className = 'status error';
+        createRoleStatus.textContent = 'Den rollen finns redan.';
+      }
+      this.reset();
+    });
+
+    createStaffForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const username = document.getElementById('newStaffUser').value.trim();
+      const password = document.getElementById('newStaffPass').value;
+      const role = newStaffRole.value;
+      if (!username || !password) {
+        createStaffStatus.className = 'status error';
+        createStaffStatus.textContent = 'Fyll i användarnamn och lösenord.';
+        return;
+      }
+      const exists = staffAccounts.some(account => account.username.toLowerCase() === username.toLowerCase());
+      if (exists) {
+        createStaffStatus.className = 'status error';
+        createStaffStatus.textContent = 'Det användarnamnet finns redan.';
+        return;
+      }
+      staffAccounts.push({ username, password, role, shiftStatus: 'Avslutad', active: false, shiftMinutes: 0, shiftStartedAt: null });
+      saveStaffAccounts();
+      renderStaffDashboard();
+      renderAdminDashboard();
+      createStaffStatus.className = 'status';
+      createStaffStatus.textContent = `Kontot ${username} skapades med rollen ${role}.`;
+      this.reset();
+    });
+
+    document.getElementById('adminLogoutBtn').addEventListener('click', function () {
+      localStorage.removeItem(currentAdminKey);
+      renderAdminDashboard();
+    });
+
+    if (saveHomeEditBtn) {
+      saveHomeEditBtn.addEventListener('click', function () {
+        homeContent = {
+          headline: editHeadline ? editHeadline.value.trim() || 'Välkommen till caféet i Stockholm city' : homeContent.headline,
+          intro: editIntro ? editIntro.value.trim() || 'Här finns en snygg och enkel beställningsupplevelse där kunder kan välja dryck, lägga till i kassan och få tydlig betalningsinfo.' : homeContent.intro
+        };
+        saveHomeContent(homeContent);
+        applyHomeContent(homeContent);
+      });
+    }
+
+    document.addEventListener('click', function (event) {
+      const trigger = event.target.closest('[data-action="complete-order"]');
+      if (!trigger) return;
+      const orderId = trigger.getAttribute('data-order-id');
+      const order = orders.find(entry => entry.id === orderId);
+      if (!order) return;
+      order.status = 'Slutförd';
+      saveOrders();
+      renderPublicOrders();
+      renderStaffDashboard();
+      renderAdminDashboard();
+    });
+
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', function (event) {
+        event.preventDefault();
+        const target = this.getAttribute('data-view');
+        showView(target);
+      });
+    });
+
+    function showView(viewName) {
+      document.querySelectorAll('.view').forEach(view => view.classList.toggle('active', view.id === viewName));
+      document.querySelectorAll('.nav-link').forEach(link => link.classList.toggle('active', link.getAttribute('data-view') === viewName));
+    }
+
+    applyHomeContent(homeContent);
+    if (heroVisualImage) heroVisualImage.src = createHeroImage();
+    document.body.style.backgroundImage = `linear-gradient(rgba(4,9,15,0.72), rgba(4,9,15,0.82)), url('${createHeroImage()}')`;
+    renderDrinkOptions();
+    renderRolePermissionsList();
+    renderMenuGrid();
+    renderCart();
+    renderPublicOrders();
+    renderStaffDashboard();
+    renderAdminDashboard();
+    showView('home');
+  </script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stockholm Sweden RP — Café & Bar</title>
+  <style>
+    :root {
+      --bg: #05090e;
+      --panel: rgba(13, 21, 34, 0.95);
+      --panel-2: rgba(23, 36, 57, 0.95);
+      --text: #f8fafc;
+      --muted: #b8c3d2;
+      --gold: #f1b73f;
+      --blue: #2f7df6;
+      --green: #4ade80;
+      --red: #ff6b6b;
+      --border: rgba(255,255,255,0.12);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text);
+      background: linear-gradient(rgba(4,9,15,0.72), rgba(4,9,15,0.82)), #05090e;
+      min-height: 100vh;
+      background-size: cover;
+      background-attachment: fixed;
+    }
+    .topbar { position: sticky; top: 0; z-index: 10; display: flex; justify-content: space-between; align-items: center; padding: 14px 24px; background: rgba(4,9,15,0.9); border-bottom: 1px solid var(--border); }
+    .brand { font-weight: 800; color: var(--gold); letter-spacing: 0.04em; }
+    nav a { color: var(--text); text-decoration: none; margin-left: 12px; font-weight: 600; }
+    nav a:hover { color: var(--gold); }
+    .page { max-width: 1200px; margin: 0 auto; padding: 24px; }
+    .hero, .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 22px; box-shadow: 0 18px 46px rgba(0,0,0,0.28); }
+    .hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: 20px; padding: 42px 28px; margin-bottom: 24px; }
+    .hero h1 { margin: 0 0 10px; font-size: clamp(2rem, 4vw, 3rem); }
+    .hero-visual { border-radius: 18px; overflow: hidden; border: 1px solid var(--border); min-height: 280px; }
+    .hero-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .editable-block { border: 1px dashed rgba(241,183,63,0.35); padding: 10px; border-radius: 12px; background: rgba(241,183,63,0.07); }
+    .editable-block textarea { min-height: 90px; resize: vertical; }
+    .hero p, .section p, .muted { color: var(--muted); line-height: 1.6; }
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+    .btn { border: none; border-radius: 999px; padding: 11px 16px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; color: #07111f; background: linear-gradient(135deg, var(--gold), #ffd77a); }
+    .btn.secondary { color: var(--text); background: linear-gradient(135deg, var(--blue), #6aa7ff); }
+    .btn.danger { color: var(--text); background: linear-gradient(135deg, var(--red), #ff8b8b); }
+    .btn.small { padding: 8px 12px; font-size: 0.9rem; }
+    .panel { padding: 24px; margin-bottom: 24px; }
+    .section h2 { margin-top: 0; margin-bottom: 6px; }
+    .grid { display: grid; gap: 16px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .card { padding: 16px; border-radius: 16px; background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); border: 1px solid var(--border); }
+    .card h3 { margin-top: 0; margin-bottom: 8px; }
+    .price { font-size: 1.2rem; color: var(--gold); font-weight: 700; margin-top: 6px; }
+    .menu-grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-top: 16px; }
+    .menu-card { display: flex; flex-direction: column; height: 100%; transition: transform 180ms ease, border-color 180ms ease; padding: 12px; }
+    .menu-card:hover { transform: translateY(-2px); border-color: rgba(241,183,63,0.4); }
+    .menu-image { width: 100%; aspect-ratio: 5 / 4; object-fit: cover; border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--border); background: rgba(255,255,255,0.04); max-height: 170px; }
+    .card-body { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+    .drink-meta { display: flex; flex-direction: column; gap: 6px; }
+    .menu-tag { display: inline-block; width: fit-content; padding: 6px 10px; border-radius: 999px; background: rgba(241,183,63,0.15); color: var(--gold); font-size: 0.8rem; font-weight: 700; border: 1px solid rgba(241,183,63,0.25); }
+    .menu-description { color: var(--muted); font-size: 0.95rem; line-height: 1.45; }
+    .menu-card .btn { width: 100%; text-align: center; margin-top: auto; }
+    .permission-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 6px; }
+    .permission-chip { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 999px; border: 1px solid var(--border); background: rgba(255,255,255,0.04); font-size: 0.92rem; }
+    .permission-chip input { width: auto; accent-color: var(--gold); margin: 0; }
+    .staff-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .status-badge { display: inline-block; padding: 6px 10px; border-radius: 999px; font-size: 0.8rem; font-weight: 700; }
+    .status-badge.active { background: rgba(74, 222, 128, 0.16); color: var(--green); border: 1px solid rgba(74, 222, 128, 0.24); }
+    .status-badge.inactive { background: rgba(255, 107, 107, 0.16); color: var(--red); border: 1px solid rgba(255, 107, 107, 0.24); }
+    form { display: grid; gap: 12px; margin-top: 12px; }
+    input, select, button { font: inherit; border-radius: 12px; border: 1px solid var(--border); padding: 12px 14px; background: var(--panel-2); color: var(--text); }
+    input::placeholder { color: #8ea2bd; }
+    .status { min-height: 20px; margin-top: 8px; color: var(--green); font-weight: 600; }
+    .status.error { color: var(--red); }
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(2,6,12,0.74); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 50; }
+    .modal-card { background: var(--panel); border: 1px solid var(--border); border-radius: 18px; padding: 22px; width: min(420px, 100%); box-shadow: 0 24px 50px rgba(0,0,0,0.35); }
+    .modal-actions { display: flex; gap: 10px; margin-top: 14px; }
+    .modal-actions .btn { flex: 1; justify-content: center; }
+    .hidden { display: none; }
+    .list-item { padding: 12px; border-radius: 14px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); margin-top: 10px; }
+    .pill { display: inline-block; padding: 6px 10px; border-radius: 999px; font-size: 0.8rem; background: rgba(47,125,246,0.2); color: #8dc4ff; border: 1px solid rgba(47,125,246,0.25); margin-left: 6px; }
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .small { font-size: 0.95rem; color: var(--muted); }
+    .nav-link { color: var(--text); text-decoration: none; margin-left: 12px; font-weight: 600; }
+    .nav-link:hover, .nav-link.active { color: var(--gold); }
+    .view { display: none; }
+    .view.active { display: block; }
+    .accent { color: var(--gold); font-weight: 700; }
+    footer { padding: 24px; text-align: center; color: var(--muted); border-top: 1px solid var(--border); margin-top: 20px; }
+    @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } .grid { grid-template-columns: 1fr 1fr; } .split { grid-template-columns: 1fr; } }
+    @media (max-width: 600px) { .topbar { flex-direction: column; gap: 8px; } .page { padding: 16px; } .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">Stockholm Sweden RP</div>
+    <nav>
+      <a href="#" class="nav-link active" data-view="home">Hem</a>
+      <a href="#" class="nav-link" data-view="order">Beställ</a>
+      <a href="#" class="nav-link" data-view="staff">Personal</a>
+      <a href="#" class="nav-link" data-view="admin">Admin</a>
+      <a href="#" class="nav-link" data-view="contact">Kontakt</a>
+    </nav>
+  </div>
+
+  <div class="page">
+    <section id="home" class="view active">
+      <section class="hero">
+        <div>
+          <h1 id="homeHeadline">Välkommen till caféet i Stockholm city</h1>
+          <p id="homeIntro">Här finns en snygg och enkel beställningsupplevelse där kunder kan välja dryck, lägga till i kassan och få tydlig betalningsinfo.</p>
+          <div class="btn-row">
+            <a class="btn" href="#" data-view="order">Gå till beställning</a>
+            <a class="btn secondary" href="#" data-view="staff">Personalportal</a>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="hero-visual">
+            <img id="heroVisualImage" src="" alt="Kollage med folk, öl och glas på ett träbord" />
+          </div>
+          <h3 style="margin-top: 12px;">Så fungerar det</h3>
+          <p>• Välj dryck<br />• Lägg till i kassan<br />• Fyll i RP-namn och Discord-namn<br />• Beställningen syns för personalen</p>
+        </div>
+      </section>
+
+      <section class="section panel">
+        <h2>En cool struktur</h2>
+        <p>Beställning, personal och admin är nu uppdelade i egna sidor så det känns mer professionellt och lättare att använda.</p>
+        <div class="grid">
+          <div class="card"><h3>Beställ</h3><div class="small">Kunder får en egen sida där det tydligt står att det betalas till Driftynordic.</div></div>
+          <div class="card"><h3>Personal</h3><div class="small">Personal kan logga in, se shift, ta beställningar och markera dem som klara.</div></div>
+          <div class="card"><h3>Admin</h3><div class="small">Admin kan skapa roller, personalkonton och följa personalens shift-status.</div></div>
+        </div>
+      </section>
+    </section>
+
+    <section id="order" class="view">
+      <section class="section panel">
+        <h2>Beställning</h2>
+        <p class="accent">Det betalas till Driftynordic</p>
+        <p>Välj vad du vill ha och skicka din beställning till personalen.</p>
+        <div id="menuGrid" class="menu-grid"></div>
+        <div style="margin-top: 16px;">
+          <select id="drinkSelect" class="hidden"></select>
+          <button id="addToCartBtn" class="btn" style="margin-top: 8px;">Lägg till i kundvagnen</button>
+        </div>
+        <div id="menuStatus" class="status"></div>
+      </section>
+
+      <section class="section panel">
+        <h2>Kassa</h2>
+        <div id="cartItems"></div>
+        <form id="checkoutForm">
+          <input id="rpName" placeholder="RP-namn" required />
+          <input id="discordName" placeholder="Discord-namn" required />
+          <input id="paymentAmount" placeholder="Belopp att betala" required />
+          <button type="button" id="checkoutSubmitBtn" class="btn">Betala</button>
+        </form>
+        <div id="checkoutStatus" class="status"></div>
+      </section>
+
+      <section class="section panel">
+        <h2>Prenumerationer</h2>
+        <p>Välj ett paket och lägg det i kundvagnen. Kunder ser inte beställningslistan här.</p>
+        <div id="publicOrdersList"></div>
+      </section>
+    </section>
+
+    <section id="staff" class="view">
+      <section class="section panel">
+        <h2>Personalportal</h2>
+        <p>Här finns en egen personalyta där personal kan logga in, se shift, ta beställningar och markera dem som klara.</p>
+        <div id="staffLoginBox">
+          <h3>Logga in</h3>
+          <form id="staffLoginForm">
+            <input id="staffUser" placeholder="Användarnamn" required />
+            <input id="staffPass" type="password" placeholder="Lösenord" required />
+            <button type="submit" class="btn secondary">Logga in som personal</button>
+          </form>
+          <div id="staffLoginStatus" class="status"></div>
+        </div>
+
+        <div id="staffDashboard" class="hidden">
+          <div class="split">
+            <div class="card">
+              <h3>Min status</h3>
+              <div id="myStaffInfo" class="small"></div>
+              <div class="btn-row">
+                <button id="startShiftBtn" class="btn">Starta shift</button>
+                <button id="pauseShiftBtn" class="btn secondary">Pausa shift</button>
+                <button id="endShiftBtn" class="btn danger">Avsluta shift</button>
+              </div>
+              <div id="staffShiftStatus" class="status"></div>
+            </div>
+            <div class="card">
+              <h3>Aktiva medarbetare</h3>
+              <div id="activeStaffList"></div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Ta beställning</h3>
+            <form id="staffOrderForm">
+              <input id="customerName" placeholder="Kundens namn" required />
+              <select id="staffDrinkSelect"></select>
+              <button type="submit" class="btn">Skapa beställning</button>
+            </form>
+            <div id="staffOrderStatus" class="status"></div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Personalöversikt</h3>
+            <div id="staffRoster"></div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Beställningar</h3>
+            <div id="staffOrdersList"></div>
+          </div>
+
+          <button id="staffLogoutBtn" class="btn secondary" style="margin-top: 12px;">Logga ut</button>
+        </div>
+      </section>
+    </section>
+
+    <section id="admin" class="view">
+      <section class="section panel">
+        <h2>Adminportal</h2>
+        <p>Här hanterar admin roller, personalkonton, aktiv personal och orderstatus utan att personalpanelen blandas ihop.</p>
+        <div id="adminLoginBox">
+          <h3>Admin login</h3>
+          <form id="adminLoginForm">
+            <input id="adminUser" placeholder="Admin användarnamn" required />
+            <input id="adminPass" type="password" placeholder="Admin lösenord" required />
+            <button type="submit" class="btn secondary">Logga in som admin</button>
+          </form>
+          <div id="adminLoginStatus" class="status"></div>
+        </div>
+
+        <div id="adminDashboard" class="hidden">
+          <div class="split">
+            <div class="card">
+              <h3>Skapa ny roll</h3>
+              <form id="createRoleForm">
+                <input id="roleName" placeholder="Rollnamn" required />
+                <div class="permission-grid">
+                  <label class="permission-chip"><input type="checkbox" name="rolePermission" value="manage_orders" /> Hantera beställningar</label>
+                  <label class="permission-chip"><input type="checkbox" name="rolePermission" value="manage_staff" /> Hantera personal</label>
+                  <label class="permission-chip"><input type="checkbox" name="rolePermission" value="manage_shifts" /> Hantera shift</label>
+                  <label class="permission-chip"><input type="checkbox" name="rolePermission" value="view_dashboard" /> Se dashboard</label>
+                </div>
+                <button type="submit" class="btn">Lägg till roll</button>
+              </form>
+              <div id="createRoleStatus" class="status"></div>
+              <div id="rolePermissionsList" style="margin-top: 10px;"></div>
+            </div>
+            <div class="card">
+              <h3>Skapa personalkonto</h3>
+              <form id="createStaffForm">
+                <input id="newStaffUser" placeholder="Användarnamn" required />
+                <input id="newStaffPass" placeholder="Lösenord" required />
+                <select id="newStaffRole"></select>
+                <button type="submit" class="btn">Skapa konto</button>
+              </form>
+              <div id="createStaffStatus" class="status"></div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Redigera startsida</h3>
+            <div class="editable-block">
+              <label class="small" for="editHeadline">Rubrik</label>
+              <input id="editHeadline" type="text" value="Välkommen till caféet i Stockholm city" />
+              <label class="small" for="editIntro" style="margin-top: 8px; display: block;">Introtext</label>
+              <textarea id="editIntro">Här finns en snygg och enkel beställningsupplevelse där kunder kan välja dryck, lägga till i kassan och få tydlig betalningsinfo.</textarea>
+              <button id="saveHomeEditBtn" class="btn" style="margin-top: 10px;">Spara ändringar</button>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Personal och shift-status</h3>
+            <div id="adminStaffRoster"></div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Aktiva personal</h3>
+            <div id="adminActiveStaff"></div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Beställningar</h3>
+            <div id="adminOrdersList"></div>
+          </div>
+
+          <button id="adminLogoutBtn" class="btn secondary" style="margin-top: 12px;">Logga ut admin</button>
+        </div>
+      </section>
+    </section>
+
+    <section id="contact" class="view">
+      <section class="section panel">
+        <h2>Kontakt</h2>
+        <p>Drifty i Discord DMs för hjälp med support eller frågor om beställningar.</p>
+      </section>
+    </section>
+  </div>
+
+  <footer>
+    <strong>Kontakt</strong><br />
+    Drifty i Discord DMs för hjälp med support.
+  </footer>
+
+  <div id="confirmModal" class="modal-backdrop hidden">
+    <div class="modal-card">
+      <h3>Bekräfta köp</h3>
+      <p>Är du säker på att du vill köpa? Kom ihåg att betala till Driftynordic.</p>
+      <div class="modal-actions">
+        <button id="confirmCheckoutYes" class="btn" type="button">Ja</button>
+        <button id="confirmCheckoutNo" class="btn secondary" type="button">Nej</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function createInlineImage(label, accent, kind) {
+      const safeLabel = String(label).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const safeKind = String(kind).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 900 600">
+        <rect width="100%" height="100%" rx="36" fill="#07111f" />
+        <rect x="70" y="70" width="760" height="460" rx="32" fill="#0f1828" stroke="${accent}" stroke-width="6" />
+        <rect x="210" y="150" width="480" height="270" rx="26" fill="${accent}" fill-opacity="0.18" stroke="${accent}" stroke-width="4" />
+        <rect x="250" y="110" width="400" height="115" rx="18" fill="${accent}" />
+        <circle cx="330" cy="360" r="24" fill="${accent}" />
+        <circle cx="570" cy="360" r="24" fill="${accent}" />
+        <rect x="285" y="320" width="330" height="80" rx="18" fill="rgba(255,255,255,0.16)" />
+        <text x="450" y="220" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="34" font-weight="700" fill="${accent}">${safeLabel}</text>
+        <text x="450" y="370" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="24" font-weight="600" fill="#f8fafc">${safeKind}</text>
+      </svg>`;
+      return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+    }
+
+    function createHeroImage() {
+      return createInlineImage('Öl & Glas', '#f1b73f', 'Stockholm City');
+    }
+
+    function createMenuImage(name, kind) {
+      const accent = kind === 'Mat' ? '#ff8b3d' : '#f1b73f';
+      return createInlineImage(name, accent, kind);
+    }
+
+    const menu = [
+      { name: 'Storgatan Stark', price: 95, kind: 'Dryck', description: 'Klassisk öl med mjuk maltig smak.', image: createMenuImage('Storgatan Stark', 'Dryck') },
+      { name: 'Norrlands Guld', price: 80, kind: 'Dryck', description: 'Lätt och fräsch med tydlig humle.', image: createMenuImage('Norrlands Guld', 'Dryck') },
+      { name: 'Falcon', price: 75, kind: 'Dryck', description: 'En balanserad lager som passar till maten.', image: createMenuImage('Falcon', 'Dryck') },
+      { name: 'Pripps Blå', price: 70, kind: 'Dryck', description: 'En enkel och populär klassiker.', image: createMenuImage('Pripps Blå', 'Dryck') },
+      { name: 'Pilsner', price: 90, kind: 'Dryck', description: 'Ren smak med fin kurva och lätt kropp.', image: createMenuImage('Pilsner', 'Dryck') },
+      { name: 'Lager', price: 85, kind: 'Dryck', description: 'Mjuk och uppfriskande för en lugn kväll.', image: createMenuImage('Lager', 'Dryck') },
+      { name: 'IPA', price: 95, kind: 'Dryck', description: 'Starkare humlearom med lite bitterhet.', image: createMenuImage('IPA', 'Dryck') },
+      { name: 'Stout', price: 95, kind: 'Dryck', description: 'Rik, mörk och perfekt till en mysig stund.', image: createMenuImage('Stout', 'Dryck') },
+      { name: 'Alkoholfritt Svenskt', price: 55, kind: 'Dryck', description: 'Alkoholfri klassiker med ren smak.', image: createMenuImage('Alkoholfritt Svenskt', 'Dryck') },
+      { name: 'Alkoholfri Pilsner', price: 65, kind: 'Dryck', description: 'Lätt och svalkande utan alkohol.', image: createMenuImage('Alkoholfri Pilsner', 'Dryck') },
+      { name: 'Alkoholfri IPA', price: 60, kind: 'Dryck', description: 'Fräsch humlesmak för den som vill ha mer.', image: createMenuImage('Alkoholfri IPA', 'Dryck') },
+      { name: 'Classic Burger', price: 135, kind: 'Mat', description: 'Biff, ost, pickles och sallad på mjukt bröd.', image: createMenuImage('Classic Burger', 'Mat') },
+      { name: 'Chicken Wrap', price: 115, kind: 'Mat', description: 'Krispig kyckling med sallad och dressing.', image: createMenuImage('Chicken Wrap', 'Mat') },
+      { name: 'Pommes Frites', price: 75, kind: 'Mat', description: 'Goda pommes med salt och klassisk sås.', image: createMenuImage('Pommes Frites', 'Mat') },
+      { name: 'Nachos', price: 95, kind: 'Mat', description: 'Kryddiga nachos med ost, salsa och guacamole.', image: createMenuImage('Nachos', 'Mat') },
+      { name: 'Club Sandwich', price: 125, kind: 'Mat', description: 'Roastbiff, bacon, sallad och smakrik dressing.', image: createMenuImage('Club Sandwich', 'Mat') }
+    ];
+
+    const packages = [
+      {
+        id: 'standard',
+        name: 'Standard',
+        price: 299,
+        description: '2 gratis Folköl + 1 hamburgare',
+        details: ['2 gratis Folköl', '1 hamburgare']
+      },
+      {
+        id: 'premium',
+        name: 'Premium',
+        price: 599,
+        description: '2 hamburgare + öl eller cider + 1 gratis Folköl',
+        details: ['2 hamburgare', 'Öl eller cider', '1 gratis Folköl']
+      }
+    ];
+
+    const staffAccountsKey = 'ssrp-staff-accounts';
+    const rolesKey = 'ssrp-roles';
+    const ordersKey = 'ssrp-orders';
+    const cartKey = 'ssrp-cart';
+    const currentStaffKey = 'ssrp-current-staff';
+    const currentAdminKey = 'ssrp-current-admin';
+    const homeContentKey = 'ssrp-home-content';
+
+    const drinkSelect = document.getElementById('drinkSelect');
+    const staffDrinkSelect = document.getElementById('staffDrinkSelect');
+    const addToCartBtn = document.getElementById('addToCartBtn');
+    const menuGrid = document.getElementById('menuGrid');
+    const menuStatus = document.getElementById('menuStatus');
+    const cartItems = document.getElementById('cartItems');
+    const checkoutForm = document.getElementById('checkoutForm');
+    const checkoutStatus = document.getElementById('checkoutStatus');
+    const checkoutSubmitBtn = document.getElementById('checkoutSubmitBtn');
+    const paymentAmountInput = document.getElementById('paymentAmount');
+    const publicOrdersList = document.getElementById('publicOrdersList');
+    const confirmModal = document.getElementById('confirmModal');
+    const confirmCheckoutYes = document.getElementById('confirmCheckoutYes');
+    const confirmCheckoutNo = document.getElementById('confirmCheckoutNo');
+
+    const staffLoginBox = document.getElementById('staffLoginBox');
+    const staffDashboard = document.getElementById('staffDashboard');
+    const staffLoginForm = document.getElementById('staffLoginForm');
+    const staffLoginStatus = document.getElementById('staffLoginStatus');
+    const myStaffInfo = document.getElementById('myStaffInfo');
+    const activeStaffList = document.getElementById('activeStaffList');
+    const staffShiftStatus = document.getElementById('staffShiftStatus');
+    const staffRoster = document.getElementById('staffRoster');
+    const staffOrderForm = document.getElementById('staffOrderForm');
+    const staffOrderStatus = document.getElementById('staffOrderStatus');
+    const staffOrdersList = document.getElementById('staffOrdersList');
+
+    const adminLoginBox = document.getElementById('adminLoginBox');
+    const adminDashboard = document.getElementById('adminDashboard');
+    const adminLoginForm = document.getElementById('adminLoginForm');
+    const adminLoginStatus = document.getElementById('adminLoginStatus');
+    const createRoleForm = document.getElementById('createRoleForm');
+    const createRoleStatus = document.getElementById('createRoleStatus');
+    const createStaffForm = document.getElementById('createStaffForm');
+    const createStaffStatus = document.getElementById('createStaffStatus');
+    const newStaffRole = document.getElementById('newStaffRole');
+    const rolePermissionsList = document.getElementById('rolePermissionsList');
+    const heroVisualImage = document.getElementById('heroVisualImage');
+    const homeHeadline = document.getElementById('homeHeadline');
+    const homeIntro = document.getElementById('homeIntro');
+    const editHeadline = document.getElementById('editHeadline');
+    const editIntro = document.getElementById('editIntro');
+    const saveHomeEditBtn = document.getElementById('saveHomeEditBtn');
+    const adminStaffRoster = document.getElementById('adminStaffRoster');
+    const adminActiveStaff = document.getElementById('adminActiveStaff');
+    const adminOrdersList = document.getElementById('adminOrdersList');
+
+    function loadStaffAccounts() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(staffAccountsKey) || 'null');
+        if (Array.isArray(saved) && saved.length) return saved;
+      } catch (e) {}
+      return [
+        { username: '555', password: '333', role: 'Personal', shiftStatus: 'Avslutad', active: false, shiftMinutes: 0, shiftStartedAt: null },
+        { username: '777', password: '444', role: 'Barista', shiftStatus: 'Avslutad', active: false, shiftMinutes: 0, shiftStartedAt: null }
+      ];
+    }
+
+    function saveStaffAccounts() {
+      localStorage.setItem(staffAccountsKey, JSON.stringify(staffAccounts));
+    }
+
+    function normalizeRole(entry) {
+      if (typeof entry === 'string') {
+        return { name: entry, permissions: ['view_dashboard'] };
+      }
+      if (entry && typeof entry === 'object') {
+        return {
+          name: entry.name || 'Roll',
+          permissions: Array.isArray(entry.permissions) ? entry.permissions : []
+        };
+      }
+      return null;
+    }
+
+    function loadRoles() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(rolesKey) || 'null');
+        if (Array.isArray(saved) && saved.length) {
+          const normalized = saved.map(normalizeRole).filter(Boolean);
+          if (normalized.length) return normalized;
+        }
+      } catch (e) {}
+      return [
+        { name: 'Personal', permissions: ['view_dashboard'] },
+        { name: 'Barista', permissions: ['view_dashboard', 'manage_orders'] },
+        { name: 'Säljare', permissions: ['view_dashboard', 'manage_orders'] },
+        { name: 'Chef', permissions: ['view_dashboard', 'manage_orders', 'manage_staff', 'manage_shifts'] }
+      ];
+    }
+
+    function saveRoles() {
+      localStorage.setItem(rolesKey, JSON.stringify(roles));
+    }
+
+    function loadOrders() {
+      try {
+        return JSON.parse(localStorage.getItem(ordersKey) || '[]');
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveOrders() {
+      localStorage.setItem(ordersKey, JSON.stringify(orders));
+    }
+
+    function loadCart() {
+      try {
+        return JSON.parse(localStorage.getItem(cartKey) || '[]');
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveCart() {
+      localStorage.setItem(cartKey, JSON.stringify(cart));
+    }
+
+    function getRoleByName(roleName) {
+      return roles.find(role => role.name.toLowerCase() === (roleName || '').toLowerCase()) || null;
+    }
+
+    function getPermissionLabel(permission) {
+      const labels = {
+        manage_orders: 'Hantera beställningar',
+        manage_staff: 'Hantera personal',
+        manage_shifts: 'Hantera shift',
+        view_dashboard: 'Se dashboard'
+      };
+      return labels[permission] || permission;
+    }
+
+    function loadHomeContent() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(homeContentKey) || 'null');
+        if (saved && typeof saved === 'object') {
+          return {
+            headline: saved.headline || 'Välkommen till caféet i Stockholm city',
+            intro: saved.intro || 'Här finns en snygg och enkel beställningsupplevelse där kunder kan välja dryck, lägga till i kassan och få tydlig betalningsinfo.'
+          };
+        }
+      } catch (e) {}
+      return {
+        headline: 'Välkommen till caféet i Stockholm city',
+        intro: 'Här finns en snygg och enkel beställningsupplevelse där kunder kan välja dryck, lägga till i kassan och få tydlig betalningsinfo.'
+      };
+    }
+
+    function saveHomeContent(content) {
+      localStorage.setItem(homeContentKey, JSON.stringify(content));
+    }
+
+    function applyHomeContent(content) {
+      if (homeHeadline) homeHeadline.textContent = content.headline;
+      if (homeIntro) homeIntro.textContent = content.intro;
+      if (editHeadline) editHeadline.value = content.headline;
+      if (editIntro) editIntro.value = content.intro;
+    }
+
+    function renderDrinkOptions() {
+      if (drinkSelect) {
+        drinkSelect.innerHTML = menu.map(item => `<option value="${item.name}">${item.name} — ${item.price} kr</option>`).join('');
+      }
+      staffDrinkSelect.innerHTML = menu.map(item => `<option value="${item.name}">${item.name} — ${item.price} kr</option>`).join('');
+      newStaffRole.innerHTML = roles.map(role => `<option value="${role.name}">${role.name}</option>`).join('');
+    }
+
+    function renderRolePermissionsList() {
+      if (!rolePermissionsList) return;
+      rolePermissionsList.innerHTML = roles.length ? roles.map(role => `
+        <div class="list-item">
+          <strong>${role.name}</strong>
+          <div class="small">Behörigheter: ${role.permissions.length ? role.permissions.map(getPermissionLabel).join(', ') : 'Inga'}</div>
+        </div>
+      `).join('') : '<div class="list-item"><strong>Inga roller skapade ännu.</strong></div>';
+    }
+
+    function renderMenuGrid() {
+      if (!menuGrid) return;
+      menuGrid.innerHTML = menu.map(item => `
+        <div class="card menu-card">
+          <img class="menu-image" src="${item.image}" alt="${item.name}" />
+          <div class="card-body">
+            <div class="drink-meta">
+              <div class="menu-tag">${item.kind}</div>
+              <h3>${item.name}</h3>
+              <div class="menu-description">${item.description}</div>
+              <div class="price">${item.price} kr</div>
+            </div>
+            <button class="btn add-item-btn" type="button" data-item-name="${item.name}">Lägg till i kundvagnen</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    let staffAccounts = loadStaffAccounts();
+    let roles = loadRoles();
+    let orders = loadOrders();
+    let cart = loadCart();
+    let homeContent = loadHomeContent();
+
+    function getCurrentStaffAccount() {
+      const username = localStorage.getItem(currentStaffKey);
+      return staffAccounts.find(account => account.username === username) || null;
+    }
+
+    function getShiftMinutes(account) {
+      if (typeof account.shiftMinutes !== 'number') account.shiftMinutes = 0;
+      if (account.shiftStartedAt && account.active) {
+        const elapsed = Math.floor((Date.now() - account.shiftStartedAt) / 60000);
+        return account.shiftMinutes + elapsed;
+      }
+      return account.shiftMinutes;
+    }
+
+    function renderCart() {
+      if (!cart.length) {
+        cartItems.innerHTML = '<div class="list-item"><strong>Varukorgen är tom.</strong></div>';
+        paymentAmountInput.value = '';
+        return;
+      }
+      const total = cart.reduce((sum, item) => sum + item.price, 0);
+      cartItems.innerHTML = cart.map(item => `<div class="list-item"><strong>${item.name}</strong><div class="small">${item.price} kr</div></div>`).join('') + `<div class="list-item"><strong>Totalt</strong><div class="small">${total} kr</div></div>`;
+      paymentAmountInput.value = `${total} kr`;
+    }
+
+    function renderPublicOrders() {
+      if (!publicOrdersList) return;
+      publicOrdersList.innerHTML = packages.map(pkg => `
+        <div class="card menu-card" style="margin-top: 12px;">
+          <div class="card-body">
+            <div class="drink-meta">
+              <div class="menu-tag">Paket</div>
+              <h3>${pkg.name}</h3>
+              <div class="menu-description">${pkg.description}</div>
+              <div class="small">${pkg.details.join(' • ')}</div>
+              <div class="price">${pkg.price} kr</div>
+            </div>
+            <button class="btn add-package-btn" type="button" data-package-id="${pkg.id}">Lägg till i kundvagnen</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderStaffDashboard() {
+      const currentStaff = getCurrentStaffAccount();
+      if (!currentStaff) {
+        staffLoginBox.classList.remove('hidden');
+        staffDashboard.classList.add('hidden');
+        return;
+      }
+      staffLoginBox.classList.add('hidden');
+      staffDashboard.classList.remove('hidden');
+      const roleDefinition = getRoleByName(currentStaff.role);
+      const permissionsText = roleDefinition && roleDefinition.permissions.length ? roleDefinition.permissions.map(getPermissionLabel).join(', ') : 'Inga';
+      myStaffInfo.innerHTML = `<strong>${currentStaff.username}</strong><br />Roll: ${currentStaff.role}<br />Shift: ${currentStaff.shiftStatus}<br />Status: ${currentStaff.active ? 'Aktiv' : 'Ej aktiv'}<br /><span class="small">Behörigheter: ${permissionsText}</span>`;
+      staffShiftStatus.textContent = `Shiftstatus: ${currentStaff.shiftStatus}`;
+
+      const active = staffAccounts.filter(account => account.active);
+      const sortedByShift = [...staffAccounts].sort((a, b) => getShiftMinutes(b) - getShiftMinutes(a));
+      activeStaffList.innerHTML = active.length ? active.map(account => `<div class="list-item"><strong>${account.username}</strong><div class="small">Roll: ${account.role} • Shift: ${account.shiftStatus} • ${getShiftMinutes(account)} min</div></div>`).join('') : '<div class="list-item"><strong>Inga andra är aktiva just nu.</strong></div>';
+
+      staffRoster.innerHTML = staffAccounts.map(account => `
+        <div class="list-item">
+          <strong>${account.username}</strong> <span class="pill">${account.role}</span>
+          <div class="small">Shift: ${account.shiftStatus} • Aktiv: ${account.active ? 'Ja' : 'Nej'} • ${getShiftMinutes(account)} min</div>
+        </div>
+      `).join('');
+
+      const topShift = sortedByShift[0];
+      const topShiftText = topShift ? `${topShift.username} med ${getShiftMinutes(topShift)} min i shift` : 'Ingen personal registrerad ännu';
+      staffOrdersList.innerHTML = `
+        <div class="list-item">
+          <strong>Vem har mest i shift?</strong>
+          <div class="small">${topShiftText}</div>
+        </div>
+        ${orders.length ? orders.map(order => `
+          <div class="list-item">
+            <strong>${order.customerName}</strong>
+            <div class="small">${order.drinkName} • ${order.price} kr</div>
+            <div class="small">Skapad av: ${order.staffName}</div>
+            <div class="small">Status: ${order.status}</div>
+            <div class="small">Betala till: ${order.paymentNote || 'Driftynordic'}</div>
+            <button class="btn small" data-order-id="${order.id}" data-action="complete-order" style="margin-top: 8px;">Markera som klar</button>
+          </div>
+        `).join('') : '<div class="list-item"><strong>Inga beställningar ännu.</strong></div>'}
+      `;
+    }
+
+    function renderAdminDashboard() {
+      const isLoggedIn = localStorage.getItem(currentAdminKey);
+      if (!isLoggedIn) {
+        adminLoginBox.classList.remove('hidden');
+        adminDashboard.classList.add('hidden');
+        return;
+      }
+      adminLoginBox.classList.add('hidden');
+      adminDashboard.classList.remove('hidden');
+      newStaffRole.innerHTML = roles.map(role => `<option value="${role}">${role}</option>`).join('');
+      adminStaffRoster.innerHTML = staffAccounts.map(account => {
+        const roleDefinition = getRoleByName(account.role);
+        const permissionsText = roleDefinition && roleDefinition.permissions.length ? roleDefinition.permissions.map(getPermissionLabel).join(', ') : 'Inga';
+        return `
+          <div class="list-item staff-row">
+            <div>
+              <strong>${account.username}</strong> <span class="pill">${account.role}</span>
+              <div class="small">Shift: ${account.shiftStatus} • Aktiv: ${account.active ? 'Ja' : 'Nej'} • ${getShiftMinutes(account)} min</div>
+              <div class="small">Behörigheter: ${permissionsText}</div>
+            </div>
+            <span class="status-badge ${account.active ? 'active' : 'inactive'}">${account.active ? 'Aktiv' : 'Inaktiv'}</span>
+          </div>
+        `;
+      }).join('');
+      const active = staffAccounts.filter(account => account.active);
+      adminActiveStaff.innerHTML = active.length ? active.map(account => `<div class="list-item"><strong>${account.username}</strong><div class="small">Roll: ${account.role} • Shift: ${account.shiftStatus} • ${getShiftMinutes(account)} min</div></div>`).join('') : '<div class="list-item"><strong>Ingen personal är aktiv just nu.</strong></div>';
+      adminOrdersList.innerHTML = orders.length ? orders.map(order => `
+        <div class="list-item">
+          <strong>${order.customerName}</strong>
+          <div class="small">${order.drinkName} • ${order.price} kr</div>
+          <div class="small">Status: ${order.status}</div>
+          <div class="small">Betala till: ${order.paymentNote || 'Driftynordic'}</div>
+          <button class="btn small" data-order-id="${order.id}" data-action="complete-order" style="margin-top: 8px;">Markera som klar</button>
+        </div>
+      `).join('') : '<div class="list-item"><strong>Inga beställningar ännu.</strong></div>';
+    }
+
+    function addItemToCart(itemName) {
+      const item = menu.find(entry => entry.name === itemName);
+      if (!item) return;
+      cart.push({ name: item.name, price: item.price });
+      saveCart();
+      renderCart();
+      menuStatus.textContent = `${item.name} lades till i kundvagnen.`;
+    }
+
+    function addPackageToCart(packageId) {
+      const pkg = packages.find(entry => entry.id === packageId);
+      if (!pkg) return;
+      cart.push({ name: pkg.name, price: pkg.price, type: 'package', description: pkg.description });
+      saveCart();
+      renderCart();
+      menuStatus.textContent = `${pkg.name} paket lades till i kundvagnen.`;
+    }
+
+    if (addToCartBtn) {
+      addToCartBtn.addEventListener('click', function () {
+        const selected = drinkSelect ? drinkSelect.value : '';
+        addItemToCart(selected);
+      });
+    }
+
+    if (menuGrid) {
+      menuGrid.addEventListener('click', function (event) {
+        const trigger = event.target.closest('.add-item-btn');
+        if (!trigger) return;
+        addItemToCart(trigger.getAttribute('data-item-name'));
+      });
+    }
+
+    if (publicOrdersList) {
+      publicOrdersList.addEventListener('click', function (event) {
+        const trigger = event.target.closest('.add-package-btn');
+        if (!trigger) return;
+        addPackageToCart(trigger.getAttribute('data-package-id'));
+      });
+    }
+
+    function submitCheckout() {
+      const rpName = document.getElementById('rpName').value.trim();
+      const discordName = document.getElementById('discordName').value.trim();
+      const amount = paymentAmountInput.value.trim();
+      if (!rpName || !discordName || !amount) {
+        checkoutStatus.className = 'status error';
+        checkoutStatus.textContent = 'Fyll i RP-namn, Discord-namn och belopp.';
+        return;
+      }
+      if (!cart.length) {
+        checkoutStatus.className = 'status error';
+        checkoutStatus.textContent = 'Varukorgen är tom.';
+        return;
+      }
+      const orderItems = cart.map(item => item.name).join(', ');
+      orders.unshift({
+        id: Date.now().toString(),
+        customerName: rpName,
+        discordName: discordName,
+        drinkName: orderItems || 'Kundval',
+        price: cart.reduce((sum, item) => sum + item.price, 0),
+        amount: amount,
+        status: 'Ny',
+        staffName: 'Kund',
+        paymentNote: 'Betala till Driftynordic'
+      });
+      saveOrders();
+      checkoutStatus.className = 'status';
+      checkoutStatus.textContent = `Beställning skickad. Det betalas till Driftynordic för ${amount}.`;
+      cart = [];
+      saveCart();
+      renderCart();
+      renderPublicOrders();
+      renderStaffDashboard();
+      renderAdminDashboard();
+      checkoutForm.reset();
+    }
+
+    checkoutForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      submitCheckout();
+    });
+
+    checkoutSubmitBtn.addEventListener('click', function () {
+      if (!cart.length) {
+        checkoutStatus.className = 'status error';
+        checkoutStatus.textContent = 'Lägg till något i kundvagnen innan du betalar.';
+        return;
+      }
+      confirmModal.classList.remove('hidden');
+    });
+
+    confirmCheckoutYes.addEventListener('click', function () {
+      confirmModal.classList.add('hidden');
+      submitCheckout();
+    });
+
+    confirmCheckoutNo.addEventListener('click', function () {
+      confirmModal.classList.add('hidden');
+      checkoutStatus.className = 'status';
+      checkoutStatus.textContent = 'Köpet avbröts.';
+    });
+
+    confirmModal.addEventListener('click', function (event) {
+      if (event.target === confirmModal) {
+        confirmModal.classList.add('hidden');
+      }
+    });
+
+    staffLoginForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const username = document.getElementById('staffUser').value.trim();
+      const password = document.getElementById('staffPass').value;
+      const account = staffAccounts.find(entry => entry.username === username && entry.password === password);
+      if (!account) {
+        staffLoginStatus.className = 'status error';
+        staffLoginStatus.textContent = 'Fel användarnamn eller lösenord.';
+        return;
+      }
+      account.active = true;
+      account.shiftStatus = account.shiftStatus || 'Avslutad';
+      account.shiftStartedAt = null;
+      saveStaffAccounts();
+      localStorage.setItem(currentStaffKey, username);
+      staffLoginStatus.className = 'status';
+      staffLoginStatus.textContent = `Inloggad som ${username}.`;
+      renderStaffDashboard();
+      this.reset();
+    });
+
+    document.getElementById('startShiftBtn').addEventListener('click', function () {
+      const currentStaff = getCurrentStaffAccount();
+      if (!currentStaff) return;
+      currentStaff.shiftStatus = 'På shift';
+      currentStaff.shiftStartedAt = Date.now();
+      saveStaffAccounts();
+      renderStaffDashboard();
+    });
+
+    document.getElementById('pauseShiftBtn').addEventListener('click', function () {
+      const currentStaff = getCurrentStaffAccount();
+      if (!currentStaff) return;
+      if (currentStaff.shiftStartedAt) {
+        currentStaff.shiftMinutes = (currentStaff.shiftMinutes || 0) + Math.floor((Date.now() - currentStaff.shiftStartedAt) / 60000);
+        currentStaff.shiftStartedAt = null;
+      }
+      currentStaff.shiftStatus = 'Pausad';
+      saveStaffAccounts();
+      renderStaffDashboard();
+    });
+
+    document.getElementById('endShiftBtn').addEventListener('click', function () {
+      const currentStaff = getCurrentStaffAccount();
+      if (!currentStaff) return;
+      if (currentStaff.shiftStartedAt) {
+        currentStaff.shiftMinutes = (currentStaff.shiftMinutes || 0) + Math.floor((Date.now() - currentStaff.shiftStartedAt) / 60000);
+        currentStaff.shiftStartedAt = null;
+      }
+      currentStaff.shiftStatus = 'Avslutad';
+      saveStaffAccounts();
+      renderStaffDashboard();
+    });
+
+    staffOrderForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const currentStaff = getCurrentStaffAccount();
+      const customerName = document.getElementById('customerName').value.trim();
+      const drinkName = staffDrinkSelect.value;
+      const chosen = menu.find(entry => entry.name === drinkName);
+      if (!currentStaff || !customerName || !chosen) {
+        staffOrderStatus.className = 'status error';
+        staffOrderStatus.textContent = 'Välj kund, dryck och se till att du är inloggad.';
+        return;
+      }
+      orders.unshift({
+        id: Date.now().toString(),
+        customerName,
+        drinkName: chosen.name,
+        price: chosen.price,
+        status: 'Ny',
+        staffName: currentStaff.username,
+        paymentNote: 'Betala till Driftynordic'
+      });
+      saveOrders();
+      renderStaffDashboard();
+      renderAdminDashboard();
+      renderPublicOrders();
+      staffOrderStatus.className = 'status';
+      staffOrderStatus.textContent = `Beställning skapad för ${customerName}. Det betalas till Driftynordic.`;
+      this.reset();
+    });
+
+    document.getElementById('staffLogoutBtn').addEventListener('click', function () {
+      const currentStaff = getCurrentStaffAccount();
+      if (currentStaff) {
+        if (currentStaff.shiftStartedAt) {
+          currentStaff.shiftMinutes = (currentStaff.shiftMinutes || 0) + Math.floor((Date.now() - currentStaff.shiftStartedAt) / 60000);
+          currentStaff.shiftStartedAt = null;
+        }
+        currentStaff.active = false;
+        saveStaffAccounts();
+      }
+      localStorage.removeItem(currentStaffKey);
+      renderStaffDashboard();
+    });
+
+    adminLoginForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const username = document.getElementById('adminUser').value.trim();
+      const password = document.getElementById('adminPass').value;
+      if (username === 'ADMINSSRP' && password === 'DUVET') {
+        localStorage.setItem(currentAdminKey, 'true');
+        adminLoginStatus.className = 'status';
+        adminLoginStatus.textContent = 'Inloggad som admin.';
+        renderAdminDashboard();
+        this.reset();
+      } else {
+        adminLoginStatus.className = 'status error';
+        adminLoginStatus.textContent = 'Fel admininlogg.';
+      }
+    });
+
+    createRoleForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const roleName = document.getElementById('roleName').value.trim();
+      if (!roleName) {
+        createRoleStatus.className = 'status error';
+        createRoleStatus.textContent = 'Skriv in ett rollnamn.';
+        return;
+      }
+      const permissions = Array.from(document.querySelectorAll('input[name="rolePermission"]:checked')).map(input => input.value);
+      if (!roles.some(role => role.name.toLowerCase() === roleName.toLowerCase())) {
+        roles.push({ name: roleName, permissions });
+        saveRoles();
+        renderDrinkOptions();
+        renderRolePermissionsList();
+        createRoleStatus.className = 'status';
+        createRoleStatus.textContent = `Rollen ${roleName} skapades.`;
+      } else {
+        createRoleStatus.className = 'status error';
+        createRoleStatus.textContent = 'Den rollen finns redan.';
+      }
+      this.reset();
+    });
+
+    createStaffForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const username = document.getElementById('newStaffUser').value.trim();
+      const password = document.getElementById('newStaffPass').value;
+      const role = newStaffRole.value;
+      if (!username || !password) {
+        createStaffStatus.className = 'status error';
+        createStaffStatus.textContent = 'Fyll i användarnamn och lösenord.';
+        return;
+      }
+      const exists = staffAccounts.some(account => account.username.toLowerCase() === username.toLowerCase());
+      if (exists) {
+        createStaffStatus.className = 'status error';
+        createStaffStatus.textContent = 'Det användarnamnet finns redan.';
+        return;
+      }
+      staffAccounts.push({ username, password, role, shiftStatus: 'Avslutad', active: false, shiftMinutes: 0, shiftStartedAt: null });
+      saveStaffAccounts();
+      renderStaffDashboard();
+      renderAdminDashboard();
+      createStaffStatus.className = 'status';
+      createStaffStatus.textContent = `Kontot ${username} skapades med rollen ${role}.`;
+      this.reset();
+    });
+
+    document.getElementById('adminLogoutBtn').addEventListener('click', function () {
+      localStorage.removeItem(currentAdminKey);
+      renderAdminDashboard();
+    });
+
+    if (saveHomeEditBtn) {
+      saveHomeEditBtn.addEventListener('click', function () {
+        homeContent = {
+          headline: editHeadline ? editHeadline.value.trim() || 'Välkommen till caféet i Stockholm city' : homeContent.headline,
+          intro: editIntro ? editIntro.value.trim() || 'Här finns en snygg och enkel beställningsupplevelse där kunder kan välja dryck, lägga till i kassan och få tydlig betalningsinfo.' : homeContent.intro
+        };
+        saveHomeContent(homeContent);
+        applyHomeContent(homeContent);
+      });
+    }
+
+    document.addEventListener('click', function (event) {
+      const trigger = event.target.closest('[data-action="complete-order"]');
+      if (!trigger) return;
+      const orderId = trigger.getAttribute('data-order-id');
+      const order = orders.find(entry => entry.id === orderId);
+      if (!order) return;
+      order.status = 'Slutförd';
+      saveOrders();
+      renderPublicOrders();
+      renderStaffDashboard();
+      renderAdminDashboard();
+    });
+
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', function (event) {
+        event.preventDefault();
+        const target = this.getAttribute('data-view');
+        showView(target);
+      });
+    });
+
+    function showView(viewName) {
+      document.querySelectorAll('.view').forEach(view => view.classList.toggle('active', view.id === viewName));
+      document.querySelectorAll('.nav-link').forEach(link => link.classList.toggle('active', link.getAttribute('data-view') === viewName));
+    }
+
+    applyHomeContent(homeContent);
+    if (heroVisualImage) heroVisualImage.src = createHeroImage();
+    document.body.style.backgroundImage = `linear-gradient(rgba(4,9,15,0.72), rgba(4,9,15,0.82)), url('${createHeroImage()}')`;
+    renderDrinkOptions();
+    renderRolePermissionsList();
+    renderMenuGrid();
+    renderCart();
+    renderPublicOrders();
+    renderStaffDashboard();
+    renderAdminDashboard();
+    showView('home');
+  </script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stockholm Sweden RP — Café & Bar</title>
+  <style>
+    :root {
+      --bg: #05090e;
+      --panel: rgba(13, 21, 34, 0.95);
+      --panel-2: rgba(23, 36, 57, 0.95);
+      --text: #f8fafc;
+      --muted: #b8c3d2;
+      --gold: #f1b73f;
+      --blue: #2f7df6;
+      --green: #4ade80;
+      --red: #ff6b6b;
+      --border: rgba(255,255,255,0.12);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text);
+      background: linear-gradient(rgba(4,9,15,0.72), rgba(4,9,15,0.82)), #05090e;
+      min-height: 100vh;
+      background-size: cover;
+      background-attachment: fixed;
+    }
+    .topbar { position: sticky; top: 0; z-index: 10; display: flex; justify-content: space-between; align-items: center; padding: 14px 24px; background: rgba(4,9,15,0.9); border-bottom: 1px solid var(--border); }
+    .brand { font-weight: 800; color: var(--gold); letter-spacing: 0.04em; }
+    nav a { color: var(--text); text-decoration: none; margin-left: 12px; font-weight: 600; }
+    nav a:hover { color: var(--gold); }
+    .page { max-width: 1200px; margin: 0 auto; padding: 24px; }
+    .hero, .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 22px; box-shadow: 0 18px 46px rgba(0,0,0,0.28); }
+    .hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: 20px; padding: 42px 28px; margin-bottom: 24px; }
+    .hero h1 { margin: 0 0 10px; font-size: clamp(2rem, 4vw, 3rem); }
+    .hero-visual { border-radius: 18px; overflow: hidden; border: 1px solid var(--border); min-height: 280px; }
+    .hero-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .editable-block { border: 1px dashed rgba(241,183,63,0.35); padding: 10px; border-radius: 12px; background: rgba(241,183,63,0.07); }
+    .editable-block textarea { min-height: 90px; resize: vertical; }
+    .hero p, .section p, .muted { color: var(--muted); line-height: 1.6; }
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+    .btn { border: none; border-radius: 999px; padding: 11px 16px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; color: #07111f; background: linear-gradient(135deg, var(--gold), #ffd77a); }
+    .btn.secondary { color: var(--text); background: linear-gradient(135deg, var(--blue), #6aa7ff); }
+    .btn.danger { color: var(--text); background: linear-gradient(135deg, var(--red), #ff8b8b); }
+    .btn.small { padding: 8px 12px; font-size: 0.9rem; }
+    .panel { padding: 24px; margin-bottom: 24px; }
+    .section h2 { margin-top: 0; margin-bottom: 6px; }
+    .grid { display: grid; gap: 16px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .card { padding: 16px; border-radius: 16px; background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); border: 1px solid var(--border); }
+    .card h3 { margin-top: 0; margin-bottom: 8px; }
+    .price { font-size: 1.2rem; color: var(--gold); font-weight: 700; margin-top: 6px; }
+    .menu-grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-top: 16px; }
+    .menu-card { display: flex; flex-direction: column; height: 100%; transition: transform 180ms ease, border-color 180ms ease; padding: 12px; }
+    .menu-card:hover { transform: translateY(-2px); border-color: rgba(241,183,63,0.4); }
+    .menu-image { width: 100%; aspect-ratio: 5 / 4; object-fit: cover; border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--border); background: rgba(255,255,255,0.04); max-height: 170px; }
+    .card-body { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+    .drink-meta { display: flex; flex-direction: column; gap: 6px; }
+    .menu-tag { display: inline-block; width: fit-content; padding: 6px 10px; border-radius: 999px; background: rgba(241,183,63,0.15); color: var(--gold); font-size: 0.8rem; font-weight: 700; border: 1px solid rgba(241,183,63,0.25); }
+    .menu-description { color: var(--muted); font-size: 0.95rem; line-height: 1.45; }
+    .menu-card .btn { width: 100%; text-align: center; margin-top: auto; }
+    .permission-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 6px; }
+    .permission-chip { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 999px; border: 1px solid var(--border); background: rgba(255,255,255,0.04); font-size: 0.92rem; }
+    .permission-chip input { width: auto; accent-color: var(--gold); margin: 0; }
+    .staff-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .status-badge { display: inline-block; padding: 6px 10px; border-radius: 999px; font-size: 0.8rem; font-weight: 700; }
+    .status-badge.active { background: rgba(74, 222, 128, 0.16); color: var(--green); border: 1px solid rgba(74, 222, 128, 0.24); }
+    .status-badge.inactive { background: rgba(255, 107, 107, 0.16); color: var(--red); border: 1px solid rgba(255, 107, 107, 0.24); }
+    form { display: grid; gap: 12px; margin-top: 12px; }
+    input, select, button { font: inherit; border-radius: 12px; border: 1px solid var(--border); padding: 12px 14px; background: var(--panel-2); color: var(--text); }
+    input::placeholder { color: #8ea2bd; }
+    .status { min-height: 20px; margin-top: 8px; color: var(--green); font-weight: 600; }
+    .status.error { color: var(--red); }
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(2,6,12,0.74); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 50; }
+    .modal-card { background: var(--panel); border: 1px solid var(--border); border-radius: 18px; padding: 22px; width: min(420px, 100%); box-shadow: 0 24px 50px rgba(0,0,0,0.35); }
+    .modal-actions { display: flex; gap: 10px; margin-top: 14px; }
+    .modal-actions .btn { flex: 1; justify-content: center; }
+    .hidden { display: none; }
+    .list-item { padding: 12px; border-radius: 14px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); margin-top: 10px; }
+    .pill { display: inline-block; padding: 6px 10px; border-radius: 999px; font-size: 0.8rem; background: rgba(47,125,246,0.2); color: #8dc4ff; border: 1px solid rgba(47,125,246,0.25); margin-left: 6px; }
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .small { font-size: 0.95rem; color: var(--muted); }
+    .nav-link { color: var(--text); text-decoration: none; margin-left: 12px; font-weight: 600; }
+    .nav-link:hover, .nav-link.active { color: var(--gold); }
+    .view { display: none; }
+    .view.active { display: block; }
+    .accent { color: var(--gold); font-weight: 700; }
+    footer { padding: 24px; text-align: center; color: var(--muted); border-top: 1px solid var(--border); margin-top: 20px; }
+    @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } .grid { grid-template-columns: 1fr 1fr; } .split { grid-template-columns: 1fr; } }
+    @media (max-width: 600px) { .topbar { flex-direction: column; gap: 8px; } .page { padding: 16px; } .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">Stockholm Sweden RP</div>
+    <nav>
+      <a href="#" class="nav-link active" data-view="home">Hem</a>
+      <a href="#" class="nav-link" data-view="order">Beställ</a>
+      <a href="#" class="nav-link" data-view="staff">Personal</a>
+      <a href="#" class="nav-link" data-view="admin">Admin</a>
+      <a href="#" class="nav-link" data-view="contact">Kontakt</a>
+    </nav>
+  </div>
+
+  <div class="page">
+    <section id="home" class="view active">
+      <section class="hero">
+        <div>
+          <h1 id="homeHeadline">Välkommen till caféet i Stockholm city</h1>
+          <p id="homeIntro">Här finns en snygg och enkel beställningsupplevelse där kunder kan välja dryck, lägga till i kassan och få tydlig betalningsinfo.</p>
+          <div class="btn-row">
+            <a class="btn" href="#" data-view="order">Gå till beställning</a>
+            <a class="btn secondary" href="#" data-view="staff">Personalportal</a>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="hero-visual">
+            <img id="heroVisualImage" src="" alt="Kollage med folk, öl och glas på ett träbord" />
+          </div>
+          <h3 style="margin-top: 12px;">Så fungerar det</h3>
+          <p>• Välj dryck<br />• Lägg till i kassan<br />• Fyll i RP-namn och Discord-namn<br />• Beställningen syns för personalen</p>
+        </div>
+      </section>
+
+      <section class="section panel">
+        <h2>En cool struktur</h2>
+        <p>Beställning, personal och admin är nu uppdelade i egna sidor så det känns mer professionellt och lättare att använda.</p>
+        <div class="grid">
+          <div class="card"><h3>Beställ</h3><div class="small">Kunder får en egen sida där det tydligt står att det betalas till Driftynordic.</div></div>
+          <div class="card"><h3>Personal</h3><div class="small">Personal kan logga in, se shift, ta beställningar och markera dem som klara.</div></div>
+          <div class="card"><h3>Admin</h3><div class="small">Admin kan skapa roller, personalkonton och följa personalens shift-status.</div></div>
+        </div>
+      </section>
+    </section>
+
+    <section id="order" class="view">
+      <section class="section panel">
+        <h2>Beställning</h2>
+        <p class="accent">Det betalas till Driftynordic</p>
+        <p>Välj vad du vill ha och skicka din beställning till personalen.</p>
+        <div id="menuGrid" class="menu-grid"></div>
+        <div style="margin-top: 16px;">
+          <select id="drinkSelect" class="hidden"></select>
+          <button id="addToCartBtn" class="btn" style="margin-top: 8px;">Lägg till i kundvagnen</button>
+        </div>
+        <div id="menuStatus" class="status"></div>
+      </section>
+
+      <section class="section panel">
+        <h2>Kassa</h2>
+        <div id="cartItems"></div>
+        <form id="checkoutForm">
+          <input id="rpName" placeholder="RP-namn" required />
+          <input id="discordName" placeholder="Discord-namn" required />
+          <input id="paymentAmount" placeholder="Belopp att betala" required />
+          <button type="button" id="checkoutSubmitBtn" class="btn">Betala</button>
+        </form>
+        <div id="checkoutStatus" class="status"></div>
+      </section>
+
+      <section class="section panel">
+        <h2>Prenumerationer</h2>
+        <p>Välj ett paket och lägg det i kundvagnen. Kunder ser inte beställningslistan här.</p>
+        <div id="publicOrdersList"></div>
+      </section>
+    </section>
+
+    <section id="staff" class="view">
+      <section class="section panel">
+        <h2>Personalportal</h2>
+        <p>Här finns en egen personalyta där personal kan logga in, se shift, ta beställningar och markera dem som klara.</p>
+        <div id="staffLoginBox">
+          <h3>Logga in</h3>
+          <form id="staffLoginForm">
+            <input id="staffUser" placeholder="Användarnamn" required />
+            <input id="staffPass" type="password" placeholder="Lösenord" required />
+            <button type="submit" class="btn secondary">Logga in som personal</button>
+          </form>
+          <div id="staffLoginStatus" class="status"></div>
+        </div>
+
+        <div id="staffDashboard" class="hidden">
+          <div class="split">
+            <div class="card">
+              <h3>Min status</h3>
+              <div id="myStaffInfo" class="small"></div>
+              <div class="btn-row">
+                <button id="startShiftBtn" class="btn">Starta shift</button>
+                <button id="pauseShiftBtn" class="btn secondary">Pausa shift</button>
+                <button id="endShiftBtn" class="btn danger">Avsluta shift</button>
+              </div>
+              <div id="staffShiftStatus" class="status"></div>
+            </div>
+            <div class="card">
+              <h3>Aktiva medarbetare</h3>
+              <div id="activeStaffList"></div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Ta beställning</h3>
+            <form id="staffOrderForm">
+              <input id="customerName" placeholder="Kundens namn" required />
+              <select id="staffDrinkSelect"></select>
+              <button type="submit" class="btn">Skapa beställning</button>
+            </form>
+            <div id="staffOrderStatus" class="status"></div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Personalöversikt</h3>
+            <div id="staffRoster"></div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Beställningar</h3>
+            <div id="staffOrdersList"></div>
+          </div>
+
+          <button id="staffLogoutBtn" class="btn secondary" style="margin-top: 12px;">Logga ut</button>
+        </div>
+      </section>
+    </section>
+
+    <section id="admin" class="view">
+      <section class="section panel">
+        <h2>Adminportal</h2>
+        <p>Här hanterar admin roller, personalkonton, aktiv personal och orderstatus utan att personalpanelen blandas ihop.</p>
+        <div id="adminLoginBox">
+          <h3>Admin login</h3>
+          <form id="adminLoginForm">
+            <input id="adminUser" placeholder="Admin användarnamn" required />
+            <input id="adminPass" type="password" placeholder="Admin lösenord" required />
+            <button type="submit" class="btn secondary">Logga in som admin</button>
+          </form>
+          <div id="adminLoginStatus" class="status"></div>
+        </div>
+
+        <div id="adminDashboard" class="hidden">
+          <div class="split">
+            <div class="card">
+              <h3>Skapa ny roll</h3>
+              <form id="createRoleForm">
+                <input id="roleName" placeholder="Rollnamn" required />
+                <div class="permission-grid">
+                  <label class="permission-chip"><input type="checkbox" name="rolePermission" value="manage_orders" /> Hantera beställningar</label>
+                  <label class="permission-chip"><input type="checkbox" name="rolePermission" value="manage_staff" /> Hantera personal</label>
+                  <label class="permission-chip"><input type="checkbox" name="rolePermission" value="manage_shifts" /> Hantera shift</label>
+                  <label class="permission-chip"><input type="checkbox" name="rolePermission" value="view_dashboard" /> Se dashboard</label>
+                </div>
+                <button type="submit" class="btn">Lägg till roll</button>
+              </form>
+              <div id="createRoleStatus" class="status"></div>
+              <div id="rolePermissionsList" style="margin-top: 10px;"></div>
+            </div>
+            <div class="card">
+              <h3>Skapa personalkonto</h3>
+              <form id="createStaffForm">
+                <input id="newStaffUser" placeholder="Användarnamn" required />
+                <input id="newStaffPass" placeholder="Lösenord" required />
+                <select id="newStaffRole"></select>
+                <button type="submit" class="btn">Skapa konto</button>
+              </form>
+              <div id="createStaffStatus" class="status"></div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Redigera startsida</h3>
+            <div class="editable-block">
+              <label class="small" for="editHeadline">Rubrik</label>
+              <input id="editHeadline" type="text" value="Välkommen till caféet i Stockholm city" />
+              <label class="small" for="editIntro" style="margin-top: 8px; display: block;">Introtext</label>
+              <textarea id="editIntro">Här finns en snygg och enkel beställningsupplevelse där kunder kan välja dryck, lägga till i kassan och få tydlig betalningsinfo.</textarea>
+              <button id="saveHomeEditBtn" class="btn" style="margin-top: 10px;">Spara ändringar</button>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Personal och shift-status</h3>
+            <div id="adminStaffRoster"></div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Aktiva personal</h3>
+            <div id="adminActiveStaff"></div>
+          </div>
+
+          <div class="card" style="margin-top: 16px;">
+            <h3>Beställningar</h3>
+            <div id="adminOrdersList"></div>
+          </div>
+
+          <button id="adminLogoutBtn" class="btn secondary" style="margin-top: 12px;">Logga ut admin</button>
+        </div>
+      </section>
+    </section>
+
+    <section id="contact" class="view">
+      <section class="section panel">
+        <h2>Kontakt</h2>
+        <p>Drifty i Discord DMs för hjälp med support eller frågor om beställningar.</p>
+      </section>
+    </section>
+  </div>
+
+  <footer>
+    <strong>Kontakt</strong><br />
+    Drifty i Discord DMs för hjälp med support.
+  </footer>
+
+  <div id="confirmModal" class="modal-backdrop hidden">
+    <div class="modal-card">
+      <h3>Bekräfta köp</h3>
+      <p>Är du säker på att du vill köpa? Kom ihåg att betala till Driftynordic.</p>
+      <div class="modal-actions">
+        <button id="confirmCheckoutYes" class="btn" type="button">Ja</button>
+        <button id="confirmCheckoutNo" class="btn secondary" type="button">Nej</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function createInlineImage(label, accent, kind) {
+      const safeLabel = String(label).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const safeKind = String(kind).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 900 600">
+        <rect width="100%" height="100%" rx="36" fill="#07111f" />
+        <rect x="70" y="70" width="760" height="460" rx="32" fill="#0f1828" stroke="${accent}" stroke-width="6" />
+        <rect x="210" y="150" width="480" height="270" rx="26" fill="${accent}" fill-opacity="0.18" stroke="${accent}" stroke-width="4" />
+        <rect x="250" y="110" width="400" height="115" rx="18" fill="${accent}" />
+        <circle cx="330" cy="360" r="24" fill="${accent}" />
+        <circle cx="570" cy="360" r="24" fill="${accent}" />
+        <rect x="285" y="320" width="330" height="80" rx="18" fill="rgba(255,255,255,0.16)" />
+        <text x="450" y="220" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="34" font-weight="700" fill="${accent}">${safeLabel}</text>
+        <text x="450" y="370" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="24" font-weight="600" fill="#f8fafc">${safeKind}</text>
+      </svg>`;
+      return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+    }
+
+    function createHeroImage() {
+      return createInlineImage('Öl & Glas', '#f1b73f', 'Stockholm City');
+    }
+
+    function createMenuImage(name, kind) {
+      const accent = kind === 'Mat' ? '#ff8b3d' : '#f1b73f';
+      return createInlineImage(name, accent, kind);
+    }
+
+    const menu = [
+      { name: 'Storgatan Stark', price: 95, kind: 'Dryck', description: 'Klassisk öl med mjuk maltig smak.', image: createMenuImage('Storgatan Stark', 'Dryck') },
+      { name: 'Norrlands Guld', price: 80, kind: 'Dryck', description: 'Lätt och fräsch med tydlig humle.', image: createMenuImage('Norrlands Guld', 'Dryck') },
+      { name: 'Falcon', price: 75, kind: 'Dryck', description: 'En balanserad lager som passar till maten.', image: createMenuImage('Falcon', 'Dryck') },
+      { name: 'Pripps Blå', price: 70, kind: 'Dryck', description: 'En enkel och populär klassiker.', image: createMenuImage('Pripps Blå', 'Dryck') },
+      { name: 'Pilsner', price: 90, kind: 'Dryck', description: 'Ren smak med fin kurva och lätt kropp.', image: createMenuImage('Pilsner', 'Dryck') },
+      { name: 'Lager', price: 85, kind: 'Dryck', description: 'Mjuk och uppfriskande för en lugn kväll.', image: createMenuImage('Lager', 'Dryck') },
+      { name: 'IPA', price: 95, kind: 'Dryck', description: 'Starkare humlearom med lite bitterhet.', image: createMenuImage('IPA', 'Dryck') },
+      { name: 'Stout', price: 95, kind: 'Dryck', description: 'Rik, mörk och perfekt till en mysig stund.', image: createMenuImage('Stout', 'Dryck') },
+      { name: 'Alkoholfritt Svenskt', price: 55, kind: 'Dryck', description: 'Alkoholfri klassiker med ren smak.', image: createMenuImage('Alkoholfritt Svenskt', 'Dryck') },
+      { name: 'Alkoholfri Pilsner', price: 65, kind: 'Dryck', description: 'Lätt och svalkande utan alkohol.', image: createMenuImage('Alkoholfri Pilsner', 'Dryck') },
+      { name: 'Alkoholfri IPA', price: 60, kind: 'Dryck', description: 'Fräsch humlesmak för den som vill ha mer.', image: createMenuImage('Alkoholfri IPA', 'Dryck') },
+      { name: 'Classic Burger', price: 135, kind: 'Mat', description: 'Biff, ost, pickles och sallad på mjukt bröd.', image: createMenuImage('Classic Burger', 'Mat') },
+      { name: 'Chicken Wrap', price: 115, kind: 'Mat', description: 'Krispig kyckling med sallad och dressing.', image: createMenuImage('Chicken Wrap', 'Mat') },
+      { name: 'Pommes Frites', price: 75, kind: 'Mat', description: 'Goda pommes med salt och klassisk sås.', image: createMenuImage('Pommes Frites', 'Mat') },
+      { name: 'Nachos', price: 95, kind: 'Mat', description: 'Kryddiga nachos med ost, salsa och guacamole.', image: createMenuImage('Nachos', 'Mat') },
+      { name: 'Club Sandwich', price: 125, kind: 'Mat', description: 'Roastbiff, bacon, sallad och smakrik dressing.', image: createMenuImage('Club Sandwich', 'Mat') }
+    ];
+
+    const packages = [
+      {
+        id: 'standard',
+        name: 'Standard',
+        price: 299,
+        description: '2 gratis Folköl + 1 hamburgare',
+        details: ['2 gratis Folköl', '1 hamburgare']
+      },
+      {
+        id: 'premium',
+        name: 'Premium',
+        price: 599,
+        description: '2 hamburgare + öl eller cider + 1 gratis Folköl',
+        details: ['2 hamburgare', 'Öl eller cider', '1 gratis Folköl']
+      }
+    ];
+
+    const staffAccountsKey = 'ssrp-staff-accounts';
+    const rolesKey = 'ssrp-roles';
+    const ordersKey = 'ssrp-orders';
+    const cartKey = 'ssrp-cart';
+    const currentStaffKey = 'ssrp-current-staff';
+    const currentAdminKey = 'ssrp-current-admin';
+    const homeContentKey = 'ssrp-home-content';
+
+    const drinkSelect = document.getElementById('drinkSelect');
+    const staffDrinkSelect = document.getElementById('staffDrinkSelect');
+    const addToCartBtn = document.getElementById('addToCartBtn');
+    const menuGrid = document.getElementById('menuGrid');
+    const menuStatus = document.getElementById('menuStatus');
+    const cartItems = document.getElementById('cartItems');
+    const checkoutForm = document.getElementById('checkoutForm');
+    const checkoutStatus = document.getElementById('checkoutStatus');
+    const checkoutSubmitBtn = document.getElementById('checkoutSubmitBtn');
+    const paymentAmountInput = document.getElementById('paymentAmount');
+    const publicOrdersList = document.getElementById('publicOrdersList');
+    const confirmModal = document.getElementById('confirmModal');
+    const confirmCheckoutYes = document.getElementById('confirmCheckoutYes');
+    const confirmCheckoutNo = document.getElementById('confirmCheckoutNo');
+
+    const staffLoginBox = document.getElementById('staffLoginBox');
+    const staffDashboard = document.getElementById('staffDashboard');
+    const staffLoginForm = document.getElementById('staffLoginForm');
+    const staffLoginStatus = document.getElementById('staffLoginStatus');
+    const myStaffInfo = document.getElementById('myStaffInfo');
+    const activeStaffList = document.getElementById('activeStaffList');
+    const staffShiftStatus = document.getElementById('staffShiftStatus');
+    const staffRoster = document.getElementById('staffRoster');
+    const staffOrderForm = document.getElementById('staffOrderForm');
+    const staffOrderStatus = document.getElementById('staffOrderStatus');
+    const staffOrdersList = document.getElementById('staffOrdersList');
+
+    const adminLoginBox = document.getElementById('adminLoginBox');
+    const adminDashboard = document.getElementById('adminDashboard');
+    const adminLoginForm = document.getElementById('adminLoginForm');
+    const adminLoginStatus = document.getElementById('adminLoginStatus');
+    const createRoleForm = document.getElementById('createRoleForm');
+    const createRoleStatus = document.getElementById('createRoleStatus');
+    const createStaffForm = document.getElementById('createStaffForm');
+    const createStaffStatus = document.getElementById('createStaffStatus');
+    const newStaffRole = document.getElementById('newStaffRole');
+    const rolePermissionsList = document.getElementById('rolePermissionsList');
+    const heroVisualImage = document.getElementById('heroVisualImage');
+    const homeHeadline = document.getElementById('homeHeadline');
+    const homeIntro = document.getElementById('homeIntro');
+    const editHeadline = document.getElementById('editHeadline');
+    const editIntro = document.getElementById('editIntro');
+    const saveHomeEditBtn = document.getElementById('saveHomeEditBtn');
+    const adminStaffRoster = document.getElementById('adminStaffRoster');
+    const adminActiveStaff = document.getElementById('adminActiveStaff');
+    const adminOrdersList = document.getElementById('adminOrdersList');
+
+    function loadStaffAccounts() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(staffAccountsKey) || 'null');
+        if (Array.isArray(saved) && saved.length) return saved;
+      } catch (e) {}
+      return [
+        { username: '555', password: '333', role: 'Personal', shiftStatus: 'Avslutad', active: false, shiftMinutes: 0, shiftStartedAt: null },
+        { username: '777', password: '444', role: 'Barista', shiftStatus: 'Avslutad', active: false, shiftMinutes: 0, shiftStartedAt: null }
+      ];
+    }
+
+    function saveStaffAccounts() {
+      localStorage.setItem(staffAccountsKey, JSON.stringify(staffAccounts));
+    }
+
+    function normalizeRole(entry) {
+      if (typeof entry === 'string') {
+        return { name: entry, permissions: ['view_dashboard'] };
+      }
+      if (entry && typeof entry === 'object') {
+        return {
+          name: entry.name || 'Roll',
+          permissions: Array.isArray(entry.permissions) ? entry.permissions : []
+        };
+      }
+      return null;
+    }
+
+    function loadRoles() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(rolesKey) || 'null');
+        if (Array.isArray(saved) && saved.length) {
+          const normalized = saved.map(normalizeRole).filter(Boolean);
+          if (normalized.length) return normalized;
+        }
+      } catch (e) {}
+      return [
+        { name: 'Personal', permissions: ['view_dashboard'] },
+        { name: 'Barista', permissions: ['view_dashboard', 'manage_orders'] },
+        { name: 'Säljare', permissions: ['view_dashboard', 'manage_orders'] },
+        { name: 'Chef', permissions: ['view_dashboard', 'manage_orders', 'manage_staff', 'manage_shifts'] }
+      ];
+    }
+
+    function saveRoles() {
+      localStorage.setItem(rolesKey, JSON.stringify(roles));
+    }
+
+    function loadOrders() {
+      try {
+        return JSON.parse(localStorage.getItem(ordersKey) || '[]');
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveOrders() {
+      localStorage.setItem(ordersKey, JSON.stringify(orders));
+    }
+
+    function loadCart() {
+      try {
+        return JSON.parse(localStorage.getItem(cartKey) || '[]');
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveCart() {
+      localStorage.setItem(cartKey, JSON.stringify(cart));
+    }
+
+    function getRoleByName(roleName) {
+      return roles.find(role => role.name.toLowerCase() === (roleName || '').toLowerCase()) || null;
+    }
+
+    function getPermissionLabel(permission) {
+      const labels = {
+        manage_orders: 'Hantera beställningar',
+        manage_staff: 'Hantera personal',
+        manage_shifts: 'Hantera shift',
+        view_dashboard: 'Se dashboard'
+      };
+      return labels[permission] || permission;
+    }
+
+    function loadHomeContent() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(homeContentKey) || 'null');
+        if (saved && typeof saved === 'object') {
+          return {
+            headline: saved.headline || 'Välkommen till caféet i Stockholm city',
+            intro: saved.intro || 'Här finns en snygg och enkel beställningsupplevelse där kunder kan välja dryck, lägga till i kassan och få tydlig betalningsinfo.'
+          };
+        }
+      } catch (e) {}
+      return {
+        headline: 'Välkommen till caféet i Stockholm city',
+        intro: 'Här finns en snygg och enkel beställningsupplevelse där kunder kan välja dryck, lägga till i kassan och få tydlig betalningsinfo.'
+      };
+    }
+
+    function saveHomeContent(content) {
+      localStorage.setItem(homeContentKey, JSON.stringify(content));
+    }
+
+    function applyHomeContent(content) {
+      if (homeHeadline) homeHeadline.textContent = content.headline;
+      if (homeIntro) homeIntro.textContent = content.intro;
+      if (editHeadline) editHeadline.value = content.headline;
+      if (editIntro) editIntro.value = content.intro;
+    }
+
+    function renderDrinkOptions() {
+      if (drinkSelect) {
+        drinkSelect.innerHTML = menu.map(item => `<option value="${item.name}">${item.name} — ${item.price} kr</option>`).join('');
+      }
+      staffDrinkSelect.innerHTML = menu.map(item => `<option value="${item.name}">${item.name} — ${item.price} kr</option>`).join('');
+      newStaffRole.innerHTML = roles.map(role => `<option value="${role.name}">${role.name}</option>`).join('');
+    }
+
+    function renderRolePermissionsList() {
+      if (!rolePermissionsList) return;
+      rolePermissionsList.innerHTML = roles.length ? roles.map(role => `
+        <div class="list-item">
+          <strong>${role.name}</strong>
+          <div class="small">Behörigheter: ${role.permissions.length ? role.permissions.map(getPermissionLabel).join(', ') : 'Inga'}</div>
+        </div>
+      `).join('') : '<div class="list-item"><strong>Inga roller skapade ännu.</strong></div>';
+    }
+
+    function renderMenuGrid() {
+      if (!menuGrid) return;
+      menuGrid.innerHTML = menu.map(item => `
+        <div class="card menu-card">
+          <img class="menu-image" src="${item.image}" alt="${item.name}" />
+          <div class="card-body">
+            <div class="drink-meta">
+              <div class="menu-tag">${item.kind}</div>
+              <h3>${item.name}</h3>
+              <div class="menu-description">${item.description}</div>
+              <div class="price">${item.price} kr</div>
+            </div>
+            <button class="btn add-item-btn" type="button" data-item-name="${item.name}">Lägg till i kundvagnen</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    let staffAccounts = loadStaffAccounts();
+    let roles = loadRoles();
+    let orders = loadOrders();
+    let cart = loadCart();
+    let homeContent = loadHomeContent();
+
+    function getCurrentStaffAccount() {
+      const username = localStorage.getItem(currentStaffKey);
+      return staffAccounts.find(account => account.username === username) || null;
+    }
+
+    function getShiftMinutes(account) {
+      if (typeof account.shiftMinutes !== 'number') account.shiftMinutes = 0;
+      if (account.shiftStartedAt && account.active) {
+        const elapsed = Math.floor((Date.now() - account.shiftStartedAt) / 60000);
+        return account.shiftMinutes + elapsed;
+      }
+      return account.shiftMinutes;
+    }
+
+    function renderCart() {
+      if (!cart.length) {
+        cartItems.innerHTML = '<div class="list-item"><strong>Varukorgen är tom.</strong></div>';
+        paymentAmountInput.value = '';
+        return;
+      }
+      const total = cart.reduce((sum, item) => sum + item.price, 0);
+      cartItems.innerHTML = cart.map(item => `<div class="list-item"><strong>${item.name}</strong><div class="small">${item.price} kr</div></div>`).join('') + `<div class="list-item"><strong>Totalt</strong><div class="small">${total} kr</div></div>`;
+      paymentAmountInput.value = `${total} kr`;
+    }
+
+    function renderPublicOrders() {
+      if (!publicOrdersList) return;
+      publicOrdersList.innerHTML = packages.map(pkg => `
+        <div class="card menu-card" style="margin-top: 12px;">
+          <div class="card-body">
+            <div class="drink-meta">
+              <div class="menu-tag">Paket</div>
+              <h3>${pkg.name}</h3>
+              <div class="menu-description">${pkg.description}</div>
+              <div class="small">${pkg.details.join(' • ')}</div>
+              <div class="price">${pkg.price} kr</div>
+            </div>
+            <button class="btn add-package-btn" type="button" data-package-id="${pkg.id}">Lägg till i kundvagnen</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderStaffDashboard() {
+      const currentStaff = getCurrentStaffAccount();
+      if (!currentStaff) {
+        staffLoginBox.classList.remove('hidden');
+        staffDashboard.classList.add('hidden');
+        return;
+      }
+      staffLoginBox.classList.add('hidden');
+      staffDashboard.classList.remove('hidden');
+      const roleDefinition = getRoleByName(currentStaff.role);
+      const permissionsText = roleDefinition && roleDefinition.permissions.length ? roleDefinition.permissions.map(getPermissionLabel).join(', ') : 'Inga';
+      myStaffInfo.innerHTML = `<strong>${currentStaff.username}</strong><br />Roll: ${currentStaff.role}<br />Shift: ${currentStaff.shiftStatus}<br />Status: ${currentStaff.active ? 'Aktiv' : 'Ej aktiv'}<br /><span class="small">Behörigheter: ${permissionsText}</span>`;
+      staffShiftStatus.textContent = `Shiftstatus: ${currentStaff.shiftStatus}`;
+
+      const active = staffAccounts.filter(account => account.active);
+      const sortedByShift = [...staffAccounts].sort((a, b) => getShiftMinutes(b) - getShiftMinutes(a));
+      activeStaffList.innerHTML = active.length ? active.map(account => `<div class="list-item"><strong>${account.username}</strong><div class="small">Roll: ${account.role} • Shift: ${account.shiftStatus} • ${getShiftMinutes(account)} min</div></div>`).join('') : '<div class="list-item"><strong>Inga andra är aktiva just nu.</strong></div>';
+
+      staffRoster.innerHTML = staffAccounts.map(account => `
+        <div class="list-item">
+          <strong>${account.username}</strong> <span class="pill">${account.role}</span>
+          <div class="small">Shift: ${account.shiftStatus} • Aktiv: ${account.active ? 'Ja' : 'Nej'} • ${getShiftMinutes(account)} min</div>
+        </div>
+      `).join('');
+
+      const topShift = sortedByShift[0];
+      const topShiftText = topShift ? `${topShift.username} med ${getShiftMinutes(topShift)} min i shift` : 'Ingen personal registrerad ännu';
+      staffOrdersList.innerHTML = `
+        <div class="list-item">
+          <strong>Vem har mest i shift?</strong>
+          <div class="small">${topShiftText}</div>
+        </div>
+        ${orders.length ? orders.map(order => `
+          <div class="list-item">
+            <strong>${order.customerName}</strong>
+            <div class="small">${order.drinkName} • ${order.price} kr</div>
+            <div class="small">Skapad av: ${order.staffName}</div>
+            <div class="small">Status: ${order.status}</div>
+            <div class="small">Betala till: ${order.paymentNote || 'Driftynordic'}</div>
+            <button class="btn small" data-order-id="${order.id}" data-action="complete-order" style="margin-top: 8px;">Markera som klar</button>
+          </div>
+        `).join('') : '<div class="list-item"><strong>Inga beställningar ännu.</strong></div>'}
+      `;
+    }
+
+    function renderAdminDashboard() {
+      const isLoggedIn = localStorage.getItem(currentAdminKey);
+      if (!isLoggedIn) {
+        adminLoginBox.classList.remove('hidden');
+        adminDashboard.classList.add('hidden');
+        return;
+      }
+      adminLoginBox.classList.add('hidden');
+      adminDashboard.classList.remove('hidden');
+      newStaffRole.innerHTML = roles.map(role => `<option value="${role}">${role}</option>`).join('');
+      adminStaffRoster.innerHTML = staffAccounts.map(account => {
+        const roleDefinition = getRoleByName(account.role);
+        const permissionsText = roleDefinition && roleDefinition.permissions.length ? roleDefinition.permissions.map(getPermissionLabel).join(', ') : 'Inga';
+        return `
+          <div class="list-item staff-row">
+            <div>
+              <strong>${account.username}</strong> <span class="pill">${account.role}</span>
+              <div class="small">Shift: ${account.shiftStatus} • Aktiv: ${account.active ? 'Ja' : 'Nej'} • ${getShiftMinutes(account)} min</div>
+              <div class="small">Behörigheter: ${permissionsText}</div>
+            </div>
+            <span class="status-badge ${account.active ? 'active' : 'inactive'}">${account.active ? 'Aktiv' : 'Inaktiv'}</span>
+          </div>
+        `;
+      }).join('');
+      const active = staffAccounts.filter(account => account.active);
+      adminActiveStaff.innerHTML = active.length ? active.map(account => `<div class="list-item"><strong>${account.username}</strong><div class="small">Roll: ${account.role} • Shift: ${account.shiftStatus} • ${getShiftMinutes(account)} min</div></div>`).join('') : '<div class="list-item"><strong>Ingen personal är aktiv just nu.</strong></div>';
+      adminOrdersList.innerHTML = orders.length ? orders.map(order => `
+        <div class="list-item">
+          <strong>${order.customerName}</strong>
+          <div class="small">${order.drinkName} • ${order.price} kr</div>
+          <div class="small">Status: ${order.status}</div>
+          <div class="small">Betala till: ${order.paymentNote || 'Driftynordic'}</div>
+          <button class="btn small" data-order-id="${order.id}" data-action="complete-order" style="margin-top: 8px;">Markera som klar</button>
+        </div>
+      `).join('') : '<div class="list-item"><strong>Inga beställningar ännu.</strong></div>';
+    }
+
+    function addItemToCart(itemName) {
+      const item = menu.find(entry => entry.name === itemName);
+      if (!item) return;
+      cart.push({ name: item.name, price: item.price });
+      saveCart();
+      renderCart();
+      menuStatus.textContent = `${item.name} lades till i kundvagnen.`;
+    }
+
+    function addPackageToCart(packageId) {
+      const pkg = packages.find(entry => entry.id === packageId);
+      if (!pkg) return;
+      cart.push({ name: pkg.name, price: pkg.price, type: 'package', description: pkg.description });
+      saveCart();
+      renderCart();
+      menuStatus.textContent = `${pkg.name} paket lades till i kundvagnen.`;
+    }
+
+    if (addToCartBtn) {
+      addToCartBtn.addEventListener('click', function () {
+        const selected = drinkSelect ? drinkSelect.value : '';
+        addItemToCart(selected);
+      });
+    }
+
+    if (menuGrid) {
+      menuGrid.addEventListener('click', function (event) {
+        const trigger = event.target.closest('.add-item-btn');
+        if (!trigger) return;
+        addItemToCart(trigger.getAttribute('data-item-name'));
+      });
+    }
+
+    if (publicOrdersList) {
+      publicOrdersList.addEventListener('click', function (event) {
+        const trigger = event.target.closest('.add-package-btn');
+        if (!trigger) return;
+        addPackageToCart(trigger.getAttribute('data-package-id'));
+      });
+    }
+
+    function submitCheckout() {
+      const rpName = document.getElementById('rpName').value.trim();
+      const discordName = document.getElementById('discordName').value.trim();
+      const amount = paymentAmountInput.value.trim();
+      if (!rpName || !discordName || !amount) {
+        checkoutStatus.className = 'status error';
+        checkoutStatus.textContent = 'Fyll i RP-namn, Discord-namn och belopp.';
+        return;
+      }
+      if (!cart.length) {
+        checkoutStatus.className = 'status error';
+        checkoutStatus.textContent = 'Varukorgen är tom.';
+        return;
+      }
+      const orderItems = cart.map(item => item.name).join(', ');
+      orders.unshift({
+        id: Date.now().toString(),
+        customerName: rpName,
+        discordName: discordName,
+        drinkName: orderItems || 'Kundval',
+        price: cart.reduce((sum, item) => sum + item.price, 0),
+        amount: amount,
+        status: 'Ny',
+        staffName: 'Kund',
+        paymentNote: 'Betala till Driftynordic'
+      });
+      saveOrders();
+      checkoutStatus.className = 'status';
+      checkoutStatus.textContent = `Beställning skickad. Det betalas till Driftynordic för ${amount}.`;
+      cart = [];
+      saveCart();
+      renderCart();
+      renderPublicOrders();
+      renderStaffDashboard();
+      renderAdminDashboard();
+      checkoutForm.reset();
+    }
+
+    checkoutForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      submitCheckout();
+    });
+
+    checkoutSubmitBtn.addEventListener('click', function () {
+      if (!cart.length) {
+        checkoutStatus.className = 'status error';
+        checkoutStatus.textContent = 'Lägg till något i kundvagnen innan du betalar.';
+        return;
+      }
+      confirmModal.classList.remove('hidden');
+    });
+
+    confirmCheckoutYes.addEventListener('click', function () {
+      confirmModal.classList.add('hidden');
+      submitCheckout();
+    });
+
+    confirmCheckoutNo.addEventListener('click', function () {
+      confirmModal.classList.add('hidden');
+      checkoutStatus.className = 'status';
+      checkoutStatus.textContent = 'Köpet avbröts.';
+    });
+
+    confirmModal.addEventListener('click', function (event) {
+      if (event.target === confirmModal) {
+        confirmModal.classList.add('hidden');
+      }
+    });
+
+    staffLoginForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const username = document.getElementById('staffUser').value.trim();
+      const password = document.getElementById('staffPass').value;
+      const account = staffAccounts.find(entry => entry.username === username && entry.password === password);
+      if (!account) {
+        staffLoginStatus.className = 'status error';
+        staffLoginStatus.textContent = 'Fel användarnamn eller lösenord.';
+        return;
+      }
+      account.active = true;
+      account.shiftStatus = account.shiftStatus || 'Avslutad';
+      account.shiftStartedAt = null;
+      saveStaffAccounts();
+      localStorage.setItem(currentStaffKey, username);
+      staffLoginStatus.className = 'status';
+      staffLoginStatus.textContent = `Inloggad som ${username}.`;
+      renderStaffDashboard();
+      this.reset();
+    });
+
+    document.getElementById('startShiftBtn').addEventListener('click', function () {
+      const currentStaff = getCurrentStaffAccount();
+      if (!currentStaff) return;
+      currentStaff.shiftStatus = 'På shift';
+      currentStaff.shiftStartedAt = Date.now();
+      saveStaffAccounts();
+      renderStaffDashboard();
+    });
+
+    document.getElementById('pauseShiftBtn').addEventListener('click', function () {
+      const currentStaff = getCurrentStaffAccount();
+      if (!currentStaff) return;
+      if (currentStaff.shiftStartedAt) {
+        currentStaff.shiftMinutes = (currentStaff.shiftMinutes || 0) + Math.floor((Date.now() - currentStaff.shiftStartedAt) / 60000);
+        currentStaff.shiftStartedAt = null;
+      }
+      currentStaff.shiftStatus = 'Pausad';
+      saveStaffAccounts();
+      renderStaffDashboard();
+    });
+
+    document.getElementById('endShiftBtn').addEventListener('click', function () {
+      const currentStaff = getCurrentStaffAccount();
+      if (!currentStaff) return;
+      if (currentStaff.shiftStartedAt) {
+        currentStaff.shiftMinutes = (currentStaff.shiftMinutes || 0) + Math.floor((Date.now() - currentStaff.shiftStartedAt) / 60000);
+        currentStaff.shiftStartedAt = null;
+      }
+      currentStaff.shiftStatus = 'Avslutad';
+      saveStaffAccounts();
+      renderStaffDashboard();
+    });
+
+    staffOrderForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const currentStaff = getCurrentStaffAccount();
+      const customerName = document.getElementById('customerName').value.trim();
+      const drinkName = staffDrinkSelect.value;
+      const chosen = menu.find(entry => entry.name === drinkName);
+      if (!currentStaff || !customerName || !chosen) {
+        staffOrderStatus.className = 'status error';
+        staffOrderStatus.textContent = 'Välj kund, dryck och se till att du är inloggad.';
+        return;
+      }
+      orders.unshift({
+        id: Date.now().toString(),
+        customerName,
+        drinkName: chosen.name,
+        price: chosen.price,
+        status: 'Ny',
+        staffName: currentStaff.username,
+        paymentNote: 'Betala till Driftynordic'
+      });
+      saveOrders();
+      renderStaffDashboard();
+      renderAdminDashboard();
+      renderPublicOrders();
+      staffOrderStatus.className = 'status';
+      staffOrderStatus.textContent = `Beställning skapad för ${customerName}. Det betalas till Driftynordic.`;
+      this.reset();
+    });
+
+    document.getElementById('staffLogoutBtn').addEventListener('click', function () {
+      const currentStaff = getCurrentStaffAccount();
+      if (currentStaff) {
+        if (currentStaff.shiftStartedAt) {
+          currentStaff.shiftMinutes = (currentStaff.shiftMinutes || 0) + Math.floor((Date.now() - currentStaff.shiftStartedAt) / 60000);
+          currentStaff.shiftStartedAt = null;
+        }
+        currentStaff.active = false;
+        saveStaffAccounts();
+      }
+      localStorage.removeItem(currentStaffKey);
+      renderStaffDashboard();
+    });
+
+    adminLoginForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const username = document.getElementById('adminUser').value.trim();
+      const password = document.getElementById('adminPass').value;
+      if (username === 'ADMINSSRP' && password === 'DUVET') {
+        localStorage.setItem(currentAdminKey, 'true');
+        adminLoginStatus.className = 'status';
+        adminLoginStatus.textContent = 'Inloggad som admin.';
+        renderAdminDashboard();
+        this.reset();
+      } else {
+        adminLoginStatus.className = 'status error';
+        adminLoginStatus.textContent = 'Fel admininlogg.';
+      }
+    });
+
+    createRoleForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const roleName = document.getElementById('roleName').value.trim();
+      if (!roleName) {
+        createRoleStatus.className = 'status error';
+        createRoleStatus.textContent = 'Skriv in ett rollnamn.';
+        return;
+      }
+      const permissions = Array.from(document.querySelectorAll('input[name="rolePermission"]:checked')).map(input => input.value);
+      if (!roles.some(role => role.name.toLowerCase() === roleName.toLowerCase())) {
+        roles.push({ name: roleName, permissions });
+        saveRoles();
+        renderDrinkOptions();
+        renderRolePermissionsList();
+        createRoleStatus.className = 'status';
+        createRoleStatus.textContent = `Rollen ${roleName} skapades.`;
+      } else {
+        createRoleStatus.className = 'status error';
+        createRoleStatus.textContent = 'Den rollen finns redan.';
+      }
+      this.reset();
+    });
+
+    createStaffForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const username = document.getElementById('newStaffUser').value.trim();
+      const password = document.getElementById('newStaffPass').value;
+      const role = newStaffRole.value;
+      if (!username || !password) {
+        createStaffStatus.className = 'status error';
+        createStaffStatus.textContent = 'Fyll i användarnamn och lösenord.';
+        return;
+      }
+      const exists = staffAccounts.some(account => account.username.toLowerCase() === username.toLowerCase());
+      if (exists) {
+        createStaffStatus.className = 'status error';
+        createStaffStatus.textContent = 'Det användarnamnet finns redan.';
+        return;
+      }
+      staffAccounts.push({ username, password, role, shiftStatus: 'Avslutad', active: false, shiftMinutes: 0, shiftStartedAt: null });
+      saveStaffAccounts();
+      renderStaffDashboard();
+      renderAdminDashboard();
+      createStaffStatus.className = 'status';
+      createStaffStatus.textContent = `Kontot ${username} skapades med rollen ${role}.`;
+      this.reset();
+    });
+
+    document.getElementById('adminLogoutBtn').addEventListener('click', function () {
+      localStorage.removeItem(currentAdminKey);
+      renderAdminDashboard();
+    });
+
+    if (saveHomeEditBtn) {
+      saveHomeEditBtn.addEventListener('click', function () {
+        homeContent = {
+          headline: editHeadline ? editHeadline.value.trim() || 'Välkommen till caféet i Stockholm city' : homeContent.headline,
+          intro: editIntro ? editIntro.value.trim() || 'Här finns en snygg och enkel beställningsupplevelse där kunder kan välja dryck, lägga till i kassan och få tydlig betalningsinfo.' : homeContent.intro
+        };
+        saveHomeContent(homeContent);
+        applyHomeContent(homeContent);
+      });
+    }
+
+    document.addEventListener('click', function (event) {
+      const trigger = event.target.closest('[data-action="complete-order"]');
+      if (!trigger) return;
+      const orderId = trigger.getAttribute('data-order-id');
+      const order = orders.find(entry => entry.id === orderId);
+      if (!order) return;
+      order.status = 'Slutförd';
+      saveOrders();
+      renderPublicOrders();
+      renderStaffDashboard();
+      renderAdminDashboard();
+    });
+
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', function (event) {
+        event.preventDefault();
+        const target = this.getAttribute('data-view');
+        showView(target);
+      });
+    });
+
+    function showView(viewName) {
+      document.querySelectorAll('.view').forEach(view => view.classList.toggle('active', view.id === viewName));
+      document.querySelectorAll('.nav-link').forEach(link => link.classList.toggle('active', link.getAttribute('data-view') === viewName));
+    }
+
+    applyHomeContent(homeContent);
+    if (heroVisualImage) heroVisualImage.src = createHeroImage();
+    document.body.style.backgroundImage = `linear-gradient(rgba(4,9,15,0.72), rgba(4,9,15,0.82)), url('${createHeroImage()}')`;
+    renderDrinkOptions();
+    renderRolePermissionsList();
+    renderMenuGrid();
+    renderCart();
+    renderPublicOrders();
+    renderStaffDashboard();
+    renderAdminDashboard();
+    showView('home');
+  </script>
+</body>
+</html>
+
